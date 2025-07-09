@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Eventos-Ribeirao
-=======
 # Eventos Ribeirão
 
 Este é um projeto Next.js para um portal de eventos em Ribeirão Preto, desenvolvido com TypeScript e estilizado com Tailwind CSS.
@@ -101,4 +98,3 @@ Recomenda-se a instalação de uma extensão do ESLint em seu editor de código 
 -   **[Tailwind CSS](https://tailwindcss.com/)** - Framework CSS utility-first para estilização rápida.
 -   **[Shadcn/ui](https://ui.shadcn.com/)** - Coleção de componentes de UI reutilizáveis.
 -   **[ESLint](https://eslint.org/)** - Ferramenta de linting para JavaScript e TypeScript.
->>>>>>> master
