@@ -1,0 +1,239 @@
+/* Estilos Gerais */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0 0 30px 0;
+}
+
+.main-search {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Espaçamento entre os elementos de busca */
+    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+}
+
+.main-search input[type="text"],
+.main-search input[type="date"],
+.main-search select {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 200px; /* Largura padrão para os campos */
+}
+
+.main-search button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.main-search button:hover {
+    background-color: #0056b3;
+}
+
+/* Menu Rápido */
+.quick-menu {
+    background-color: #eee;
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.quick-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Espaçamento entre os itens do menu rápido */
+    flex-wrap: wrap;
+}
+
+.quick-menu ul li a {
+    text-decoration: none;
+    color: #555;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.quick-menu ul li a i {
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: #007bff;
+}
+
+.quick-menu ul li a:hover {
+    color: #007bff;
+}
+
+/* Grid de Eventos */
+.event-grid {
+	height: 670px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 2 colunas responsivas */
+    gap: 30px;
+    margin: 40px auto; /* Centraliza a grid e adiciona margem */
+    justify-content: center; /* Centraliza os itens dentro da grid */
+}
+
+.event-card {
+	height: 650px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.event-card img {
+    width: 400px;
+    height: 500px;
+    object-fit: cover;
+    display: block;
+}
+
+.event-card h3 {
+    margin: 15px 0 10px;
+    color: #007bff;
+}
+
+.event-card p {
+    margin: 5px 0;
+    color: #666;
+    padding: 0 15px;
+}
+
+.event-card button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.event-card button:hover {
+    background-color: #218838;
+}
+
+/* Carrossel */
+.carousel-container {
+    background-color: #e9ecef;
+    padding: 20px;
+    text-align: center;
+    margin: 40px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden; /* Importante para esconder banners fora da vista */
+    position: relative;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.carousel-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.8s ease-in-out; /* Transição suave para o movimento */
+}
+
+.carousel-banner {
+    min-width: 100%; /* Cada banner ocupa 100% da largura do contêiner */
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.6s ease;
+}
+
+.dot.active {
+    background-color: #717171;
+}
+
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .main-search {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-search input,
+    .main-search select,
+    .main-search button {
+        width: 80%; /* Ocupa mais espaço em telas menores */
+        margin-bottom: 10px;
+    }
+
+    .quick-menu ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .event-grid {
+        grid-template-columns: 1fr; /* Uma coluna em telas menores */
+    }
+
+    .carousel-banner {
+        height: 200px; /* Ajusta altura do banner em telas menores */
+    }
+}
