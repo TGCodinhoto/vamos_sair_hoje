@@ -7,7 +7,7 @@
     <title>Vamos Sair Hoje!</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <!-- <link rel="stylesheet" href="index.css"> -->
+    <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
@@ -15,20 +15,20 @@
     <?php require_once 'header.php' ?>
 
     <!-- Main -->
-    <main class="max-w-7xl mx-auto px-4">
+    <main class="max-w-6xl mx-auto px-5">
+        
+        <!-- Carrossel de Propaganda -->
+        <?php require_once 'carrosselPropaganda.php' ?>
 
-        <!-- Carrossel Principal -->
-        <?php require_once 'CarrosselMain.php' ?>
-
-        <!-- Cards -->
-        <?php require_once 'cards.php' ?>
-
+        <!-- Cards de Eventos -->
+        <?php require_once 'cardsEventos.php' ?>
+    
     </main>
 
     <!-- Footer -->
     <?php require_once 'footer.php' ?>
 
-    <script src="js/index.js"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>
