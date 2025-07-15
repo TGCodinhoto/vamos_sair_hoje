@@ -1,16 +1,18 @@
 <?php
 require_once '../conexao.php';
 
-function criarEstado($nome) {
+function criarEstado($nome, $sigla) {
     global $conexao;
     try {
-        $stmt = $conexao->prepare("INSERT INTO estado (estadonome) VALUES (:nome)");
+        $stmt = $conexao->prepare("INSERT INTO estado (estadonome, estadosigla) VALUES (:nome, :sigla)");
         $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':sigla', $sigla);
         return $stmt->execute();
     } catch (PDOException $e) {
         return false;
     }
 }
+
 
 function listarEstados() {
     global $conexao;
@@ -26,10 +28,11 @@ function buscarEstadoPorId($id) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function atualizarEstado($id, $nome) {
+function atualizarEstado($id, $nome, $sigla) {
     global $conexao;
-    $stmt = $conexao->prepare("UPDATE estado SET estadonome = :nome WHERE estadoid = :id");
+    $stmt = $conexao->prepare("UPDATE estado SET estadonome = :nome, estadosigla = :sigla WHERE estadoid = :id");
     $stmt->bindParam(':nome', $nome);
+    $stmt->bindParam(':sigla', $sigla);
     $stmt->bindParam(':id', $id);
     return $stmt->execute();
 }
