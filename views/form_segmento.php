@@ -29,7 +29,7 @@ $segmentos = listarSegmentos();
 
 <head>
     <meta charset="UTF-8" />
-    <title>Gerenciar - Segmentos</title>
+    <title>Gerenciar - Segmento</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -79,7 +79,7 @@ $segmentos = listarSegmentos();
                         <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($segmento['segmentonome']) ?></td>
                         <td class="border border-gray-300 px-4 py-2">
                             <a href="?editar=<?= $segmento['segmentoid'] ?>"
-                                class="text-indigo-600 hover:underline mr-2">Editar</a>
+                                class="text-indigo-600 hover:underline mr-2">Editar Segmento</a>
                             <a href="../controllers/segmento_controller.php?delete=<?= $segmento['segmentoid'] ?>"
                                 onclick="return confirm('Tem certeza que deseja excluir este segmento?')"
                                 class="text-red-600 hover:underline">Excluir</a>
