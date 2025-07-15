@@ -35,7 +35,7 @@ $tiposAnuncio = listarTiposAnuncio();
 
 <body class="bg-gray-100 min-h-screen p-6">
     <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
-        <h1 class="text-3xl font-bold mb-6 text-center">Gerenciar - Tipo de Anúncio</h1>
+        <h1 class="text-3xl font-bold mb-6 text-center">Gerenciar - Tipo de Anúncio haha</h1>
 
         <?php if (!empty($mensagem)): ?>
             <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
