@@ -12,21 +12,21 @@
 
 <body>
     <!-- Header -->
-    <?php require_once 'header.php' ?>
+    <?php require_once 'ui/header.php' ?>
 
     <!-- Main -->
     <main class="max-w-6xl mx-auto px-5">
         
         <!-- Carrossel de Propaganda -->
-        <?php require_once 'carrosselPropaganda.php' ?>
+        <?php require_once 'ui/carrosselPropaganda.php' ?>
 
         <!-- Cards de Eventos -->
-        <?php require_once 'cardsEventos.php' ?>
+        <?php require_once 'ui/cardsEventos.php' ?>
     
     </main>
 
     <!-- Footer -->
-    <?php require_once 'footer.php' ?>
+    <?php require_once 'ui/footer.php' ?>
 
     <script src="index.js"></script>
 </body>
