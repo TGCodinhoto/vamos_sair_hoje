@@ -34,7 +34,7 @@ function atualizarTipoPublico($id, $nome) {
     return $stmt->execute();
 }
 
-function excluirCategoria($id) {
+function excluirTipoPublico($id) {
     global $conexao;
     $stmt = $conexao->prepare("DELETE FROM tipopublico WHERE tipopublicoid = :id");
     $stmt->bindParam(':id', $id);
@@ -42,7 +42,7 @@ function excluirCategoria($id) {
 }
 
 if (isset($_GET['delete'])) {
-    excluirCategoria($_GET['delete']);
+    excluirTipoPublico($_GET['delete']);
     header("Location: ../views/form_tipopublico.php");
     exit;
 }

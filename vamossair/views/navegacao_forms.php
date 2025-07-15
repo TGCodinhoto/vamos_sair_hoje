@@ -58,6 +58,11 @@ error_reporting(E_ALL);
                 <h2 class="text-xl font-semibold text-green-800 mb-2">Tipo de Público</h2>
                 <p class="text-green-600">Gerenciar Tipo de Público</p>
             </a>
+            <a href="form_classificacao_etaria.php" 
+               class="block p-6 bg-yellow-50 border border-yellow-200 rounded-lg hover:bg-yellow-100 transition">
+                <h2 class="text-xl font-semibold text-yellow-800 mb-2">Classificação Etária</h2>
+                <p class="text-yellow-600">Gerenciar Classificação Etária</p>
+            </a>
         </div>
 
         <div class="mt-8 text-center">
