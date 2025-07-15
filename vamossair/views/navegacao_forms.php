@@ -53,6 +53,11 @@ error_reporting(E_ALL);
                 <h2 class="text-xl font-semibold text-red-800 mb-2">Categoria</h2>
                 <p class="text-red-600">Gerenciar categorias</p>
             </a>
+            <a href="form_tipopublico.php" 
+               class="block p-6 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition">
+                <h2 class="text-xl font-semibold text-green-800 mb-2">Tipo de Público</h2>
+                <p class="text-green-600">Gerenciar Tipo de Público</p>
+            </a>
         </div>
 
         <div class="mt-8 text-center">
