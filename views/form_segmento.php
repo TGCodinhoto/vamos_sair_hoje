@@ -29,7 +29,7 @@ $segmentos = listarSegmentos();
 
 <head>
     <meta charset="UTF-8" />
-    <title>Gerenciar - Segmento</title>
+    <title>Gerenciar - Segmentos</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
