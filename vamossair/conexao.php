@@ -11,7 +11,7 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC // Define o modo de busca padrão para retornar um array associativo
     ];
     
-    $conexao = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8mb4", $username, $password, $options);
+    $conexao = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8mb4", $username, $ewqeqweqwewqpassword, $options);
 } catch (PDOException $e) {
     error_log("Erro na conexão com o banco de dados: " . $e->getMessage());
     echo "Ocorreu um erro na conexão. Por favor, tente novamente mais tarde.";
