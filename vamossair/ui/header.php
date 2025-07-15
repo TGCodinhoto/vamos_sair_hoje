@@ -3,7 +3,13 @@
 <header class="bg-[#363636] text-white text-center py-4">
 
   <!-- Titulo Principal -->
-  <h1 class="font-extrabold text-xl md:text-3xl">Vamos Sair Hoje!</h1>
+  <div class="flex justify-between items-center px-4 max-w-5xl mx-auto">
+    <h1 class="font-extrabold text-xl md:text-3xl">Vamos Sair Hoje!</h1>
+    <a href="views/navegacao_forms.php" #Remover depois de testar
+       class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium transition">
+      <i class="fas fa-cog mr-1"></i>Administração
+    </a>
+  </div>
 
   <!-- Formulário Filtro -->
   <form class="mt-4 flex flex-col sm:flex-row justify-center gap-4 px-4 max-w-5xl mx-auto">
