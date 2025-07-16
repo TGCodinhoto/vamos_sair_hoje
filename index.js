@@ -1,4 +1,4 @@
-// JavaScript Document
+// JS Carrossel
 document.addEventListener('DOMContentLoaded', () => {
     // --- Lógica do Carrossel de Propaganda ---
     const carouselTrack = document.querySelector('.carousel-track');
