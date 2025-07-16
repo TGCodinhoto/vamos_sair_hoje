@@ -23,6 +23,7 @@
 </head>
 
 <body>
+    
     <!-- Header! -->
     <?php require_once 'ui/header.php' ?>
 
@@ -40,8 +41,6 @@
     <!-- Footer -->
     <?php require_once 'ui/footer.php' ?>
 
-    <!-- JS Carrossel -->
-    <script src="index.js"></script>
 </body>
 
 </html>
