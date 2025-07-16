@@ -37,7 +37,8 @@ $tiposLocal = listarTipoLocal();
   <!-- botao para voltar para navegacao_forms.php -->
 
 
-  <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+  <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
+    <a href="navegacao_forms.php" class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr; Voltar</a>
 
     <h1 class="text-2xl font-bold mb-6"><?= $tipoLocalEditar ? 'Editar' : 'Cadastrar' ?> Tipo de Local</h1>
 
