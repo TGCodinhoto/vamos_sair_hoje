@@ -49,7 +49,7 @@ $tiposAnuncio = listarTiposAnuncio();
                 <input type="hidden" name="id" value="<?= htmlspecialchars($anuncioParaEditar['tipoanuncioid']) ?>" />
             <?php endif; ?>
 
-            <label for="tipoanuncionome" class="block font-semibold mb-2">Nome do Tipo de Anúncio hahaha:</label>
+            <label for="tipoanuncionome" class="block font-semibold mb-2">Nome do Tipo de Anúncio:</label>
             <input type="text" id="tipoanuncionome" name="tipoanuncionome" required
                 value="<?= $anuncioParaEditar ? htmlspecialchars($anuncioParaEditar['tipoanuncionome']) : '' ?>"
                 class="w-full border border-gray-300 rounded p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
