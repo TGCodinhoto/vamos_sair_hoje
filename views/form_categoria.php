@@ -32,7 +32,7 @@ $categorias = listarCategorias();
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-900 p-8">
-  <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+  <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
     <h1 class="text-2xl font-bold mb-6"><?= $categoriaEditar ? 'Editar' : 'Cadastrar' ?> Categoria</h1>
 
     <?php if (!empty($mensagem)): ?>

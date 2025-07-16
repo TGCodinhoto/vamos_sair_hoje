@@ -35,6 +35,7 @@ $tiposAnuncio = listarTiposAnuncio();
 
 <body class="bg-gray-100 min-h-screen p-6">
     <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
+        <a href="navegacao_forms.php" class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr; Voltar</a>
         <h1 class="text-3xl font-bold mb-6 text-center">Gerenciar - Tipo de Anúncio</h1>
 
         <?php if (!empty($mensagem)): ?>
@@ -48,7 +49,7 @@ $tiposAnuncio = listarTiposAnuncio();
                 <input type="hidden" name="id" value="<?= htmlspecialchars($anuncioParaEditar['tipoanuncioid']) ?>" />
             <?php endif; ?>
 
-            <label for="tipoanuncionome" class="block font-semibold mb-2">Nome do Tipo de Anúncio hahaha:</label>
+            <label for="tipoanuncionome" class="block font-semibold mb-2">Nome do Tipo de Anúncio:</label>
             <input type="text" id="tipoanuncionome" name="tipoanuncionome" required
                 value="<?= $anuncioParaEditar ? htmlspecialchars($anuncioParaEditar['tipoanuncionome']) : '' ?>"
                 class="w-full border border-gray-300 rounded p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500" />

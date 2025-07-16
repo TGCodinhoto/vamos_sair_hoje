@@ -35,6 +35,7 @@ $formatosEvento = listarFormatosEvento();
 
 <body class="bg-gray-100 min-h-screen p-6">
     <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
+        <a href="navegacao_forms.php" class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr; Voltar</a>
         <h1 class="text-3xl font-bold mb-6 text-center">Gerenciar - Formato do Evento</h1>
 
         <?php if (!empty($mensagem)): ?>
@@ -45,12 +46,17 @@ $formatosEvento = listarFormatosEvento();
 
         <form method="POST" action="" class="mb-8">
             <?php if ($formatoParaEditar): ?>
-                <input type="hidden" name="id" value="<?= htmlspecialchars($formatoParaEditar['formatoeventoid']) ?>" />
+                <input type="hidden" name="id" value="<?= htmlspecialchars($formatoParaEditar['formatoid']) ?>" />
             <?php endif; ?>
 
-            <label for="formatoeventonome" class="block font-semibold mb-2">Nome do Formato do Evento:</label>
-            <input type="text" id="formatoeventonome" name="formatoeventonome" required
-                value="<?= $formatoParaEditar ? htmlspecialchars($formatoParaEditar['formatoeventonome']) : '' ?>"
+            <label for="formatonome" class="block font-semibold mb-2">Nome do Formato do Evento:</label>
+            <input type="text" id="formatonome" name="formatonome" required
+                value="<?= $formatoParaEditar ? htmlspecialchars($formatoParaEditar['formatonome']) : '' ?>"
+                class="w-full border border-gray-300 rounded p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+
+            <label for="formatodescricao" class="block font-semibold mb-2">Descrição do Formato do Evento:</label>
+            <input type="text" id="formatodescricao" name="formatodescricao"
+                value="<?= $formatoParaEditar ? htmlspecialchars($formatoParaEditar['formatodescricao']) : '' ?>"
                 class="w-full border border-gray-300 rounded p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
 
             <button
@@ -69,18 +75,20 @@ $formatosEvento = listarFormatosEvento();
                 <tr class="bg-indigo-100">
                     <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Nome</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Descrição</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($formatosEvento as $formato): ?>
                     <tr class="hover:bg-gray-100">
-                        <td class="border border-gray-300 px-4 py-2"><?= $formato['formatoeventoid'] ?></td>
-                        <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($formato['formatoeventonome']) ?></td>
+                        <td class="border border-gray-300 px-4 py-2"><?= $formato['formatoid'] ?></td>
+                        <td class="border border-gray-300 px-4 py-2"><?= $formato['formatonome'] ?></td>
+                        <td class="border border-gray-300 px-4 py-2"><?= $formato['formatodescricao'] ?></td>
                         <td class="border border-gray-300 px-4 py-2">
-                            <a href="?editar=<?= $formato['formatoeventoid'] ?>"
+                            <a href="?editar=<?= $formato['formatoid'] ?>"
                                 class="text-indigo-600 hover:underline mr-2">Editar</a>
-                            <a href="../controllers/formatoevento_controller.php?delete=<?= $formato['formatoeventoid'] ?>"
+                            <a href="../controllers/formatoevento_controller.php?delete=<?= $formato['formatoid'] ?>"
                                 onclick="return confirm('Tem certeza que deseja excluir este formato de evento?')"
                                 class="text-red-600 hover:underline">Excluir</a>
                         </td>
