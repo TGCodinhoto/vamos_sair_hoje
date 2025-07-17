@@ -82,9 +82,9 @@ $formatosEvento = listarFormatosEvento();
             <tbody>
                 <?php foreach ($formatosEvento as $formato): ?>
                     <tr class="hover:bg-gray-100">
-                        <td class="border border-gray-300 px-4 py-2"><?= $formato['formatoid'] ?></td>
-                        <td class="border border-gray-300 px-4 py-2"><?= $formato['formatonome'] ?></td>
-                        <td class="border border-gray-300 px-4 py-2"><?= $formato['formatodescricao'] ?></td>
+                        <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($formato['formatoid']) ?></td>
+                        <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($formato['formatonome']) ?></td>
+                        <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($formato['formatodescricao']) ?></td>
                         <td class="border border-gray-300 px-4 py-2">
                             <a href="?editar=<?= $formato['formatoid'] ?>"
                                 class="text-indigo-600 hover:underline mr-2">Editar</a>
