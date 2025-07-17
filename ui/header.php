@@ -24,6 +24,7 @@
     </a>
   </div>
 
+  <!-- Mobile (DropDown) -->
   <nav id="mobile-menu"
     class="sm:hidden hidden absolute top-full left-0 right-0 py-1 px-4 max-w-5xl mx-auto bg-[#2b2b2b]  shadow-lg z-50">
     <a href="views/navegacao_forms.php"
@@ -61,6 +62,7 @@
     </form>
   </nav>
 
+  
   <form class="hidden sm:flex mt-6 sm:mt-8 flex-col sm:flex-row justify-center gap-4 sm:gap-6 px-4 max-w-5xl mx-auto"
     aria-label="Formulário de filtro de eventos">
     <select aria-label="Cidade do evento"
