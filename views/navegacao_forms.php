@@ -8,83 +8,98 @@ error_reporting(E_ALL);
 <html lang="pt-br">
 
 <head>
+    <!-- Meta Tags -->
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Título Site -->
     <title>Navegação - Formulários</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font MontSerrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+
 </head>
 
-<body class="bg-gray-100 min-h-screen p-6">
-    <a href="navegacao_forms.php" class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr; Voltar</a>
+<body class="bg-gray-100 min-h-screen px-2 sm:px-6 py-6">
     <div class="max-w-4xl mx-auto bg-white p-8 rounded shadow">
-        <h1 class="text-3xl font-bold mb-8 text-center">Gerenciamento de Dados</h1>
+        <h1 class="text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600 drop-shadow-md">
+            Gerenciamento de Dados
+        </h1>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <a href="form_tipoanuncio.php"
-                class="block p-6 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition">
-                <h2 class="text-xl font-semibold text-indigo-800 mb-2">Tipo de Anúncio</h2>
-                <p class="text-indigo-600">Gerenciar tipos de anúncio</p>
+                class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo de Anúncio</h2>
+                <p class="text-gray-600">Gerenciar tipos de anúncio</p>
             </a>
 
             <a href="form_segmento.php"
-                class="block p-6 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition">
-                <h2 class="text-xl font-semibold text-green-800 mb-2">Segmento</h2>
-                <p class="text-green-600">Gerenciar segmentos</p>
+                class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                <h2 class="text-xl font-semibold text-blue-700 mb-2">Segmento</h2>
+                <p class="text-gray-600">Gerenciar segmentos</p>
             </a>
 
             <a href="form_atrativos.php"
-                class="block p-6 bg-yellow-50 border border-yellow-200 rounded-lg hover:bg-yellow-100 transition">
-                <h2 class="text-xl font-semibold text-yellow-800 mb-2">Atrativos</h2>
-                <p class="text-yellow-600">Gerenciar atrativos</p>
+                class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                <h2 class="text-xl font-semibold text-blue-700 mb-2">Atrativos</h2>
+                <p class="text-gray-600">Gerenciar atrativos</p>
             </a>
 
             <a href="form_formatoevento.php"
-                class="block p-6 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition">
-                <h2 class="text-xl font-semibold text-purple-800 mb-2">Formato do Evento</h2>
-                <p class="text-purple-600">Gerenciar formatos de evento</p>
+                class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                <h2 class="text-xl font-semibold text-blue-700 mb-2">Formato do Evento</h2>
+                <p class="text-gray-600">Gerenciar formatos de evento</p>
             </a>
 
             <a href="form_tipoevento.php"
-                class="block p-6 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition">
-                <h2 class="text-xl font-semibold text-blue-800 mb-2">Tipo de Evento</h2>
-                <p class="text-blue-600">Gerenciar tipos de evento</p>
+                class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo de Evento</h2>
+                <p class="text-gray-600">Gerenciar tipos de evento</p>
             </a>
 
             <a href="form_categoria.php"
-                class="block p-6 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition">
-                <h2 class="text-xl font-semibold text-red-800 mb-2">Categoria</h2>
-                <p class="text-red-600">Gerenciar categorias</p>
-            </a>
-            <a href="form_tipopublico.php"
-                class="block p-6 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition">
-                <h2 class="text-xl font-semibold text-green-800 mb-2">Tipo de Público</h2>
-                <p class="text-green-600">Gerenciar Tipo de Público</p>
-            </a>
-            <a href="form_classificacao_etaria.php"
-                class="block p-6 bg-yellow-50 border border-yellow-200 rounded-lg hover:bg-yellow-100 transition">
-                <h2 class="text-xl font-semibold text-yellow-800 mb-2">Classificação Etária</h2>
-                <p class="text-yellow-600">Gerenciar Classificação Etária</p>
-            </a>
-            <a href="form_tipolocal.php"
-                class="block p-6 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition">
-                <h2 class="text-xl font-semibold text-purple-800 mb-2">Tipo do Local </h2>
-                <p class="text-purple-600">Gerenciar Tipo do Local</p>
-            </a>
-            <a href="form_estado.php"
-                class="block p-6 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition">
-                <h2 class="text-xl font-semibold text-blue-800 mb-2">Estado</h2>
-                <p class="text-blue-600">Gerenciar Estados</p>
-            </a>
-            <a href="form_cidade.php"
-                class="block p-6 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition">
-                <h2 class="text-xl font-semibold text-red-800 mb-2">Cidades</h2>
-                <p class="text-red-600">Gerenciar Cidades</p>
+                class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                <h2 class="text-xl font-semibold text-blue-700 mb-2">Categoria</h2>
+                <p class="text-gray-600">Gerenciar categorias</p>
             </a>
 
+            <a href="form_tipopublico.php"
+                class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo de Público</h2>
+                <p class="text-gray-600">Gerenciar Tipo de Público</p>
+            </a>
+
+            <a href="form_classificacao_etaria.php"
+                class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                <h2 class="text-xl font-semibold text-blue-700 mb-2">Classificação Etária</h2>
+                <p class="text-gray-600">Gerenciar Classificação Etária</p>
+            </a>
+
+            <a href="form_tipolocal.php"
+                class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo do Local </h2>
+                <p class="text-gray-600">Gerenciar Tipo do Local</p>
+            </a>
+
+            <a href="form_estado.php"
+                class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                <h2 class="text-xl font-semibold text-blue-700 mb-2">Estado</h2>
+                <p class="text-gray-600">Gerenciar Estados</p>
+            </a>
+
+            <a href="form_cidade.php"
+                class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                <h2 class="text-xl font-semibold text-blue-700 mb-2">Cidades</h2>
+                <p class="text-gray-600">Gerenciar Cidades</p>
+            </a>
         </div>
 
         <div class="mt-8 text-center">
             <a href="../index.php"
-                class="inline-block bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700 transition">
+                class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md px-5 py-2 transition">
                 Voltar ao Início
             </a>
         </div>
