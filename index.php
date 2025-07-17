@@ -9,6 +9,8 @@
     <!-- Título Site -->
     <title>Vamos Sair Hoje!</title>
 
+    <link rel="shortcut icon" href="image/favicon.svg" type="image/x-icon">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
