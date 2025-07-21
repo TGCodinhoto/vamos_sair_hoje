@@ -5,20 +5,22 @@ $mensagem = '';
 $classificacaoEtariaEditar = null;
 
 if (isset($_GET['editar'])) {
-    $classificacaoEtariaEditar = buscarClassificacaoEtariaPorId($_GET['editar']);
+  $classificacaoEtariaEditar = buscarClassificacaoEtariaPorId($_GET['editar']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = $_POST['classificacaonome'] ?? '';
+  $nome = $_POST['classificacaonome'] ?? '';
 
-    if (!empty($_POST['id'])) {
-        $atualizou = atualizarClassificacaoEtaria($_POST['id'], $nome);
-        $mensagem = $atualizou ? "Classificação Etária atualizada com sucesso!" : "Erro ao atualizar.";
-        $classificacaoEtariaEditar = buscarClassificacaoEtariaPorId($_POST['id']);
-    } else {
-        $inseriu = criarClassificacaoEtaria($nome);
-        $mensagem = $inseriu ? "Classificação Etária cadastrada com sucesso!" : "Erro ao cadastrar.";
-    }
+  if (!empty($_POST['id'])) {
+    $atualizou = atualizarClassificacaoEtaria($_POST['id'], $nome);
+    $mensagem = $atualizou ? "Classificação Etária atualizada com sucesso!" : "Erro ao atualizar.";
+  } else {
+    $inseriu = criarClassificacaoEtaria($nome);
+    $mensagem = $inseriu ? "Classificação Etária cadastrada com sucesso!" : "Erro ao cadastrar.";
+  }
+
+  header("Location: form_classificacao_etaria.php?mensagem=" . urlencode($mensagem));
+  exit;
 }
 
 $classificacoesEtarias = listarClassificacaoEtaria();
@@ -26,18 +28,22 @@ $classificacoesEtarias = listarClassificacaoEtaria();
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <title>Gerenciar Classificação Etária</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 text-gray-900 p-8">
   <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
     <a href="navegacao_forms.php" class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr; Voltar</a>
     <h1 class="text-2xl font-bold mb-6"><?= $classificacaoEtariaEditar ? 'Editar' : 'Cadastrar' ?> Classificação Etária</h1>
 
-    <?php if (!empty($mensagem)): ?>
-      <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($mensagem) ?></p>
+    <?php
+    if (isset($_GET['mensagem'])):
+    ?>
+      <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($_GET['mensagem']) ?></p>
     <?php endif; ?>
 
     <form method="POST" class="space-y-4">
@@ -84,4 +90,5 @@ $classificacoesEtarias = listarClassificacaoEtaria();
     </table>
   </div>
 </body>
+
 </html>

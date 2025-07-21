@@ -5,20 +5,22 @@ $mensagem = '';
 $categoriaEditar = null;
 
 if (isset($_GET['editar'])) {
-    $categoriaEditar = buscarCategoriaPorId($_GET['editar']);
+  $categoriaEditar = buscarCategoriaPorId($_GET['editar']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = $_POST['categorianome'];
+  $nome = $_POST['categorianome'];
 
-    if (!empty($_POST['id'])) {
-        $atualizou = atualizarCategoria($_POST['id'], $nome);
-        $mensagem = $atualizou ? "Categoria atualizada com sucesso!" : "Erro ao atualizar.";
-        $categoriaEditar = buscarCategoriaPorId($_POST['id']);
-    } else {
-        $inseriu = criarCategoria($nome);
-        $mensagem = $inseriu ? "Categoria cadastrada com sucesso!" : "Erro ao cadastrar.";
-    }
+  if (!empty($_POST['id'])) {
+    $atualizou = atualizarCategoria($_POST['id'], $nome);
+    $mensagem = $atualizou ? "Categoria atualizada com sucesso!" : "Erro ao atualizar.";
+  } else {
+    $inseriu = criarCategoria($nome);
+    $mensagem = $inseriu ? "Categoria cadastrada com sucesso!" : "Erro ao cadastrar.";
+  }
+
+  header("Location: form_categoria.php?mensagem=" . urlencode($mensagem));
+  exit;
 }
 
 $categorias = listarCategorias();
@@ -26,18 +28,23 @@ $categorias = listarCategorias();
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <title>Gerenciar Categoria</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 text-gray-900 p-8">
   <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
     <h1 class="text-2xl font-bold mb-6"><?= $categoriaEditar ? 'Editar' : 'Cadastrar' ?> Categoria</h1>
 
-    <?php if (!empty($mensagem)): ?>
-      <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($mensagem) ?></p>
+    <?php
+    if (isset($_GET['mensagem'])):
+    ?>
+      <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($_GET['mensagem']) ?></p>
     <?php endif; ?>
+
 
     <form method="POST" class="space-y-4">
       <?php if ($categoriaEditar): ?>
@@ -83,4 +90,5 @@ $categorias = listarCategorias();
     </table>
   </div>
 </body>
+
 </html>
