@@ -41,8 +41,8 @@ $estados = listarEstados();
         <a href="navegacao_forms.php" class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr; Voltar</a>
         <h1 class="text-2xl font-bold mb-6"><?= $estadoEditar ? 'Editar' : 'Cadastrar' ?> Estado</h1>
 
-        <?php if (!empty($mensagem)): ?>
-            <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($mensagem) ?></p>
+        <?php if (isset($_GET['mensagem'])): ?>
+            <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($_GET['mensagem']) ?></p>
         <?php endif; ?>
 
         <form method="POST" class="space-y-4">
