@@ -5,20 +5,22 @@ $mensagem = '';
 $tipopublicoEditar = null;
 
 if (isset($_GET['editar'])) {
-    $tipopublicoEditar = buscarTipoPublicoPorId($_GET['editar']);
+  $tipopublicoEditar = buscarTipoPublicoPorId($_GET['editar']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = $_POST['tipopubliconome'];
+  $nome = $_POST['tipopubliconome'];
 
-    if (!empty($_POST['id'])) {
-        $atualizou = atualizarTipoPublico($_POST['id'], $nome);
-        $mensagem = $atualizou ? "Tipo de Público atualizado com sucesso!" : "Erro ao atualizar.";
-        $tipopublicoEditar = buscarTipoPublicoPorId($_POST['id']);
-    } else {
-        $inseriu = criarTipoPublico($nome);
-        $mensagem = $inseriu ? "Tipo de Público cadastrado com sucesso!" : "Erro ao cadastrar.";
-    }
+  if (!empty($_POST['id'])) {
+    $atualizou = atualizarTipoPublico($_POST['id'], $nome);
+    $mensagem = $atualizou ? "Tipo de Público atualizado com sucesso!" : "Erro ao atualizar.";
+  } else {
+    $inseriu = criarTipoPublico($nome);
+    $mensagem = $inseriu ? "Tipo de Público cadastrado com sucesso!" : "Erro ao cadastrar.";
+  }
+
+  header("Location: form_tipopublico.php?mensagem=" . urlencode($mensagem));
+  exit;
 }
 
 $tipoPublicos = listarTipoPublico();
@@ -26,17 +28,21 @@ $tipoPublicos = listarTipoPublico();
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <title>Gerenciar Tipo de Público</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 text-gray-900 p-8">
   <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
     <h1 class="text-2xl font-bold mb-6"><?= $tipopublicoEditar ? 'Editar' : 'Cadastrar' ?> Tipo de Público</h1>
 
-    <?php if (!empty($mensagem)): ?>
-      <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($mensagem) ?></p>
+    <?php
+    if (isset($_GET['mensagem'])):
+    ?>
+      <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($_GET['mensagem']) ?></p>
     <?php endif; ?>
 
     <form method="POST" class="space-y-4">
@@ -83,4 +89,5 @@ $tipoPublicos = listarTipoPublico();
     </table>
   </div>
 </body>
+
 </html>

@@ -14,11 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (!empty($_POST['id'])) {
     $atualizou = atualizarTipoLocal($_POST['id'], $nome);
     $mensagem = $atualizou ? "Tipo de Local atualizado com sucesso!" : "Erro ao atualizar.";
-    $tipoLocalEditar = buscarTipoLocalPorId($_POST['id']);
   } else {
     $inseriu = criarTipoLocal($nome);
     $mensagem = $inseriu ? "Tipo de Local cadastrado com sucesso!" : "Erro ao cadastrar.";
   }
+
+  header("Location: form_tipolocal.php?mensagem=" . urlencode($mensagem));
+  exit;
 }
 
 $tiposLocal = listarTipoLocal();
@@ -42,9 +44,11 @@ $tiposLocal = listarTipoLocal();
 
     <h1 class="text-2xl font-bold mb-6"><?= $tipoLocalEditar ? 'Editar' : 'Cadastrar' ?> Tipo de Local</h1>
 
-    <?php if (!empty($mensagem)): ?>
-      <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($mensagem) ?></p>
-    <?php endif; ?>
+    <?php
+        if (isset($_GET['mensagem'])):
+        ?>
+            <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($_GET['mensagem']) ?></p>
+        <?php endif; ?>
 
     <form method="POST" class="space-y-4">
       <?php if ($tipoLocalEditar): ?>
