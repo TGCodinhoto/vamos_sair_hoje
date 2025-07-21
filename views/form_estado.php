@@ -15,11 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['id'])) {
         $atualizou = atualizarEstado($_POST['id'], $nome, $sigla);
         $mensagem = $atualizou ? "Estado atualizado com sucesso!" : "Erro ao atualizar.";
-        $estadoEditar = buscarEstadoPorId($_POST['id']);
     } else {
         $inseriu = criarEstado($nome, $sigla);
         $mensagem = $inseriu ? "Estado cadastrado com sucesso!" : "Erro ao cadastrar.";
     }
+
+    header("Location: form_estado.php?mensagem=" . urlencode($mensagem));
+    exit;
 }
 
 $estados = listarEstados();

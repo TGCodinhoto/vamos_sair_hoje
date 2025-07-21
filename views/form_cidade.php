@@ -16,11 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['id'])) {
         $atualizou = atualizarCidade($_POST['id'], $nome, $estadoid);
         $mensagem = $atualizou ? "Cidade atualizada com sucesso!" : "Erro ao atualizar.";
-        $cidadeEditar = buscarCidadePorId($_POST['id']);
     } else {
         $inseriu = criarCidade($nome, $estadoid);
         $mensagem = $inseriu ? "Cidade cadastrada com sucesso!" : "Erro ao cadastrar.";
     }
+
+    header("Location: form_cidade.php?mensagem=" . urlencode($mensagem));
+    exit;
 }
 
 $cidades = listarCidades();
@@ -40,8 +42,8 @@ $estados = listarEstados();
     <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
         <h1 class="text-2xl font-bold mb-6"><?= $cidadeEditar ? 'Editar' : 'Cadastrar' ?> Cidade</h1>
 
-        <?php if (!empty($mensagem)): ?>
-            <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($mensagem) ?></p>
+        <?php if (isset($_GET['mensagem'])): ?>
+            <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($_GET['mensagem']) ?></p>
         <?php endif; ?>
 
         <form method="POST" class="space-y-4">
