@@ -1,49 +1,57 @@
 <?php
 require_once '../conexao.php';
+require_once '../models/tipo_publico_model.php';
 
-function criarTipoPublico($nome) {
-    global $conexao;
+$tipoPublicoModel = new TipoPublicoModel($conexao);
+
+if (isset($_GET['delete'])) {
     try {
-        $stmt = $conexao->prepare("INSERT INTO tipopublico (tipopubliconome) VALUES (:nome)");
-        $stmt->bindParam(':nome', $nome);
-        return $stmt->execute();
-    } catch (PDOException $e) {
-        return false;
+        $resultado = $tipoPublicoModel->excluir($_GET['delete']);
+        if ($resultado) {
+            header("Location: ../views/form_tipopublico.php?msg=deleted");
+        } else {
+            header("Location: ../views/form_tipopublico.php?msg=error");
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao excluir tipo de público: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_tipopublico.php?msg=error&erro=" . urlencode($erro));
     }
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        if (!empty($_POST['id'])) {
+            $resultado = $tipoPublicoModel->atualizar($_POST['id'], $_POST['tipopubliconome']);
+            if ($resultado) {
+                header("Location: ../views/form_tipopublico.php?msg=updated");
+            } else {
+                header("Location: ../views/form_tipopublico.php?msg=error");
+            }
+        } else {
+            $resultado = $tipoPublicoModel->criar($_POST['tipopubliconome']);
+            if ($resultado) {
+                header("Location: ../views/form_tipopublico.php?msg=created");
+            } else {
+                header("Location: ../views/form_tipopublico.php?msg=error");
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao cadastrar tipo de público: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_tipopublico.php?msg=error&erro=" . urlencode($erro));
+    }
+    exit;
 }
 
 function listarTipoPublico() {
-    global $conexao;
-    $stmt = $conexao->query("SELECT * FROM tipopublico ORDER BY tipopublicoid DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    global $tipoPublicoModel;
+    return $tipoPublicoModel->listar();
 }
 
 function buscarTipoPublicoPorId($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("SELECT * FROM tipopublico WHERE tipopublicoid = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-function atualizarTipoPublico($id, $nome) {
-    global $conexao;
-    $stmt = $conexao->prepare("UPDATE tipopublico SET tipopubliconome = :nome WHERE tipopublicoid = :id");
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-function excluirTipoPublico($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("DELETE FROM tipopublico WHERE tipopublicoid = :id");
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-if (isset($_GET['delete'])) {
-    excluirTipoPublico($_GET['delete']);
-    header("Location: ../views/form_tipopublico.php");
-    exit;
+    global $tipoPublicoModel;
+    return $tipoPublicoModel->buscarPorId($id);
 }
 ?>

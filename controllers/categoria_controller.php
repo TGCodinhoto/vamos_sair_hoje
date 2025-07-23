@@ -1,49 +1,57 @@
 <?php
 require_once '../conexao.php';
+require_once '../models/categoria_model.php';
 
-function criarCategoria($nome) {
-    global $conexao;
+$categoriaModel = new CategoriaModel($conexao);
+
+if (isset($_GET['delete'])) {
     try {
-        $stmt = $conexao->prepare("INSERT INTO categoria (categorianome) VALUES (:nome)");
-        $stmt->bindParam(':nome', $nome);
-        return $stmt->execute();
-    } catch (PDOException $e) {
-        return false;
+        $resultado = $categoriaModel->excluir($_GET['delete']);
+        if ($resultado) {
+            header("Location: ../views/form_categoria.php?msg=deleted");
+        } else {
+            header("Location: ../views/form_categoria.php?msg=error");
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao excluir categoria: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_categoria.php?msg=error&erro=" . urlencode($erro));
     }
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        if (!empty($_POST['id'])) {
+            $resultado = $categoriaModel->atualizar($_POST['id'], $_POST['categorianome']);
+            if ($resultado) {
+                header("Location: ../views/form_categoria.php?msg=updated");
+            } else {
+                header("Location: ../views/form_categoria.php?msg=error");
+            }
+        } else {
+            $resultado = $categoriaModel->criar($_POST['categorianome']);
+            if ($resultado) {
+                header("Location: ../views/form_categoria.php?msg=created");
+            } else {
+                header("Location: ../views/form_categoria.php?msg=error");
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao cadastrar categoria: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_categoria.php?msg=error&erro=" . urlencode($erro));
+    }
+    exit;
 }
 
 function listarCategorias() {
-    global $conexao;
-    $stmt = $conexao->query("SELECT * FROM categoria ORDER BY categoriaid DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    global $categoriaModel;
+    return $categoriaModel->listar();
 }
 
 function buscarCategoriaPorId($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("SELECT * FROM categoria WHERE categoriaid = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-function atualizarCategoria($id, $nome) {
-    global $conexao;
-    $stmt = $conexao->prepare("UPDATE categoria SET categorianome = :nome WHERE categoriaid = :id");
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-function excluirCategoria($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("DELETE FROM categoria WHERE categoriaid = :id");
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-if (isset($_GET['delete'])) {
-    excluirCategoria($_GET['delete']);
-    header("Location: ../views/form_categoria.php");
-    exit;
+    global $categoriaModel;
+    return $categoriaModel->buscarPorId($id);
 }
 ?>

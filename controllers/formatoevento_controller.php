@@ -1,60 +1,56 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require_once '../conexao.php';
+require_once '../models/formato_evento_model.php';
 
-function listarFormatosEvento() {
-    global $conexao;
-    $stmt = $conexao->query("SELECT * FROM formatoevento ORDER BY formatoid DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function buscarFormatoEventoPorId($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("SELECT * FROM formatoevento WHERE formatoid = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-function atualizarFormatoEvento($id, $nome, $descricao) {
-    global $conexao;
-    $stmt = $conexao->prepare("UPDATE formatoevento SET formatonome = :nome, formatodescricao = :descricao WHERE formatoid = :id");
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':descricao', $descricao);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-function excluirFormatoEvento($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("DELETE FROM formatoevento WHERE formatoid = :id");
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
+$formatoEventoModel = new FormatoEventoModel($conexao);
 
 if (isset($_GET['delete'])) {
-    excluirFormatoEvento(intval($_GET['delete']));
-    header("Location: ../views/form_formatoevento.php?msg=deleted");
+    try {
+        $resultado = $formatoEventoModel->excluir(intval($_GET['delete']));
+        if ($resultado) {
+            header("Location: ../views/form_formatoevento.php?msg=deleted");
+        } else {
+            header("Location: ../views/form_formatoevento.php?msg=error");
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao excluir formato de evento: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_formatoevento.php?msg=error&erro=" . urlencode($erro));
+    }
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!empty($_POST['id'])) {
-        atualizarFormatoEvento(intval($_POST['id']), $_POST['formatonome'], $_POST['formatodescricao']);
-        header("Location: ../views/form_formatoevento.php?msg=updated");
-        exit;
-    } else {
-        $nome = $_POST['formatonome'];
-        $descricao = $_POST['formatodescricao'];
-        $stmt = $conexao->prepare("INSERT INTO formatoevento (formatonome, formatodescricao) VALUES (:nome, :descricao)");
-        $stmt->bindParam(':nome', $nome);
-        $stmt->bindParam(':descricao', $descricao);
-        $stmt->execute();
-        header("Location: ../views/form_formatoevento.php?msg=created");
-        exit;
+    try {
+        if (!empty($_POST['id'])) {
+            $resultado = $formatoEventoModel->atualizar(intval($_POST['id']), $_POST['formatonome'], $_POST['formatodescricao']);
+            if ($resultado) {
+                header("Location: ../views/form_formatoevento.php?msg=updated");
+            } else {
+                header("Location: ../views/form_formatoevento.php?msg=error");
+            }
+        } else {
+            $resultado = $formatoEventoModel->criar($_POST['formatonome'], $_POST['formatodescricao']);
+            if ($resultado) {
+                header("Location: ../views/form_formatoevento.php?msg=created");
+            } else {
+                header("Location: ../views/form_formatoevento.php?msg=error");
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao cadastrar formato de evento: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_formatoevento.php?msg=error&erro=" . urlencode($erro));
     }
+    exit;
 }
-?> 
+
+function listarFormatosEvento() {
+    global $formatoEventoModel;
+    return $formatoEventoModel->listar();
+}
+
+function buscarFormatoEventoPorId($id) {
+    global $formatoEventoModel;
+    return $formatoEventoModel->buscarPorId($id);
+} 

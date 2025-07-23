@@ -1,49 +1,57 @@
 <?php
 require_once '../conexao.php';
+require_once '../models/tipo_local_model.php';
 
-function criarTipoLocal($nome) {
-    global $conexao;
+$tipoLocalModel = new TipoLocalModel($conexao);
+
+if (isset($_GET['delete'])) {
     try {
-        $stmt = $conexao->prepare("INSERT INTO tipolocal (tipolocalnome) VALUES (:nome)");
-        $stmt->bindParam(':nome', $nome);
-        return $stmt->execute();
-    } catch (PDOException $e) {
-        return false;
+        $resultado = $tipoLocalModel->excluir($_GET['delete']);
+        if ($resultado) {
+            header("Location: ../views/form_tipolocal.php?msg=deleted");
+        } else {
+            header("Location: ../views/form_tipolocal.php?msg=error");
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao excluir tipo de local: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_tipolocal.php?msg=error&erro=" . urlencode($erro));
     }
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        if (!empty($_POST['id'])) {
+            $resultado = $tipoLocalModel->atualizar($_POST['id'], $_POST['tipolocalnome']);
+            if ($resultado) {
+                header("Location: ../views/form_tipolocal.php?msg=updated");
+            } else {
+                header("Location: ../views/form_tipolocal.php?msg=error");
+            }
+        } else {
+            $resultado = $tipoLocalModel->criar($_POST['tipolocalnome']);
+            if ($resultado) {
+                header("Location: ../views/form_tipolocal.php?msg=created");
+            } else {
+                header("Location: ../views/form_tipolocal.php?msg=error");
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao cadastrar tipo de local: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_tipolocal.php?msg=error&erro=" . urlencode($erro));
+    }
+    exit;
 }
 
 function listarTipoLocal() {
-    global $conexao;
-    $stmt = $conexao->query("SELECT * FROM tipolocal ORDER BY tipolocalid DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    global $tipoLocalModel;
+    return $tipoLocalModel->listar();
 }
 
 function buscarTipoLocalPorId($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("SELECT * FROM tipolocal WHERE tipolocalid = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-function atualizarTipoLocal($id, $nome) {
-    global $conexao;
-    $stmt = $conexao->prepare("UPDATE tipolocal SET tipolocalnome = :nome WHERE tipolocalid = :id");
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-function excluirTipoLocal($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("DELETE FROM tipolocal WHERE tipolocalid = :id");
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-if (isset($_GET['delete'])) {
-    excluirTipoLocal($_GET['delete']);
-    header("Location: ../views/form_tipolocal.php");
-    exit;
+    global $tipoLocalModel;
+    return $tipoLocalModel->buscarPorId($id);
 }
 ?>

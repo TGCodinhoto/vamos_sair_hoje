@@ -1,97 +1,59 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 require_once '../conexao.php';
+require_once '../models/tipo_evento_model.php';
 
-function listarTiposEvento() {
-    global $conexao;
-    $stmt = $conexao->query("SELECT * FROM tipoevento ORDER BY tipoeventoid DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function buscarTipoEventoPorId($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("SELECT * FROM tipoevento WHERE tipoeventoid = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-function atualizarTipoEvento($id, $nome) {
-    global $conexao;
-    $stmt = $conexao->prepare("UPDATE tipoevento SET tipoeventonome = :nome WHERE tipoeventoid = :id");
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-function excluirTipoEvento($id) {
-    global $conexao;
-
-    $stmt = $conexao->prepare("SELECT tipoeventoimage FROM tipoevento WHERE tipoeventoid = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    $evento = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($evento) {
-        $imagens = json_decode($evento['tipoeventoimage'], true);
-        foreach ($imagens as $img) {
-            $caminho = '../uploads/' . $img;
-            if (file_exists($caminho)) {
-                unlink($caminho);
-            }
-        }
-
-        $stmt = $conexao->prepare("DELETE FROM tipoevento WHERE tipoeventoid = :id");
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-    }
-}
+$tipoEventoModel = new TipoEventoModel($conexao);
 
 if (isset($_GET['delete'])) {
-    excluirTipoEvento(intval($_GET['delete']));
-    header("Location: ../views/form_tipoevento.php");
+    try {
+        $resultado = $tipoEventoModel->excluir(intval($_GET['delete']));
+        if ($resultado) {
+            header("Location: ../views/form_tipoevento.php?msg=deleted");
+        } else {
+            header("Location: ../views/form_tipoevento.php?msg=error");
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao excluir tipo de evento: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_tipoevento.php?msg=error&erro=" . urlencode($erro));
+    }
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!empty($_POST['id'])) {
-        atualizarTipoEvento(intval($_POST['id']), $_POST['tipoeventonome']);
-        header("Location: ../views/form_tipoevento.php?msg=updated");
-        exit;
-    } else {
-        $name = $_POST['tipoeventonome'];
-        $totalFiles = count($_FILES['fileImg']['name']);
-        $filesArray = [];
-        $uploadDir = '../uploads/';
-
-        if (!is_dir($uploadDir) || !is_writable($uploadDir)) {
-            die("Erro: A pasta uploads não existe ou não é gravável.");
-        }
-
-        for ($i = 0; $i < $totalFiles; $i++) {
-            $imageName = $_FILES['fileImg']['name'][$i];
-            $imageTmpName = $_FILES['fileImg']['tmp_name'][$i];
-            $imageExtension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
-            $newImageName = uniqid() . '.' . $imageExtension;
-
-            if (move_uploaded_file($imageTmpName, $uploadDir . $newImageName)) {
-                $filesArray[] = $newImageName;
+    try {
+        if (!empty($_POST['id'])) {
+            $resultado = $tipoEventoModel->atualizar(intval($_POST['id']), $_POST['tipoeventonome']);
+            if ($resultado) {
+                header("Location: ../views/form_tipoevento.php?msg=updated");
             } else {
-                die("Erro ao mover o arquivo: $imageName");
+                header("Location: ../views/form_tipoevento.php?msg=error");
+            }
+        } else {
+            $nome = $_POST['tipoeventonome'];
+            $imagens = isset($_POST['tipoeventoimage']) ? $_POST['tipoeventoimage'] : '';
+            $resultado = $tipoEventoModel->criar($nome, $imagens);
+            if ($resultado) {
+                header("Location: ../views/form_tipoevento.php?msg=created");
+            } else {
+                header("Location: ../views/form_tipoevento.php?msg=error");
             }
         }
-
-        $filesArrayJson = json_encode($filesArray);
-
-        $stmt = $conexao->prepare("INSERT INTO tipoevento (tipoeventonome, tipoeventoimage) VALUES (:nome, :imagens)");
-        $stmt->bindParam(':nome', $name);
-        $stmt->bindParam(':imagens', $filesArrayJson);
-        $stmt->execute();
-
-        header("Location: ../views/form_tipoevento.php?msg=created");
-        exit;
+    } catch (Exception $e) {
+        error_log("Erro ao cadastrar tipo de evento: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_tipoevento.php?msg=error&erro=" . urlencode($erro));
     }
+    exit;
+}
+
+function listarTiposEvento() {
+    global $tipoEventoModel;
+    return $tipoEventoModel->listar();
+}
+
+function buscarTipoEventoPorId($id) {
+    global $tipoEventoModel;
+    return $tipoEventoModel->buscarPorId($id);
 }

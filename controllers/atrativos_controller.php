@@ -1,59 +1,58 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 require_once '../conexao.php';
+require_once '../models/atrativos_model.php';
 
-function listarAtrativos() {
-    global $conexao;
-    $stmt = $conexao->query("SELECT * FROM atrativos ORDER BY atrativosid DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function buscarAtrativoPorId($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("SELECT * FROM atrativos WHERE atrativosid = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-function atualizarAtrativo($id, $nome) {
-    global $conexao;
-    $stmt = $conexao->prepare("UPDATE atrativos SET atrativosnome = :nome WHERE atrativosid = :id");
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-function excluirAtrativo($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("DELETE FROM atrativos WHERE atrativosid = :id");
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
+$atrativosModel = new AtrativosModel($conexao);
 
 if (isset($_GET['delete'])) {
-    excluirAtrativo(intval($_GET['delete']));
-    header("Location: ../views/form_atrativos.php?msg=deleted");
+    try {
+        $resultado = $atrativosModel->excluir(intval($_GET['delete']));
+        if ($resultado) {
+            header("Location: ../views/form_atrativos.php?msg=deleted");
+        } else {
+            header("Location: ../views/form_atrativos.php?msg=error");
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao excluir atrativo: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_atrativos.php?msg=error&erro=" . urlencode($erro));
+    }
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!empty($_POST['id'])) {
-        atualizarAtrativo(intval($_POST['id']), $_POST['atrativosnome']);
-        header("Location: ../views/form_atrativos.php?msg=updated");
-        exit;
-    } else {
-        $nome = $_POST['atrativosnome'];
-        
-        $stmt = $conexao->prepare("INSERT INTO atrativos (atrativosnome) VALUES (:nome)");
-        $stmt->bindParam(':nome', $nome);
-        $stmt->execute();
-
-        header("Location: ../views/form_atrativos.php?msg=created");
-        exit;
+    try {
+        if (!empty($_POST['id'])) {
+            $resultado = $atrativosModel->atualizar(intval($_POST['id']), $_POST['atrativosnome']);
+            if ($resultado) {
+                header("Location: ../views/form_atrativos.php?msg=updated");
+            } else {
+                header("Location: ../views/form_atrativos.php?msg=error");
+            }
+        } else {
+            $resultado = $atrativosModel->criar($_POST['atrativosnome']);
+            if ($resultado) {
+                header("Location: ../views/form_atrativos.php?msg=created");
+            } else {
+                header("Location: ../views/form_atrativos.php?msg=error");
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao cadastrar atrativo: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_atrativos.php?msg=error&erro=" . urlencode($erro));
     }
+    exit;
+}
+
+function listarAtrativos() {
+    global $atrativosModel;
+    return $atrativosModel->listar();
+}
+
+function buscarAtrativoPorId($id) {
+    global $atrativosModel;
+    return $atrativosModel->buscarPorId($id);
 }
 ?> 

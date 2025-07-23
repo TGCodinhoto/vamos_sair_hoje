@@ -1,59 +1,57 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 require_once '../conexao.php';
+require_once '../models/tipo_anuncio_model.php';
 
-function listarTiposAnuncio() {
-    global $conexao;
-    $stmt = $conexao->query("SELECT * FROM tipoanuncio ORDER BY tipoanuncioid DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function buscarTipoAnuncioPorId($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("SELECT * FROM tipoanuncio WHERE tipoanuncioid = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-function atualizarTipoAnuncio($id, $nome) {
-    global $conexao;
-    $stmt = $conexao->prepare("UPDATE tipoanuncio SET tipoanuncionome = :nome WHERE tipoanuncioid = :id");
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-function excluirTipoAnuncio($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("DELETE FROM tipoanuncio WHERE tipoanuncioid = :id");
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
+$tipoAnuncioModel = new TipoAnuncioModel($conexao);
 
 if (isset($_GET['delete'])) {
-    excluirTipoAnuncio(intval($_GET['delete']));
-    header("Location: ../views/form_tipoanuncio.php?msg=deleted");
+    try {
+        $resultado = $tipoAnuncioModel->excluir(intval($_GET['delete']));
+        if ($resultado) {
+            header("Location: ../views/form_tipoanuncio.php?msg=deleted");
+        } else {
+            header("Location: ../views/form_tipoanuncio.php?msg=error");
+        }
+    } catch (Exception $e) {
+        $erro = "Erro ao excluir: " . $e->getMessage();
+        header("Location: ../views/form_tipoanuncio.php?msg=error&erro=" . urlencode($erro));
+    }
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!empty($_POST['id'])) {
-        atualizarTipoAnuncio(intval($_POST['id']), $_POST['tipoanuncionome']);
-        header("Location: ../views/form_tipoanuncio.php?msg=updated");
-        exit;
-    } else {
-        $nome = $_POST['tipoanuncionome'];
-        
-        $stmt = $conexao->prepare("INSERT INTO tipoanuncio (tipoanuncionome) VALUES (:nome)");
-        $stmt->bindParam(':nome', $nome);
-        $stmt->execute();
-
-        header("Location: ../views/form_tipoanuncio.php?msg=created");
-        exit;
+    try {
+        if (!empty($_POST['id'])) {
+            $resultado = $tipoAnuncioModel->atualizar(intval($_POST['id']), $_POST['tipoanuncionome']);
+            if ($resultado) {
+                header("Location: ../views/form_tipoanuncio.php?msg=updated");
+            } else {
+                header("Location: ../views/form_tipoanuncio.php?msg=error");
+            }
+        } else {
+            $resultado = $tipoAnuncioModel->criar($_POST['tipoanuncionome']);
+            if ($resultado) {
+                header("Location: ../views/form_tipoanuncio.php?msg=created");
+            } else {
+                header("Location: ../views/form_tipoanuncio.php?msg=error");
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao cadastrar tipo de anúncio: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_tipoanuncio.php?msg=error&erro=" . urlencode($erro));
     }
+    exit;
+}
+
+function listarTiposAnuncio() {
+    global $tipoAnuncioModel;
+    return $tipoAnuncioModel->listar();
+}
+
+function buscarTipoAnuncioPorId($id) {
+    global $tipoAnuncioModel;
+    return $tipoAnuncioModel->buscarPorId($id);
 }
 ?> 

@@ -3,6 +3,7 @@ require_once('../controllers/cidade_controller.php');
 require_once('../controllers/estado_controller.php');
 
 $mensagem = '';
+$cor = 'green';
 $cidadeEditar = null;
 
 if (isset($_GET['editar'])) {
@@ -15,14 +16,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($_POST['id'])) {
         $atualizou = atualizarCidade($_POST['id'], $nome, $estadoid);
-        $mensagem = $atualizou ? "Cidade atualizada com sucesso!" : "Erro ao atualizar.";
+        $mensagem = $atualizou ? "updated" : "error";
     } else {
         $inseriu = criarCidade($nome, $estadoid);
-        $mensagem = $inseriu ? "Cidade cadastrada com sucesso!" : "Erro ao cadastrar.";
+        $mensagem = $inseriu ? "created" : "error";
     }
 
-    header("Location: form_cidade.php?mensagem=" . urlencode($mensagem));
+    header("Location: form_cidade.php?msg=" . $mensagem);
     exit;
+}
+
+if (isset($_GET['msg'])) {
+    if ($_GET['msg'] === 'created') {
+        $mensagem = "Cidade cadastrada com sucesso!";
+    } elseif ($_GET['msg'] === 'updated') {
+        $mensagem = "Cidade atualizada com sucesso!";
+    } elseif ($_GET['msg'] === 'deleted') {
+        $mensagem = "Cidade excluída com sucesso!";
+    } elseif ($_GET['msg'] === 'error') {
+        $cor = 'red';
+        $mensagem = isset($_GET['erro']) ? $_GET['erro'] : "Erro ao processar a solicitação.";
+    }
 }
 
 $cidades = listarCidades();
@@ -40,14 +54,13 @@ $estados = listarEstados();
 
 <body class="bg-gray-100 text-gray-900 p-8">
     <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
-        <a href="navegacao_forms.php"
-            class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr;
-            Voltar
-        </a>
-        <h1 class="text-2xl font-bold mb-6"><?= $cidadeEditar ? 'Editar' : 'Cadastrar' ?> Cidade</h1>
+        <a href="navegacao_forms.php" class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr; Voltar</a>
+        <h1 class="text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600"><?= $cidadeEditar ? 'Editar' : 'Cadastrar' ?> Cidade</h1>
 
-        <?php if (isset($_GET['mensagem'])): ?>
-            <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($_GET['mensagem']) ?></p>
+        <?php if (!empty($mensagem)): ?>
+            <div class="mb-4 p-4 bg-<?= $cor ?>-100 border border-<?= $cor ?>-400 text-<?= $cor ?>-700 rounded">
+                <?= htmlspecialchars($mensagem) ?>
+            </div>
         <?php endif; ?>
 
         <form method="POST" class="space-y-4">
@@ -56,14 +69,14 @@ $estados = listarEstados();
             <?php endif; ?>
 
             <div>
-                <label class="block font-semibold" for="cidadenome">Nome da Cidade</label>
+                <label class="block font-semibold" for="cidadenome">Nome da Cidade:</label>
                 <input type="text" id="cidadenome" name="cidadenome" required
                     value="<?= $cidadeEditar ? htmlspecialchars($cidadeEditar['cidadenome']) : '' ?>"
                     class="w-full border px-4 py-2 rounded" />
             </div>
 
             <div>
-                <label class="block font-semibold" for="estadoid">Estado</label>
+                <label class="block font-semibold" for="estadoid">Estado:</label>
                 <select name="estadoid" id="estadoid" required class="w-full border px-4 py-2 rounded">
                     <option value="">Selecione um estado</option>
                     <?php foreach ($estados as $estado): ?>
@@ -75,12 +88,9 @@ $estados = listarEstados();
                 </select>
             </div>
 
-            <div class="flex justify-between items-center mt-6">
-                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-                    <?= $cidadeEditar ? 'Atualizar' : 'Cadastrar' ?>
-                </button>
-                
-            </div>
+            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                <?= $cidadeEditar ? 'Atualizar' : 'Cadastrar' ?>
+            </button>
         </form>
 
         <hr class="my-6" />
@@ -103,8 +113,7 @@ $estados = listarEstados();
                         <td class="p-2"><?= htmlspecialchars($cidade['cidadenome']) ?></td>
                         <td class="p-2"><?= htmlspecialchars($cidade['estadonome']) ?> (<?= $cidade['estadosigla'] ?>)</td>
                         <td class="p-2">
-                            <a class="text-blue-600 hover:underline"
-                               href="?editar=<?= $cidade['cidadeid'] ?>">Editar</a> |
+                            <a class="text-blue-600 hover:underline" href="?editar=<?= $cidade['cidadeid'] ?>">Editar</a> |
                             <a class="text-red-600 hover:underline"
                                href="../controllers/cidade_controller.php?delete=<?= $cidade['cidadeid'] ?>"
                                onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>

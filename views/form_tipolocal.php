@@ -2,6 +2,26 @@
 require_once('../controllers/tipolocal_controller.php');
 
 $mensagem = '';
+$cor = 'green';
+if (isset($_GET['msg'])) {
+    if ($_GET['msg'] === 'created') {
+        $mensagem = "Tipo de local cadastrado com sucesso!";
+    } elseif ($_GET['msg'] === 'updated') {
+        $mensagem = "Tipo de local atualizado com sucesso!";
+    } elseif ($_GET['msg'] === 'deleted') {
+        $mensagem = "Tipo de local excluído com sucesso!";
+    } elseif ($_GET['msg'] === 'error') {
+        $cor = 'red';
+        $mensagem = isset($_GET['erro']) ? $_GET['erro'] : "Erro ao processar a solicitação.";
+    }
+}
+?>
+<?php if (!empty($mensagem)): ?>
+    <div class="mb-4 p-4 bg-<?= $cor ?>-100 border border-<?= $cor ?>-400 text-<?= $cor ?>-700 rounded">
+        <?= htmlspecialchars($mensagem) ?>
+    </div>
+<?php endif; ?>
+
 $tipoLocalEditar = null;
 
 if (isset($_GET['editar'])) {
@@ -43,12 +63,6 @@ $tiposLocal = listarTipoLocal();
     <a href="navegacao_forms.php" class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr; Voltar</a>
 
     <h1 class="text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600"><?= $tipoLocalEditar ? 'Editar' : 'Cadastrar' ?> Tipo de Local</h1>
-
-    <?php
-        if (isset($_GET['mensagem'])):
-        ?>
-            <p class="mb-4 p-2 bg-green-100 text-green-700 rounded"><?= htmlspecialchars($_GET['mensagem']) ?></p>
-        <?php endif; ?>
 
     <form method="POST" class="space-y-4">
       <?php if ($tipoLocalEditar): ?>
