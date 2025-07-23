@@ -2,6 +2,26 @@
 require_once('../controllers/classificacao_etaria_controller.php');
 
 $mensagem = '';
+$cor = 'green';
+if (isset($_GET['msg'])) {
+    if ($_GET['msg'] === 'created') {
+        $mensagem = "Classificação etária cadastrada com sucesso!";
+    } elseif ($_GET['msg'] === 'updated') {
+        $mensagem = "Classificação etária atualizada com sucesso!";
+    } elseif ($_GET['msg'] === 'deleted') {
+        $mensagem = "Classificação etária excluída com sucesso!";
+    } elseif ($_GET['msg'] === 'error') {
+        $cor = 'red';
+        $mensagem = isset($_GET['erro']) ? $_GET['erro'] : "Erro ao processar a solicitação.";
+    }
+}
+?>
+<?php if (!empty($mensagem)): ?>
+    <div class="mb-4 p-4 bg-<?= $cor ?>-100 border border-<?= $cor ?>-400 text-<?= $cor ?>-700 rounded">
+        <?= htmlspecialchars($mensagem) ?>
+    </div>
+<?php endif; ?>
+
 $classificacaoEtariaEditar = null;
 
 if (isset($_GET['editar'])) {

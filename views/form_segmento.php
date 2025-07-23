@@ -1,11 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require_once('../controllers/segmento_controller.php');
 
 $mensagem = '';
+$cor = 'green';
 if (isset($_GET['msg'])) {
     if ($_GET['msg'] === 'created') {
         $mensagem = "Segmento cadastrado com sucesso!";
@@ -13,6 +10,9 @@ if (isset($_GET['msg'])) {
         $mensagem = "Segmento atualizado com sucesso!";
     } elseif ($_GET['msg'] === 'deleted') {
         $mensagem = "Segmento excluído com sucesso!";
+    } elseif ($_GET['msg'] === 'error') {
+        $cor = 'red';
+        $mensagem = isset($_GET['erro']) ? $_GET['erro'] : "Erro ao processar a solicitação.";
     }
 }
 
@@ -39,7 +39,7 @@ $segmentos = listarSegmentos();
         <h1  class="text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600">Gerenciar - Segmento</h1>
 
         <?php if (!empty($mensagem)): ?>
-            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+            <div class="mb-4 p-4 bg-<?= $cor ?>-100 border border-<?= $cor ?>-400 text-<?= $cor ?>-700 rounded">
                 <?= htmlspecialchars($mensagem) ?>
             </div>
         <?php endif; ?>

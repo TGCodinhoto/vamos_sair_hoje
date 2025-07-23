@@ -1,49 +1,60 @@
 <?php
 require_once '../conexao.php';
+require_once '../models/classificacao_etaria_model.php';
 
-function criarClassificacaoEtaria($nome) {
-    global $conexao;
+$classificacaoEtariaModel = new ClassificacaoEtariaModel($conexao);
+
+if (isset($_GET['delete'])) {
     try {
-        $stmt = $conexao->prepare("INSERT INTO classificacaoetaria (classificacaonome) VALUES (:nome)");
-        $stmt->bindParam(':nome', $nome);
-        return $stmt->execute();
-    } catch (PDOException $e) {
-        return false;
+        $resultado = $classificacaoEtariaModel->excluir($_GET['delete']);
+        if ($resultado) {
+            header("Location: ../views/form_classificacao_etaria.php?msg=deleted");
+        } else {
+            header("Location: ../views/form_classificacao_etaria.php?msg=error");
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao excluir classificação etária: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_classificacao_etaria.php?msg=error&erro=" . urlencode($erro));
     }
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        if (!empty($_POST['id'])) {
+            $resultado = $classificacaoEtariaModel->atualizar($_POST['id'], $_POST['classificacaonome']);
+            if ($resultado) {
+                $mensagem = "Classificação Etária atualizada com sucesso!";
+                header("Location: form_classificacao_etaria.php?mensagem=" . urlencode($mensagem));
+            } else {
+                header("Location: form_classificacao_etaria.php?msg=error");
+            }
+        } else {
+            $resultado = $classificacaoEtariaModel->criar($_POST['classificacaonome']);
+            if ($resultado) {
+                $mensagem = "Classificação Etária cadastrada com sucesso!";
+                header("Location: form_classificacao_etaria.php?mensagem=" . urlencode($mensagem));
+            } else {
+                header("Location: form_classificacao_etaria.php?msg=error");
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao cadastrar classificação etária: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: form_classificacao_etaria.php?msg=error&erro=" . urlencode($erro));
+    }
+    exit;
 }
 
 function listarClassificacaoEtaria() {
-    global $conexao;
-    $stmt = $conexao->query("SELECT * FROM classificacaoetaria ORDER BY classificacaoid DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    global $classificacaoEtariaModel;
+    return $classificacaoEtariaModel->listar();
 }
 
 function buscarClassificacaoEtariaPorId($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("SELECT * FROM classificacaoetaria WHERE classificacaoid = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    global $classificacaoEtariaModel;
+    return $classificacaoEtariaModel->buscarPorId($id);
 }
 
-function atualizarClassificacaoEtaria($id, $nome) {
-    global $conexao;
-    $stmt = $conexao->prepare("UPDATE classificacaoetaria SET classificacaonome = :nome WHERE classificacaoid = :id");
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-function excluirClassificacaoEtaria($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("DELETE FROM classificacaoetaria WHERE classificacaoid = :id");
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-if (isset($_GET['delete'])) {
-    excluirClassificacaoEtaria($_GET['delete']);
-    header("Location: ../views/form_classificacao_etaria.php");
-    exit;
-}
 ?>

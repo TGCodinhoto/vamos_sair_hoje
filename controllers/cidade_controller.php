@@ -1,55 +1,56 @@
 <?php
 require_once '../conexao.php';
+require_once '../models/cidade_model.php';
 
-function criarCidade($nome, $estadoid) {
-    global $conexao;
+$cidadeModel = new CidadeModel($conexao);
+
+if (isset($_GET['delete'])) {
     try {
-        $stmt = $conexao->prepare("INSERT INTO cidade (cidadenome, estadoid) VALUES (:nome, :estadoid)");
-        $stmt->bindParam(':nome', $nome);
-        $stmt->bindParam(':estadoid', $estadoid);
-        return $stmt->execute();
-    } catch (PDOException $e) {
-        return false;
+        $resultado = $cidadeModel->excluir($_GET['delete']);
+        if ($resultado) {
+            header("Location: ../views/form_cidade.php?msg=deleted");
+        } else {
+            header("Location: ../views/form_cidade.php?msg=error");
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao excluir cidade: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_cidade.php?msg=error&erro=" . urlencode($erro));
     }
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        if (!empty($_POST['id'])) {
+            $resultado = $cidadeModel->atualizar($_POST['id'], $_POST['cidadenome'], $_POST['estadoid']);
+            if ($resultado) {
+                header("Location: ../views/form_cidade.php?msg=updated");
+            } else {
+                header("Location: ../views/form_cidade.php?msg=error");
+            }
+        } else {
+            $resultado = $cidadeModel->criar($_POST['cidadenome'], $_POST['estadoid']);
+            if ($resultado) {
+                header("Location: ../views/form_cidade.php?msg=created");
+            } else {
+                header("Location: ../views/form_cidade.php?msg=error");
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao cadastrar cidade: " . $e->getMessage());
+        $erro = "Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.";
+        header("Location: ../views/form_cidade.php?msg=error&erro=" . urlencode($erro));
+    }
+    exit;
 }
 
 function listarCidades() {
-    global $conexao;
-    $stmt = $conexao->query("
-        SELECT c.cidadeid, c.cidadenome, e.estadonome, e.estadosigla
-        FROM cidade c
-        JOIN estado e ON c.estadoid = e.estadoid
-        ORDER BY c.cidadeid DESC
-    ");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    global $cidadeModel;
+    return $cidadeModel->listar();
 }
 
 function buscarCidadePorId($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("SELECT * FROM cidade WHERE cidadeid = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-function atualizarCidade($id, $nome, $estadoid) {
-    global $conexao;
-    $stmt = $conexao->prepare("UPDATE cidade SET cidadenome = :nome, estadoid = :estadoid WHERE cidadeid = :id");
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':estadoid', $estadoid);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-function excluirCidade($id) {
-    global $conexao;
-    $stmt = $conexao->prepare("DELETE FROM cidade WHERE cidadeid = :id");
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
-
-if (isset($_GET['delete'])) {
-    excluirCidade($_GET['delete']);
-    header("Location: ../views/form_cidade.php");
-    exit;
+    global $cidadeModel;
+    return $cidadeModel->buscarPorId($id);
 }
