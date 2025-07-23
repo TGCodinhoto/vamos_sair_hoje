@@ -36,7 +36,7 @@ $segmentos = listarSegmentos();
 <body class="bg-gray-100 min-h-screen p-6">
     <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
         <a href="navegacao_forms.php" class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr; Voltar</a>
-        <h1 class="text-3xl font-bold mb-6 text-center">Gerenciar - Segmento</h1>
+        <h1  class="text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600">Gerenciar - Segmento</h1>
 
         <?php if (!empty($mensagem)): ?>
             <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
@@ -52,10 +52,10 @@ $segmentos = listarSegmentos();
             <label for="segmentonome" class="block font-semibold mb-2">Nome do Segmento:</label>
             <input type="text" id="segmentonome" name="segmentonome" required
                 value="<?= $segmentoParaEditar ? htmlspecialchars($segmentoParaEditar['segmentonome']) : '' ?>"
-                class="w-full border border-gray-300 rounded p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                class="w-full border border-gray-300 rounded p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" />
 
             <button
-                class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
                 type="submit">
                 <?= $segmentoParaEditar ? 'Atualizar' : 'Cadastrar' ?>
             </button>
@@ -67,7 +67,7 @@ $segmentos = listarSegmentos();
 
         <table class="w-full table-auto border-collapse border border-gray-300">
             <thead>
-                <tr class="bg-indigo-100">
+                <tr class="bg-blue-100">
                     <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Nome</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Ações</th>
@@ -80,7 +80,7 @@ $segmentos = listarSegmentos();
                         <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($segmento['segmentonome']) ?></td>
                         <td class="border border-gray-300 px-4 py-2">
                             <a href="?editar=<?= $segmento['segmentoid'] ?>"
-                                class="text-indigo-600 hover:underline mr-2">Editar Segmento</a>
+                                class="text-blue-600 hover:underline mr-2">Editar Segmento</a>
                             <a href="../controllers/segmento_controller.php?delete=<?= $segmento['segmentoid'] ?>"
                                 onclick="return confirm('Tem certeza que deseja excluir este segmento?')"
                                 class="text-red-600 hover:underline">Excluir</a>

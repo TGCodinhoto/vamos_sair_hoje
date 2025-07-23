@@ -40,6 +40,10 @@ $estados = listarEstados();
 
 <body class="bg-gray-100 text-gray-900 p-8">
     <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
+        <a href="navegacao_forms.php"
+            class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr;
+            Voltar
+        </a>
         <h1 class="text-2xl font-bold mb-6"><?= $cidadeEditar ? 'Editar' : 'Cadastrar' ?> Cidade</h1>
 
         <?php if (isset($_GET['mensagem'])): ?>
@@ -75,9 +79,7 @@ $estados = listarEstados();
                 <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
                     <?= $cidadeEditar ? 'Atualizar' : 'Cadastrar' ?>
                 </button>
-                <a href="../views/navegacao_forms.php" class="text-white bg-gray-600 px-4 py-2 rounded hover:bg-gray-700 transition">
-                    Voltar
-                </a>
+                
             </div>
         </form>
 

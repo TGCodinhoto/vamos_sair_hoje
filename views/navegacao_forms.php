@@ -25,7 +25,8 @@ error_reporting(E_ALL);
 
 <body class="bg-gray-100 min-h-screen px-2 sm:px-6 py-6">
     <div class="max-w-4xl mx-auto bg-white p-8 rounded shadow">
-        <h1 class="text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600 drop-shadow-md">
+        <a href="../index.php" class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr; Voltar</a>
+        <h1 class="text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600">
             Gerenciamento de Dados
         </h1>
 
@@ -97,12 +98,12 @@ error_reporting(E_ALL);
             </a>
         </div>
 
-        <div class="mt-8 text-center">
+        <!-- <div class="mt-8 text-center">
             <a href="../index.php"
                 class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md px-5 py-2 transition">
                 Voltar ao Início
             </a>
-        </div>
+        </div> -->
     </div>
 </body>
 
