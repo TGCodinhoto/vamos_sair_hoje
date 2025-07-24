@@ -1,9 +1,9 @@
 <?php
-
 require_once('../controllers/tipoevento_controller.php');
 
 $mensagem = '';
 $cor = 'green';
+
 if (isset($_GET['msg'])) {
     if ($_GET['msg'] === 'created') {
         $mensagem = "Tipo de evento cadastrado com sucesso!";
@@ -51,25 +51,36 @@ $tiposEvento = listarTiposEvento();
             <?php endif; ?>
 
             <label for="tipoeventonome" class="block font-semibold mb-2">Nome do Tipo de Evento:</label>
-            <input type="text" id="tipoeventonome" name="tipoeventonome" required
+            <input
+                type="text"
+                id="tipoeventonome"
+                name="tipoeventonome"
+                required
                 value="<?= $eventoParaEditar ? htmlspecialchars($eventoParaEditar['tipoeventonome']) : '' ?>"
-                class="w-full border border-gray-300 rounded p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                class="w-full border border-gray-300 rounded p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
             <?php if (!$eventoParaEditar): ?>
-                <label for="fileImg" class="block font-semibold mb-2">Imagens:</label>
-                <input type="file" name="fileImg[]" accept=".jpg,.jpeg,.png" required multiple
-                    class="mb-4" />
+                <label for="fileImg" class="block font-semibold mb-2">Imagem:</label>
+                <input
+                    type="file"
+                    name="fileImg[]"
+                    accept=".jpg,.jpeg,.png"
+                    required
+                    class="mb-4"
+                />
             <?php else: ?>
-                <label class="block font-semibold mb-2">Imagens atuais:</label>
-                <div class="flex space-x-4 mb-4">
-                    <?php
-                    $imagens = json_decode($eventoParaEditar['tipoeventoimage'], true);
-                    foreach ($imagens as $img) {
-                        echo "<img src='../uploads/{$img}' alt='Imagem do evento' class='w-20 h-20 object-cover rounded shadow' />";
-                    }
-                    ?>
-                </div>
-                <p class="text-gray-500 mb-4">* Para atualizar imagens, exclua e cadastre novamente.</p>
+                <?php if (!empty($eventoParaEditar['tipoeventoimage'])): ?>
+                    <label class="block font-semibold mb-2">Imagem atual:</label>
+                    <div class="flex space-x-4 mb-4">
+                        <img
+                            src="../uploads/<?= htmlspecialchars($eventoParaEditar['tipoeventoimage']) ?>"
+                            alt="Imagem do evento"
+                            class="w-20 h-20 object-cover rounded shadow"
+                        />
+                    </div>
+                    <p class="text-gray-500 mb-4">* Para atualizar imagens, exclua e cadastre novamente.</p>
+                <?php endif; ?>
             <?php endif; ?>
 
             <button
@@ -88,7 +99,7 @@ $tiposEvento = listarTiposEvento();
                 <tr class="bg-blue-100">
                     <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Nome</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Imagens</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Imagem</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Ações</th>
                 </tr>
             </thead>
@@ -97,22 +108,21 @@ $tiposEvento = listarTiposEvento();
                     <tr class="hover:bg-gray-100">
                         <td class="border border-gray-300 px-4 py-2"><?= $evento['tipoeventoid'] ?></td>
                         <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($evento['tipoeventonome']) ?></td>
-                        <td class="border border-gray-300 px-4 py-2 flex space-x-2">
-                            <?php
-                            $imagens = json_decode($evento['tipoeventoimage'], true);
-                            if ($imagens) {
-                                foreach ($imagens as $img) {
-                                    echo "<img src='../uploads/{$img}' alt='Imagem' class='w-16 h-16 object-cover rounded' />";
-                                }
-                            }
-                            ?>
+                        <td class="border border-gray-300 px-4 py-2">
+                            <?php if (!empty($evento['tipoeventoimage'])): ?>
+                                <img
+                                    src="../uploads/<?= htmlspecialchars($evento['tipoeventoimage']) ?>"
+                                    alt="Imagem"
+                                    class="w-16 h-16 object-cover rounded"
+                                />
+                            <?php endif; ?>
                         </td>
                         <td class="border border-gray-300 px-4 py-2">
                             <a href="?editar=<?= $evento['tipoeventoid'] ?>"
-                                class="text-blue-600 hover:underline mr-2">Editar</a>
+                               class="text-blue-600 hover:underline mr-2">Editar</a>
                             <a href="../controllers/tipoevento_controller.php?delete=<?= $evento['tipoeventoid'] ?>"
-                                onclick="return confirm('Tem certeza que deseja excluir este tipo de evento?')"
-                                class="text-red-600 hover:underline">Excluir</a>
+                               onclick="return confirm('Tem certeza que deseja excluir este tipo de evento?')"
+                               class="text-red-600 hover:underline">Excluir</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
