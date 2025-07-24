@@ -32,8 +32,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             $nome = $_POST['tipoeventonome'];
-            $imagens = isset($_POST['tipoeventoimage']) ? $_POST['tipoeventoimage'] : '';
-            $resultado = $tipoEventoModel->criar($nome, $imagens);
+            $nomeImagem = '';
+
+            // Tratamento do upload de imagem
+            if (isset($_FILES['fileImg']) && $_FILES['fileImg']['error'][0] === UPLOAD_ERR_OK) {
+                $extensoesPermitidas = ['jpg', 'jpeg', 'png'];
+                $nomeOriginal = $_FILES['fileImg']['name'][0];
+                $extensao = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION));
+
+                if (in_array($extensao, $extensoesPermitidas)) {
+                    $nomeUnico = uniqid() . '.' . $extensao;
+                    $caminhoDestino = '../uploads/' . $nomeUnico;
+
+                    if (move_uploaded_file($_FILES['fileImg']['tmp_name'][0], $caminhoDestino)) {
+                        $nomeImagem = $nomeUnico;
+                    } else {
+                        throw new Exception("Falha ao mover a imagem enviada.");
+                    }
+                } else {
+                    throw new Exception("Extensão de arquivo não permitida.");
+                }
+            } else {
+                throw new Exception("Nenhuma imagem foi enviada.");
+            }
+
+            $resultado = $tipoEventoModel->criar($nome, $nomeImagem);
+
             if ($resultado) {
                 header("Location: ../views/form_tipoevento.php?msg=created");
             } else {
