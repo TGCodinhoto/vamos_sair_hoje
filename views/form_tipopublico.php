@@ -22,6 +22,7 @@ if (isset($_GET['msg'])) {
     </div>
 <?php endif; ?>
 
+<?php
 $tipopublicoEditar = null;
 
 if (isset($_GET['editar'])) {

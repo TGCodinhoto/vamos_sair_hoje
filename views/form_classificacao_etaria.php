@@ -21,7 +21,7 @@ if (isset($_GET['msg'])) {
         <?= htmlspecialchars($mensagem) ?>
     </div>
 <?php endif; ?>
-
+<?php
 $classificacaoEtariaEditar = null;
 
 if (isset($_GET['editar'])) {
