@@ -8,7 +8,7 @@
                 src="https://storage.googleapis.com/a1aa/image/210d7813-80a2-4bb7-22de-43999ca1d326.jpg" width="600" />
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
-                <h3 class="text-2xl font-bold mb-2">
+                <!-- <h3 class="text-2xl font-bold mb-2">
                     Show da Banda Toca Tudo
                 </h3>
                 <p class="text-sm mb-1 flex items-center gap-2">
@@ -20,7 +20,7 @@
                     <i class="fas fa-map-marker-alt">
                     </i>
                     Local: Espaço das Artes - São Paulo
-                </p>
+                </p> -->
                 <button
                     class="w-full py-3 border border-white bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
                     type="button">
@@ -36,7 +36,7 @@
                 src="https://storage.googleapis.com/a1aa/image/7bd20c86-18d4-4d79-672e-610973bb97d5.jpg" width="600" />
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
-                <h3 class="text-2xl font-bold mb-2">
+                <!-- <h3 class="text-2xl font-bold mb-2">
                     Festival Rock na Cidade
                 </h3>
                 <p class="text-sm mb-1 flex items-center gap-2">
@@ -48,7 +48,7 @@
                     <i class="fas fa-map-marker-alt">
                     </i>
                     Local: Arena Central - Rio de Janeiro
-                </p>
+                </p> -->
                 <button
                     class="w-full py-3 border border-white bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
                     type="button">
@@ -64,7 +64,7 @@
                 src="https://storage.googleapis.com/a1aa/image/43a665aa-a362-48e8-4872-b1d0475a762e.jpg" width="600" />
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
-                <h3 class="text-2xl font-bold mb-2">
+                <!-- <h3 class="text-2xl font-bold mb-2">
                     Noite Pop Hits
                 </h3>
                 <p class="text-sm mb-1 flex items-center gap-2">
@@ -76,7 +76,7 @@
                     <i class="fas fa-map-marker-alt">
                     </i>
                     Local: Teatro Municipal - Belo Horizonte
-                </p>
+                </p> -->
                 <button
                     class="w-full py-3 border border-white bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
                     type="button">
@@ -92,7 +92,7 @@
                 width="600" />
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
-                <h3 class="text-2xl font-bold mb-2">
+                <!-- <h3 class="text-2xl font-bold mb-2">
                     Tarde Acústica
                 </h3>
                 <p class="text-sm mb-1 flex items-center gap-2">
@@ -104,7 +104,7 @@
                     <i class="fas fa-map-marker-alt">
                     </i>
                     Local: Café Cultural - Curitiba
-                </p>
+                </p> -->
                 <button
                     class="w-full py-3 border border-white bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
                     type="button">
@@ -120,7 +120,7 @@
                 src="https://storage.googleapis.com/a1aa/image/8d1f08fb-282c-4760-d8ca-f02f47827861.jpg" width="600" />
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
-                <h3 class="text-2xl font-bold mb-2">
+                <!-- <h3 class="text-2xl font-bold mb-2">
                     Jazz &amp; Blues Night
                 </h3>
                 <p class="text-sm mb-1 flex items-center gap-2">
@@ -132,7 +132,7 @@
                     <i class="fas fa-map-marker-alt">
                     </i>
                     Local: Clube do Jazz - Porto Alegre
-                </p>
+                </p> -->
                 <button
                     class="w-full py-3 border border-white bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
                     type="button">
@@ -148,7 +148,7 @@
                 width="600" />
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
-                <h3 class="text-2xl font-bold mb-2">
+                <!-- <h3 class="text-2xl font-bold mb-2">
                     Festa Eletrônica
                 </h3>
                 <p class="text-sm mb-1 flex items-center gap-2">
@@ -160,7 +160,7 @@
                     <i class="fas fa-map-marker-alt">
                     </i>
                     Local: Club Neon - Florianópolis
-                </p>
+                </p> -->
                 <button
                     class="w-full py-3 border border-white bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
                     type="button">

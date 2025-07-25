@@ -3,15 +3,38 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <title>Formulário de Eventos</title>
+  <title>Cadastrar Evento</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  </link>
+
+  <style>
+    #botoes {
+      font-family: 'Montserrat', sans-serif;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-50 min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 md:p-8">
+
+  <!-- Botões Superiores Voltar e Home -->
+  <div class="flex justify-center space-x-4 mb-6" id="botoes">
+    <a href="navegacao_forms.php"
+      class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
+      <i class="fas fa-arrow-left"></i>
+      <span>Voltar</span>
+    </a>
+    <a href="../index.php"
+      class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+  </div>
+
   <section class="w-full max-w-4xl bg-white rounded-lg shadow-md p-4 sm:p-8 space-y-8">
     <h1 class="text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600 font-montserrat">
-      Forms de Eventos
+      Cadastrar Evento
     </h1>
 
     <form aria-label="Formulário de Eventos" class="space-y-8" id="evento-form" novalidate>
@@ -81,24 +104,38 @@
           <input id="publicacao-pagamento" name="publicacao-pagamento" type="checkbox"
             class="h-6 w-6 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
           <label for="publicacao-pagamento"
-            class="font-medium text-gray-700 text-base sm:text-lg cursor-pointer select-none">Publicação Pagamento</label>
+            class="font-medium text-gray-700 text-base sm:text-lg cursor-pointer select-none">Publicação
+            Pagamento</label>
         </div>
       </fieldset>
 
-      <!-- Atrração -->
+      <!-- Atração -->
       <fieldset class="border border-gray-300 rounded-lg p-4 sm:p-6 space-y-6">
         <legend class="text-lg sm:text-xl font-semibold text-gray-700 px-1 sm:px-2">
           Atração
         </legend>
         <div class="flex flex-col w-full space-y-4">
+          <div class="flex flex-col w-full">
+            <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg"
+              for="realizacao-evento">Local de realização do Evento</label>
+            <select id="realizacao-evento" name="realizacao-evento" required
+              class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+              <option disabled selected value="">Selecione o local de realização do evento</option>
+              <option value="publico">Clube P2</option>
+              <option value="privado">Espaço Marina Park</option>
+              <option value="parceria">Beach Park</option>
+            </select>
+          </div>
           <div>
-            <label class="mb-8 font-medium text-gray-700 text-base sm:text-lg" for="dados-endereco">Dados do
+            <!-- <label class="mb-8 font-medium text-gray-700 text-base sm:text-lg" for="dados-endereco">Dados do
               Endereço</label>
-            <hr class="mb-10" />
+            <hr class="mb-10" /> -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="flex flex-col w-full">
-                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="logradouro">Logradouro</label>
-                <input autocomplete="off" id="logradouro" name="logradouro" placeholder="Rua, Avenida, etc." required type="text"
+                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg"
+                  for="logradouro">Logradouro</label>
+                <input autocomplete="off" id="logradouro" name="logradouro" placeholder="Rua, Avenida, etc." required
+                  type="text"
                   class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
               </div>
               <div class="flex flex-col w-full">
@@ -126,8 +163,10 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
               <div class="flex flex-col w-full">
-                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="complemento">Complemento</label>
-                <input autocomplete="off" id="complemento" name="complemento" placeholder="Apartamento, bloco, etc." type="text"
+                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg"
+                  for="complemento">Complemento</label>
+                <input autocomplete="off" id="complemento" name="complemento" placeholder="Apartamento, bloco, etc."
+                  type="text"
                   class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
               </div>
               <div class="flex flex-col w-full">
@@ -137,9 +176,10 @@
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="flex flex-col w-full">
-              <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="classificacao">Classificação</label>
+              <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg"
+                for="classificacao">Classificação</label>
               <select id="classificacao" name="classificacao" required
                 class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
                 <option disabled selected value="">Selecione a classificação</option>
@@ -171,14 +211,23 @@
                 <option value="outros">Outros</option>
               </select>
             </div>
-          </div>
-          <div class="flex flex-col w-full">
-            <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="categoria">Categoria</label>
-            <input autocomplete="off" id="categoria" name="categoria" placeholder="Categoria da atração" type="text"
-              class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
+            <div class="flex flex-col w-full">
+              <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg"
+                for="categoria">Categoria</label>
+              <select id="categoria" name="categoria" required
+                class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                <option disabled selected value="">Selecione a categoria</option>
+                <option value="musica">Música</option>
+                <option value="teatro">Teatro</option>
+                <option value="dança">Dança</option>
+                <option value="gastronomia">Gastronomia</option>
+                <option value="outros">Outros</option>
+              </select>
+            </div>
           </div>
           <div class="flex flex-col w-full space-y-2">
-            <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="telefone">Telefone</label>
+            <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="telefone">Telefone
+              Celular</label>
             <div class="flex items-center space-x-4">
               <input autocomplete="off" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" type="tel"
                 class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
@@ -197,7 +246,8 @@
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div class="flex flex-col w-full">
-              <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="instagram">Instagram</label>
+              <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg"
+                for="instagram">Instagram</label>
               <input autocomplete="off" id="instagram" name="instagram" placeholder="@usuario" type="text"
                 class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
             </div>
@@ -215,7 +265,8 @@
         <legend class="text-lg sm:text-xl font-semibold text-gray-700 px-1 sm:px-2">Eventos</legend>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div class="flex flex-col w-full">
-            <label for="tipo-evento" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Tipo de Evento</label>
+            <label for="tipo-evento" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Tipo de
+              Evento</label>
             <select id="tipo-evento" name="tipo-evento" required
               class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
               <option disabled selected value="">Selecione o tipo de evento</option>
@@ -227,7 +278,8 @@
             </select>
           </div>
           <div class="flex flex-col w-full">
-            <label for="formato-evento" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Formato Evento</label>
+            <label for="formato-evento" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Formato
+              Evento</label>
             <select id="formato-evento" name="formato-evento" required
               class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
               <option disabled selected value="">Selecione o formato</option>
@@ -238,13 +290,15 @@
           </div>
         </div>
         <div class="flex flex-col w-full">
-          <label for="expectativa" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Expectativa</label>
+          <label for="expectativa"
+            class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Expectativa</label>
           <textarea id="expectativa" name="expectativa" rows="3" placeholder="Descreva a expectativa do evento"
             class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full resize-y"></textarea>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div class="flex flex-col w-full">
-            <label for="dia-evento" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Dia do Evento</label>
+            <label for="dia-evento" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Dia do
+              Evento</label>
             <input id="dia-evento" name="dia-evento" type="date" required
               class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
           </div>
@@ -254,18 +308,21 @@
               class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
           </div>
           <div class="flex flex-col w-full">
-            <label for="duracao-evento" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Duração Evento</label>
+            <label for="duracao-evento" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Duração
+              Evento</label>
             <input id="duracao-evento" name="duracao-evento" type="text" placeholder="Ex: 2 horas"
               class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
           </div>
         </div>
         <div class="flex flex-col w-full">
-          <label for="infos-gerais" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Infos Gerais</label>
+          <label for="infos-gerais" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Informações
+            Gerais</label>
           <textarea id="infos-gerais" name="infos-gerais" rows="4" placeholder="Informações gerais sobre o evento"
             class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full resize-y"></textarea>
         </div>
         <div class="flex flex-col w-full">
-          <label for="link-compra" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Link Compra de Ingresso</label>
+          <label for="link-compra" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Link Compra de
+            Ingresso</label>
           <input id="link-compra" name="link-compra" type="url" placeholder="https://"
             class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
         </div>

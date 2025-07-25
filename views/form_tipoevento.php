@@ -26,17 +26,43 @@ $tiposEvento = listarTiposEvento();
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html class="scroll-smooth" lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>Gerenciar - Tipo de Evento</title>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Cadastro - Tipo Evento</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    </link>
+
+    <style>
+        #botoes {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100 min-h-screen p-6">
+
+    <!-- Botões Superiores Voltar e Home -->
+    <div class="flex justify-center space-x-4 mb-6" id="botoes">
+        <a href="navegacao_forms.php"
+            class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
+            <i class="fas fa-arrow-left"></i>
+            <span>Voltar</span>
+        </a>
+        <a href="../index.php"
+            class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+    </div>
+
+
     <div class="max-w-5xl mx-auto bg-white p-8 rounded shadow">
-        <a href="navegacao_forms.php" class="inline-block mb-6 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">&larr; Voltar</a>
+       
         <h1 class="text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600">Gerenciar - Tipo de Evento</h1>
 
         <?php if (!empty($mensagem)): ?>
