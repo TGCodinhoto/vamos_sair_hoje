@@ -109,6 +109,11 @@
                     <h2 class="text-xl font-semibold text-blue-700 mb-2">Eventos</h2>
                     <p class="text-gray-600">Cadastrar Eventos</p>
                 </a>
+                <a href="listar_eventos.php"
+                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Eventos Cadastrados</h2>
+                    <p class="text-gray-600">Listar Eventos</p>
+                </a>
             </div>
         </div>
     </div>
