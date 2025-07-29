@@ -45,12 +45,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-function listarCidades() {
-    global $cidadeModel;
-    return $cidadeModel->listar();
+function listarCidades()
+{
+    global $conexao;
+    try {
+        $stmt = $conexao->query("
+            SELECT 
+                c.cidadeid, 
+                c.cidadenome, 
+                c.estadoid, 
+                e.estadonome, 
+                e.estadosigla 
+            FROM cidade c
+            JOIN estado e ON c.estadoid = e.estadoid
+            ORDER BY c.cidadenome
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Erro ao listar cidades com estados: " . $e->getMessage());
+        return [];
+    }
 }
 
 function buscarCidadePorId($id) {
-    global $cidadeModel;
-    return $cidadeModel->buscarPorId($id);
+global $cidadeModel;
+return $cidadeModel->buscarPorId($id);
 }

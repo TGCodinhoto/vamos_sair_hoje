@@ -4,6 +4,7 @@ require_once '../models/estado_model.php';
 
 $estadoModel = new EstadoModel($conexao);
 
+
 if (isset($_GET['delete'])) {
     try {
         $resultado = $estadoModel->excluir($_GET['delete']);
@@ -45,13 +46,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-function listarEstados() {
-    global $estadoModel;
-    return $estadoModel->listar();
-}
 
 function buscarEstadoPorId($id) {
     global $estadoModel;
     return $estadoModel->buscarPorId($id);
+}
+
+function listarEstados() {
+    global $conexao; // Pega a conexão global
+    $estadoModel = new EstadoModel($conexao);
+    try {
+        // Chama o método listar() do seu EstadoModel
+        return $estadoModel->listar(); 
+    } catch (Exception $e) {
+        error_log("Erro no controller ao chamar listarEstados: " . $e->getMessage());
+        return []; // Retorna um array vazio em caso de falha
+    }
 }
 ?>
