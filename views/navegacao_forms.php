@@ -15,16 +15,11 @@
     </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen px-2 sm:px-6 py-6">
+<body class="bg-gray-100 min-h-screen px-2 sm:px-6 py-6 relative">
 
     <div class="max-w-4xl mx-auto">
 
         <div class="flex justify-center space-x-4 mb-6" id="botoes">
-            <!-- <a href="navegacao_forms.php"
-                class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
-                <i class="fas fa-arrow-left"></i>
-                <span>Voltar</span>
-            </a> -->
             <a href="../index.php"
                 class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
                 <i class="fas fa-home"></i>
@@ -109,6 +104,7 @@
                     <h2 class="text-xl font-semibold text-blue-700 mb-2">Eventos</h2>
                     <p class="text-gray-600">Cadastrar Eventos</p>
                 </a>
+
                 <a href="listar_eventos.php"
                     class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
                     <h2 class="text-xl font-semibold text-blue-700 mb-2">Eventos Cadastrados</h2>
@@ -117,6 +113,34 @@
             </div>
         </div>
     </div>
+
+    <!-- Botão para subir a página (Mobile) -->
+    <button id="backToTopBtn"
+        class="fixed bottom-6 right-6 sm:hidden bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition"
+        aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        const backToTopBtn = document.getElementById('backToTopBtn');
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Optional: Show button only when scrolled down a bit
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200) {
+                backToTopBtn.classList.remove('hidden');
+            } else {
+                backToTopBtn.classList.add('hidden');
+            }
+        });
+
+        // Initially hide the button
+        backToTopBtn.classList.add('hidden');
+    </script>
+
 </body>
 
 </html>
