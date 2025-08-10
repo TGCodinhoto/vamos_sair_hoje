@@ -68,17 +68,17 @@ if (isset($_GET['msg'])) {
     <a href="navegacao_forms.php"
       class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
       <i class="fas fa-arrow-left"></i>
-      <span>Voltar</span>
+      <span class="hidden sm:block" >Voltar</span>
     </a>
     <a href="../index.php"
       class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
       <i class="fas fa-home"></i>
-      <span>Home</span>
+      <span class="hidden sm:block" >Home</span>
     </a>
     <a href="../views/listar_eventos.php"
       class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
       <i class="fas fa-list"></i>
-      <span>Eventos Cadastrados</span>
+      <span class="hidden sm:block" >Eventos Cadastrados</span>
     </a>
   </div>
 
@@ -106,9 +106,7 @@ if (isset($_GET['msg'])) {
       <!-- ######################################### ######################################### -- ######################################### -->
 
       <fieldset class="border border-gray-300 rounded-lg p-4 sm:p-6 space-y-6">
-        <legend class="text-lg sm:text-xl font-semibold text-gray-700 px-1 sm:px-2">
-          Publicação
-        </legend>
+        
         <div class="flex flex-col w-full">
           <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="nome">Nome</label>
           <input autocomplete="off" id="nome" name="nome" placeholder="Nome do Evento" required type="text"
@@ -184,17 +182,15 @@ if (isset($_GET['msg'])) {
         </div>
 
 
-      </fieldset>
+      
 
 
       <!-- ######################################### ######################################### -- ######################################### -->
       <!--                                                      ATRAÇÃO                                                                  -->
       <!-- ######################################### ######################################### -- ######################################### -->
 
-      <fieldset class="border border-gray-300 rounded-lg p-4 sm:p-6 space-y-6">
-        <legend class="text-lg sm:text-xl font-semibold text-gray-700 px-1 sm:px-2">
-          Atração
-        </legend>
+      
+        
         <div class="flex flex-col w-full space-y-4">
 
           <!-- !!!!!  SUBSTITUIR DEPOIS PELO LOCAL DO EVENTO !!!!! -->
@@ -378,15 +374,15 @@ if (isset($_GET['msg'])) {
             </div>
           </div>
         </div>
-      </fieldset>
+      
 
 
       <!-- ######################################### ######################################### -- ######################################### -->
       <!--                                                      EVENTOS                                                                  -->
       <!-- ######################################### ######################################### -- ######################################### -->
 
-      <fieldset class="border border-gray-300 rounded-lg p-4 sm:p-6 space-y-6">
-        <legend class="text-lg sm:text-xl font-semibold text-gray-700 px-1 sm:px-2">Eventos</legend>
+      
+        
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <!-- Tipo de Evento -->
           <div class="flex flex-col w-full">
