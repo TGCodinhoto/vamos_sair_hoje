@@ -144,7 +144,7 @@ if (isset($_GET['msg'])) {
             <div
               class="w-20 h-20 border border-gray-300 rounded-md flex items-center justify-center overflow-hidden bg-gray-50 shrink-0">
               <img alt="Pré-visualização da Foto 1 do evento, espaço reservado para imagem carregada pelo usuário"
-                height="80" width="80" id="preview-foto1" src="<?= $edicao ? htmlspecialchars('../uploads/' . $evento['publicacaofoto01']) : 'https://placehold.co/80x80' ?>"
+                height="80" width="80" id="preview-foto1" src="<?= $edicao ? htmlspecialchars('../uploads/' . $evento['publicacaofoto01']) : 'https://placehold.co/80x80?text=Foto+1' ?>"
                 class="max-h-full max-w-full object-contain" />
             </div>
             <input id="foto1" name="foto1" type="file" accept="image/*"
@@ -159,7 +159,7 @@ if (isset($_GET['msg'])) {
             <div
               class="w-20 h-20 border border-gray-300 rounded-md flex items-center justify-center overflow-hidden bg-gray-50 shrink-0">
               <img alt="Pré-visualização da Foto 2 do evento, espaço reservado para imagem carregada pelo usuário"
-                height="80" width="80" id="preview-foto2" src="<?= $edicao ? htmlspecialchars('../uploads/' . $evento['publicacaofoto02']) : 'https://placehold.co/80x80' ?>"
+                height="80" width="80" id="preview-foto2" src="<?= $edicao ? htmlspecialchars('../uploads/' . $evento['publicacaofoto02']) : 'https://placehold.co/80x80?text=Foto+2' ?>"
                 class="max-h-full max-w-full object-contain" />
             </div>
             <input id="foto2" name="foto2" type="file" accept="image/*"
