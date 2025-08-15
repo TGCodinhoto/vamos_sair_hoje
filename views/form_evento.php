@@ -68,17 +68,17 @@ if (isset($_GET['msg'])) {
     <a href="navegacao_forms.php"
       class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
       <i class="fas fa-arrow-left"></i>
-      <span class="hidden sm:block" >Voltar</span>
+      <span class="hidden sm:block">Voltar</span>
     </a>
     <a href="../index.php"
       class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
       <i class="fas fa-home"></i>
-      <span class="hidden sm:block" >Home</span>
+      <span class="hidden sm:block">Home</span>
     </a>
     <a href="../views/listar_eventos.php"
       class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
       <i class="fas fa-list"></i>
-      <span class="hidden sm:block" >Eventos Cadastrados</span>
+      <span class="hidden sm:block">Eventos Cadastrados</span>
     </a>
   </div>
 
@@ -106,7 +106,7 @@ if (isset($_GET['msg'])) {
       <!-- ######################################### ######################################### -- ######################################### -->
 
       <fieldset class="border border-gray-300 rounded-lg p-4 sm:p-6 space-y-6">
-        
+
         <div class="flex flex-col w-full">
           <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="nome">Nome</label>
           <input autocomplete="off" id="nome" name="nome" placeholder="Nome do Evento" required type="text"
@@ -182,15 +182,15 @@ if (isset($_GET['msg'])) {
         </div>
 
 
-      
 
 
-      <!-- ######################################### ######################################### -- ######################################### -->
-      <!--                                                      ATRAÇÃO                                                                  -->
-      <!-- ######################################### ######################################### -- ######################################### -->
 
-      
-        
+        <!-- ######################################### ######################################### -- ######################################### -->
+        <!--                                                      ATRAÇÃO                                                                  -->
+        <!-- ######################################### ######################################### -- ######################################### -->
+
+
+
         <div class="flex flex-col w-full space-y-4">
 
           <!-- !!!!!  SUBSTITUIR DEPOIS PELO LOCAL DO EVENTO !!!!! -->
@@ -213,33 +213,48 @@ if (isset($_GET['msg'])) {
           <!-- Dados do Endereço -->
           <div>
             <?php if ($edicao && isset($evento['enderecoid'])): ?>
-              <input type="hidden" name="endereco_id" value="<?= $evento['enderecoid'] ?>">
+              <input name="endereco_id" type="hidden" value="<?= $evento['enderecoid'] ?>">
             <?php endif; ?>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div class="flex flex-col w-full">
-                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="numero">Número</label>
-                <input autocomplete="off" id="numero" name="numero" placeholder="Número" required type="text"
-                  value="<?= $edicao ? htmlspecialchars($evento['endereconumero'] ?? 'null') : '' ?>"
-                  class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
+                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="logradouro">
+                  Rua
+                </label>
+                <input autocomplete="off"
+                  class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  id="logradouro" name="logradouro" placeholder="Rua" required="" type="text"
+                  value="<?= $edicao ? htmlspecialchars($evento['enderecorua'] ?? 'Rua indisponível') : '' ?>" />
+              </div>
+              <div class="flex flex-col w-full">
+                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="bairro">
+                  Bairro
+                </label>
+                <input autocomplete="off"
+                  class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  id="bairro" name="bairro" placeholder="Bairro" required="" type="text"
+                  value="<?= $edicao ? htmlspecialchars($evento['enderecobairro'] ?? 'Bairro indisponível') : '' ?>" />
+              </div>
+              <div class="flex flex-col w-full">
+                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="numero">
+                  Número
+                </label>
+                <input autocomplete="off"
+                  class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  id="numero" name="numero" placeholder="Número" required="" type="text"
+                  value="<?= $edicao ? htmlspecialchars($evento['endereconumero'] ?? 'null') : '' ?>" />
               </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
               <div class="flex flex-col w-full">
-                <!-- Rua -->
-                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="logradouro">Rua</label>
-                <input autocomplete="off" id="logradouro" name="logradouro" placeholder="Rua" required type="text"
-                  value="<?= $edicao ? htmlspecialchars($evento['enderecorua'] ?? 'Rua indisponível') : '' ?>"
-                  class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
-                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="bairro">Bairro</label>
-                <input autocomplete="off" id="bairro" name="bairro" placeholder="Bairro" required type="text"
-                  value="<?= $edicao ? htmlspecialchars($evento['enderecobairro'] ?? 'Bairro indisponível') : '' ?>"
-                  class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
-              </div>
-              <div class="flex flex-col w-full">
-                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="cidade">Cidade</label>
-                <select id="cidade" name="cidade" required
-                  class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                  <option disabled selected value="">Selecione a cidade</option>
+                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="cidade">
+                  Cidade
+                </label>
+                <select
+                  class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  id="cidade" name="cidade" required="">
+                  <option disabled selected value="">
+                    Selecione a cidade
+                  </option>
                   <?php foreach ($cidades as $cidade): ?>
                     <option
                       value="<?= $cidade['cidadeid'] ?>"
@@ -252,30 +267,38 @@ if (isset($_GET['msg'])) {
                 </select>
               </div>
               <div class="flex flex-col w-full">
-                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="estado">Estado</label>
-                <input autocomplete="off" id="estado" name="estado_display" placeholder="Selecione uma cidade" required type="text"
-                  value="<?= $edicao ? htmlspecialchars($evento['estadosigla']) : '' ?>"
-                  class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100" readonly />
-                <input type="hidden" id="estado_id_hidden" name="estado" value="<?= $edicao ? $evento['estadoid'] : '' ?>">
+                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="estado">
+                  Estado
+                </label>
+                <input autocomplete="off"
+                  class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
+                  id="estado" name="estado_display" placeholder="--" readonly="" required="" type="text"
+                  value="<?= $edicao ? htmlspecialchars($evento['estadosigla']) : '' ?>" />
+                <input id="estado_id_hidden" name="estado" type="hidden" value="<?= $edicao ? $evento['estadoid'] : '' ?>" />
               </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
               <div class="flex flex-col w-full">
-                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg"
-                  for="complemento">Complemento</label>
-                <input autocomplete="off" id="complemento" name="complemento" placeholder="Complemento"
-                  type="text"
-                  value="<?= $edicao ? htmlspecialchars($evento['enderecocomplemento'] ?? 'Complemento indisponível') : '' ?>"
-                  class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
+                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="complemento">
+                  Complemento
+                </label>
+                <input autocomplete="off"
+                  class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  id="complemento" name="complemento" placeholder="Complemento" type="text"
+                  value="<?= $edicao ? htmlspecialchars($evento['enderecocomplemento'] ?? 'Complemento indisponível') : '' ?>" />
               </div>
               <div class="flex flex-col w-full">
-                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="cep">CEP</label>
-                <input autocomplete="off" id="cep" name="cep" placeholder="CEP" required type="text"
-                  value="<?= $edicao ? htmlspecialchars($evento['enderecocep'] ?? 'CEP indisponível') : '' ?>"
-                  class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
+                <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="cep">
+                  CEP
+                </label>
+                <input autocomplete="off"
+                  class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  id="cep" name="cep" placeholder="CEP" required="" type="text"
+                  value="<?= $edicao ? htmlspecialchars($evento['enderecocep'] ?? 'CEP indisponível') : '' ?>" />
               </div>
             </div>
           </div>
+
 
           <!-- Dropdowns com dados do banco -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -374,15 +397,15 @@ if (isset($_GET['msg'])) {
             </div>
           </div>
         </div>
-      
 
 
-      <!-- ######################################### ######################################### -- ######################################### -->
-      <!--                                                      EVENTOS                                                                  -->
-      <!-- ######################################### ######################################### -- ######################################### -->
 
-      
-        
+        <!-- ######################################### ######################################### -- ######################################### -->
+        <!--                                                      EVENTOS                                                                  -->
+        <!-- ######################################### ######################################### -- ######################################### -->
+
+
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <!-- Tipo de Evento -->
           <div class="flex flex-col w-full">
@@ -419,13 +442,12 @@ if (isset($_GET['msg'])) {
 
         <!-- Restante dos campos (mantido igual) -->
         <div class="flex flex-col w-full">
-
-
           <label for="expectativa"
             class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Expectativa</label>
           <textarea id="expectativa" name="expectativa" rows="3" placeholder="Descreva a expectativa do evento"
             class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full resize-y"><?= $edicao ? htmlspecialchars($evento['eventoexpectativa']) : '' ?></textarea>
         </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div class="flex flex-col w-full">
             <label for="dia-evento" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Dia do
@@ -434,12 +456,14 @@ if (isset($_GET['msg'])) {
               class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               value="<?= $edicao ? htmlspecialchars($evento['eventodia']) : '' ?>" />
           </div>
+
           <div class="flex flex-col w-full">
             <label for="hora-evento" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Hora</label>
             <input id="hora-evento" name="hora-evento" type="time" required
               class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               value="<?= $edicao ? htmlspecialchars($evento['eventohora']) : '' ?>" />
           </div>
+
           <div class="flex flex-col w-full">
             <label for="duracao-evento" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Duração
               Evento</label>
@@ -447,6 +471,7 @@ if (isset($_GET['msg'])) {
               class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               value="<?= $edicao ? htmlspecialchars($evento['eventoduracao']) : '' ?>" />
           </div>
+
         </div>
         <div class="flex flex-col w-full">
           <label for="infos-gerais" class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg">Informações
@@ -476,6 +501,8 @@ if (isset($_GET['msg'])) {
 
     </form>
   </section>
+
+
   <script>
     // Preencher estado automaticamente ao selecionar cidade
     document.getElementById('cidade').addEventListener('change', function() {
