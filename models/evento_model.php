@@ -11,6 +11,11 @@ class EventoModel
     public function criar($dados)
     {
         try {
+            // Debug: Log do local de realização selecionado
+            if (isset($dados['local_realizacao_id'])) {
+                error_log("Local de realização selecionado: " . $dados['local_realizacao_id']);
+            }
+
             $stmt = $this->conexao->prepare("
                 INSERT INTO evento (
                     publicacaoid, tipoeventoid, formatoid,
@@ -66,14 +71,30 @@ class EventoModel
 
             $this->conexao->beginTransaction();
 
+            // Buscar endereco_id antes de excluir atracao
+            $stmt = $this->conexao->prepare("SELECT enderecoid FROM atracao WHERE publicacaoid = :publicacao_id");
+            $stmt->bindParam(':publicacao_id', $publicacaoId);
+            $stmt->execute();
+            $endereco = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Excluir evento
             $stmt = $this->conexao->prepare("DELETE FROM evento WHERE publicacaoid = :publicacao_id");
             $stmt->bindParam(':publicacao_id', $publicacaoId);
             $stmt->execute();
 
+            // Excluir atracao
             $stmt = $this->conexao->prepare("DELETE FROM atracao WHERE publicacaoid = :publicacao_id");
             $stmt->bindParam(':publicacao_id', $publicacaoId);
             $stmt->execute();
 
+            // Excluir endereco se existir
+            if ($endereco && $endereco['enderecoid']) {
+                $stmt = $this->conexao->prepare("DELETE FROM endereco WHERE enderecoid = :endereco_id");
+                $stmt->bindParam(':endereco_id', $endereco['enderecoid']);
+                $stmt->execute();
+            }
+
+            // Excluir publicacao
             $stmt = $this->conexao->prepare("DELETE FROM publicacao WHERE publicacaoid = :publicacao_id");
             $stmt->bindParam(':publicacao_id', $publicacaoId);
             $stmt->execute();
@@ -95,24 +116,43 @@ class EventoModel
         $this->conexao->beginTransaction();
 
         try {
+            // Atualizar publicacao
             $sqlPublicacao = "UPDATE publicacao SET 
                             publicacaonome = :nome,
                             publicacaovalidadein = :validadeinicial,
                             publicacaovalidadeout = :validadefinal,
                             publicacaoauditada = :auditado,
-                            publicacaopaga = :publicacaopagamento
-                          WHERE publicacaoid = :publicacaoid";
-
-            $stmtPublicacao = $this->conexao->prepare($sqlPublicacao);
-            $stmtPublicacao->execute([
+                            publicacaopaga = :publicacaopagamento";
+            
+            // Adicionar fotos e vídeo na query apenas se foram enviados
+            $params = [
                 ':nome' => $dados['nome'],
                 ':validadeinicial' => $dados['validade-inicial'],
                 ':validadefinal' => $dados['validade-final'],
                 ':auditado' => isset($dados['auditado']) ? 1 : 0,
-                ':publicacaopagamento' => isset($dados['publicacao-pagamento']) ? 1 : 0, 
+                ':publicacaopagamento' => isset($dados['publicacao-pagamento']) ? 1 : 0,
                 ':publicacaoid' => $dados['publicacao_id']
-            ]);
+            ];
 
+            if (!empty($dados['foto1'])) {
+                $sqlPublicacao .= ", publicacaofoto01 = :foto1";
+                $params[':foto1'] = $dados['foto1'];
+            }
+            if (!empty($dados['foto2'])) {
+                $sqlPublicacao .= ", publicacaofoto02 = :foto2";
+                $params[':foto2'] = $dados['foto2'];
+            }
+            if (!empty($dados['video'])) {
+                $sqlPublicacao .= ", publicacaovideo = :video";
+                $params[':video'] = $dados['video'];
+            }
+
+            $sqlPublicacao .= " WHERE publicacaoid = :publicacaoid";
+            
+            $stmtPublicacao = $this->conexao->prepare($sqlPublicacao);
+            $stmtPublicacao->execute($params);
+
+            // Atualizar endereco se existir
             if (!empty($dados['endereco_id'])) {
                 $sqlEndereco = "UPDATE endereco SET
                             enderecorua = :logradouro,
@@ -135,6 +175,7 @@ class EventoModel
                 ]);
             }
 
+            // Atualizar atracao
             $sqlAtracao = "UPDATE atracao SET
                         enderecoid = :enderecoid,
                         classificacaoid = :classificacaoid,
@@ -163,6 +204,7 @@ class EventoModel
                 ':publicacaoid' => $dados['publicacao_id']
             ]);
 
+            // Atualizar evento
             $sqlEvento = "UPDATE evento SET
                         tipoeventoid = :tipoeventoid,
                         formatoid = :formatoid,

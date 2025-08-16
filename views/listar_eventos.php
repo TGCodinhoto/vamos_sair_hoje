@@ -122,11 +122,77 @@ if (isset($_GET['msg'])) {
             transform: scale(1.1);
         }
 
+        /* Image Modal Styles */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(4px);
+        }
+
+        .image-modal-content {
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 201;
+        }
+
+        .image-modal-close:hover,
+        .image-modal-close:focus {
+            color: #bbb;
+            transform: scale(1.1);
+        }
+
+        .image-thumbnail {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .image-thumbnail:hover {
+            transform: scale(1.02);
+        }
+
         @media (max-width: 768px) {
             .modal-content {
                 margin: 10% auto;
                 padding: 20px;
                 width: 95%;
+            }
+            
+            .image-modal-content {
+                width: 95%;
+                max-height: 80vh;
+            }
+            
+            .image-modal-close {
+                top: 10px;
+                right: 20px;
+                font-size: 30px;
             }
         }
     </style>
@@ -232,20 +298,29 @@ if (isset($_GET['msg'])) {
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <?php if ($evento['publicacaofoto01']): ?>
                                     <div class="rounded-lg overflow-hidden">
-                                        <img src="../uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>" class="w-full h-48 object-cover rounded-lg hover:scale-105 transition-transform">
+                                        <img src="../uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>" 
+                                             class="w-full h-48 object-cover rounded-lg image-thumbnail" 
+                                             onclick="abrirImagemModal('../uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>')"
+                                             alt="<?= htmlspecialchars($evento['publicacaonome']) ?> - Foto 1">
                                     </div>
                                 <?php endif; ?>
                                 <?php if ($evento['publicacaofoto02']): ?>
                                     <div class="rounded-lg overflow-hidden">
-                                        <img src="../uploads/<?= htmlspecialchars($evento['publicacaofoto02']) ?>" class="w-full h-48 object-cover rounded-lg hover:scale-105 transition-transform">
+                                        <img src="../uploads/<?= htmlspecialchars($evento['publicacaofoto02']) ?>" 
+                                             class="w-full h-48 object-cover rounded-lg image-thumbnail" 
+                                             onclick="abrirImagemModal('../uploads/<?= htmlspecialchars($evento['publicacaofoto02']) ?>')"
+                                             alt="<?= htmlspecialchars($evento['publicacaonome']) ?> - Foto 2">
                                     </div>
                                 <?php endif; ?>
                                 <?php if ($evento['publicacaovideo']): ?>
-                                    <div class="rounded-lg bg-gray-100 flex items-center justify-center h-48">
-                                        <div class="text-center p-4">
-                                            <i class="fas fa-video text-4xl text-gray-400 mb-2"></i>
-                                            <p class="text-gray-600">Vídeo disponível</p>
-                                        </div>
+                                    <div class="rounded-lg overflow-hidden">
+                                        <video controls class="w-full h-48 object-cover rounded-lg">
+                                            <source src="../uploads/<?= htmlspecialchars($evento['publicacaovideo']) ?>" type="video/mp4">
+                                            <source src="../uploads/<?= htmlspecialchars($evento['publicacaovideo']) ?>" type="video/mov">
+                                            <source src="../uploads/<?= htmlspecialchars($evento['publicacaovideo']) ?>" type="video/avi">
+                                            <source src="../uploads/<?= htmlspecialchars($evento['publicacaovideo']) ?>" type="video/mkv">
+                                            Seu navegador não suporta vídeo HTML5.
+                                        </video>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -423,6 +498,12 @@ if (isset($_GET['msg'])) {
         </div>
     </div>
 
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal">
+        <span class="image-modal-close" onclick="fecharImagemModal()">&times;</span>
+        <img class="image-modal-content" id="modalImage">
+    </div>
+
     <script>
         function abrirModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
@@ -434,9 +515,30 @@ if (isset($_GET['msg'])) {
             document.body.style.overflow = 'auto';
         }
 
+        function abrirImagemModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = imageSrc;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharImagemModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
         window.onclick = function(event) {
+            const imageModal = document.getElementById('imageModal');
+            
             if (event.target.className === 'modal') {
                 event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            
+            if (event.target === imageModal) {
+                imageModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }
         }
@@ -449,6 +551,13 @@ if (isset($_GET['msg'])) {
                     modal.style.display = 'none';
                     document.body.style.overflow = 'auto';
                 });
+                
+                // Also close image modal
+                const imageModal = document.getElementById('imageModal');
+                if (imageModal.style.display === 'block') {
+                    imageModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
             }
         };
     </script>

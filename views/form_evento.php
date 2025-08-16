@@ -1,23 +1,77 @@
 <?php
-require_once('../controllers/evento_controller.php');
-require_once('../controllers/cidade_controller.php');
-require_once('../controllers/estado_controller.php');
-require_once('../controllers/classificacao_etaria_controller.php');
-require_once('../controllers/tipopublico_controller.php');
-require_once('../controllers/segmento_controller.php');
-require_once('../controllers/categoria_controller.php');
-require_once('../controllers/tipoevento_controller.php');
-require_once('../controllers/formatoevento_controller.php');
+require_once('../conexao.php');
 
-// Obter dados para os dropdowns
-$cidades = listarCidades();
-$estados = listarEstados();
-$classificacoes = listarClassificacaoEtaria();
-$tiposPublico = listarTipoPublico();
-$segmentos = listarSegmentos();
-$categorias = listarCategorias();
-$tiposEvento = listarTiposEvento();
-$formatosEvento = listarFormatosEvento();
+// Função para buscar evento por ID (apenas para visualização/edição)
+function buscarEventoPorId($publicacao_id) {
+    global $conexao;
+    require_once('../models/evento_model.php');
+    
+    $eventoModel = new EventoModel($conexao);
+    return $eventoModel->buscarEventoPorId($publicacao_id);
+}
+
+// Obter dados para os dropdowns diretamente via SQL para evitar problemas com models
+try {
+    // Buscar cidades
+    $cidades = $conexao->query("
+        SELECT c.cidadeid, c.cidadenome, e.estadoid, e.estadosigla 
+        FROM cidade c 
+        JOIN estado e ON c.estadoid = e.estadoid 
+        ORDER BY c.cidadenome
+    ")->fetchAll(PDO::FETCH_ASSOC);
+
+    // Buscar estados
+    $estados = $conexao->query("SELECT * FROM estado ORDER BY estadonome")->fetchAll(PDO::FETCH_ASSOC);
+
+    // Buscar classificações etárias
+    $classificacoes = $conexao->query("SELECT * FROM classificacaoetaria ORDER BY classificacaonome")->fetchAll(PDO::FETCH_ASSOC);
+
+    // Buscar tipos de público
+    $tiposPublico = $conexao->query("SELECT * FROM tipopublico ORDER BY tipopubliconome")->fetchAll(PDO::FETCH_ASSOC);
+
+    // Buscar segmentos
+    $segmentos = $conexao->query("SELECT * FROM segmento ORDER BY segmentonome")->fetchAll(PDO::FETCH_ASSOC);
+
+    // Buscar categorias
+    $categorias = $conexao->query("SELECT * FROM categoria ORDER BY categorianome")->fetchAll(PDO::FETCH_ASSOC);
+
+    // Buscar tipos de evento
+    $tiposEvento = $conexao->query("SELECT * FROM tipoevento ORDER BY tipoeventonome")->fetchAll(PDO::FETCH_ASSOC);
+
+    // Buscar formatos de evento
+    $formatosEvento = $conexao->query("SELECT * FROM formatoevento ORDER BY formatonome")->fetchAll(PDO::FETCH_ASSOC);
+
+    // Buscar locais cadastrados para seleção do local de realização do evento
+    $locaisCadastrados = $conexao->query("
+        SELECT 
+            p.publicacaoid,
+            p.publicacaonome,
+            c.cidadenome,
+            es.estadosigla,
+            tl.tipolocalnome
+        FROM publicacao p
+        JOIN local l ON p.publicacaoid = l.publicacaoid
+        JOIN atracao a ON p.publicacaoid = a.publicacaoid
+        LEFT JOIN endereco en ON a.enderecoid = en.enderecoid
+        LEFT JOIN cidade c ON en.cidadeid = c.cidadeid
+        LEFT JOIN estado es ON c.estadoid = es.estadoid
+        LEFT JOIN tipolocal tl ON l.tipolocalid = tl.tipolocalid
+        WHERE p.publicacaoauditada = 1
+        ORDER BY p.publicacaonome
+    ")->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (Exception $e) {
+    error_log("Erro ao carregar dados do formulário: " . $e->getMessage());
+    $cidades = [];
+    $estados = [];
+    $classificacoes = [];
+    $tiposPublico = [];
+    $segmentos = [];
+    $categorias = [];
+    $tiposEvento = [];
+    $formatosEvento = [];
+    $locaisCadastrados = [];
+}
 
 $mensagem = '';
 $cor = 'green';
@@ -193,17 +247,39 @@ if (isset($_GET['msg'])) {
 
         <div class="flex flex-col w-full space-y-4">
 
-          <!-- !!!!!  SUBSTITUIR DEPOIS PELO LOCAL DO EVENTO !!!!! -->
+          <!-- Local de realização do evento -->
           <div class="flex flex-col w-full">
             <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg"
               for="realizacao-evento">Local de realização do Evento</label>
             <select id="realizacao-evento" name="realizacao-evento" required
               class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-              <option disabled selected value="">Selecione o local de realização do evento</option>
-              <option value="publico">Clube P2</option>
-              <option value="privado">Espaço Marina Park</option>
-              <option value="parceria">Beach Park</option>
+              <option disabled <?= !$edicao ? 'selected' : '' ?> value="">Selecione o local de realização do evento</option>
+              <?php if (empty($locaisCadastrados)): ?>
+                <option disabled value="">Nenhum local auditado disponível</option>
+              <?php else: ?>
+                <?php foreach ($locaisCadastrados as $local): ?>
+                  <option value="<?= htmlspecialchars($local['publicacaoid']) ?>"
+                    <?= ($edicao && isset($evento['local_realizacao_id']) && $evento['local_realizacao_id'] == $local['publicacaoid']) ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($local['publicacaonome']) ?> 
+                    - <?= htmlspecialchars($local['cidadenome']) ?>/<?= htmlspecialchars($local['estadosigla']) ?>
+                    <?php if (!empty($local['tipolocalnome'])): ?>
+                      (<?= htmlspecialchars($local['tipolocalnome']) ?>)
+                    <?php endif; ?>
+                  </option>
+                <?php endforeach; ?>
+              <?php endif; ?>
             </select>
+            <?php if (empty($locaisCadastrados)): ?>
+              <p class="text-sm text-gray-500 mt-1">
+                <i class="fas fa-info-circle"></i>
+                Cadastre e audite locais primeiro para que apareçam nesta lista.
+              </p>
+            <?php else: ?>
+              <p class="text-sm text-gray-500 mt-1">
+                <i class="fas fa-info-circle"></i>
+                Mostrando apenas locais auditados (<?= count($locaisCadastrados) ?> <?= count($locaisCadastrados) > 1 ? 'disponíveis' : 'disponível' ?>).
+              </p>
+            <?php endif; ?>
           </div>
 
 
