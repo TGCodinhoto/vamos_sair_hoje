@@ -101,7 +101,9 @@ class LocalModel
     public function atualizarLocal($dados)
     {
         // Iniciar transação
-        $this->conexao->beginTransaction();
+        if (!$this->conexao->inTransaction()) {
+            $this->conexao->beginTransaction();
+        }
 
         try {
             // Atualizar publicacao

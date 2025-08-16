@@ -73,7 +73,7 @@ if ($request_method === 'POST') {
             exit;
         }
 
-        } else {
+        } elseif ($acao === 'criar') {
         // --- LÓGICA DE CRIAÇÃO (DEFAULT) ---
         try {
             $conexao->beginTransaction();

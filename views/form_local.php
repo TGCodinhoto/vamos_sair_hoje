@@ -58,7 +58,7 @@ $local = null;
 
 if (isset($_GET['editar']) && $_GET['editar'] == 'true' && isset($_GET['publicacao_id'])) {
   $publicacao_id = $_GET['publicacao_id'];
-  $local = buscarLocalPorId($publicacao_id); // Você precisará criar esta função no controller
+  $local = buscarLocalPorId($publicacao_id);
   $edicao = true;
 }
 
