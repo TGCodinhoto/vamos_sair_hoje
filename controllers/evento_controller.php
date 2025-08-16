@@ -28,8 +28,21 @@ if ($request_method === 'POST') {
     if ($acao === 'atualizar') {
         // --- LÓGICA DE ATUALIZAÇÃO ---
         try {
-            // Chama o método de atualização do model, passando os dados do formulário e os arquivos
-            $eventoModel->atualizarEvento($_POST, $_FILES);
+            // Processar uploads de imagens para a atualização
+            $dados = $_POST;
+            
+            // Processar fotos 1 e 2 (publicacao) e vídeo
+            $foto1 = processarUpload($_FILES['foto1'] ?? null, 'uploads');
+            $foto2 = processarUpload($_FILES['foto2'] ?? null, 'uploads');
+            $video = processarUpload($_FILES['video'] ?? null, 'uploads');
+            
+            // Adicionar as fotos processadas aos dados
+            if ($foto1) $dados['foto1'] = $foto1;
+            if ($foto2) $dados['foto2'] = $foto2;
+            if ($video) $dados['video'] = $video;
+            
+            // Chama o método de atualização do model
+            $eventoModel->atualizarEvento($dados);
             
             // Redireciona de volta para o formulário de edição com mensagem de sucesso
             header("Location: ../views/form_evento.php?editar=true&publicacao_id=" . $_POST['publicacao_id'] . "&msg=success");
@@ -64,10 +77,34 @@ if ($request_method === 'POST') {
         try {
             $conexao->beginTransaction();
 
+            // Debug: Verificar dados recebidos
+            error_log("Dados recebidos no evento_controller:");
+            error_log("Cidade: " . ($_POST['cidade'] ?? 'não definido'));
+            error_log("Estado: " . ($_POST['estado'] ?? 'não definido'));
+
+            // Verificar se a cidade existe antes de tentar criar o endereço
+            if (empty($_POST['cidade'])) {
+                throw new Exception("Cidade não foi selecionada.");
+            }
+
+            $stmt = $conexao->prepare("SELECT cidadeid FROM cidade WHERE cidadeid = :cidade_id");
+            $stmt->bindParam(':cidade_id', $_POST['cidade']);
+            $stmt->execute();
+            
+            if ($stmt->rowCount() === 0) {
+                throw new Exception("Cidade selecionada não existe no banco de dados. ID: " . $_POST['cidade']);
+            }
+
             // 1. Processar uploads
             $nomeFoto1 = processarUpload($_FILES['foto1'] ?? null, 'uploads');
             $nomeFoto2 = processarUpload($_FILES['foto2'] ?? null, 'uploads');
             $nomeVideo = processarUpload($_FILES['video'] ?? null, 'uploads');
+
+            // Debug: Log das fotos processadas
+            error_log("Arquivos processados:");
+            error_log("Foto1: " . ($nomeFoto1 ?: 'null'));
+            error_log("Foto2: " . ($nomeFoto2 ?: 'null'));
+            error_log("Video: " . ($nomeVideo ?: 'null'));
 
             // 2. Criar publicação
             $publicacaoId = $publicacaoModel->criar([
@@ -113,6 +150,7 @@ if ($request_method === 'POST') {
                 'publicacao_id' => $publicacaoId,
                 'tipo_evento_id' => $_POST['tipo-evento'],
                 'formato_id' => $_POST['formato-evento'],
+                'local_realizacao_id' => $_POST['realizacao-evento'] ?? null,
                 'expectativa' => $_POST['expectativa'],
                 'dia' => $_POST['dia-evento'],
                 'hora' => $_POST['hora-evento'],
@@ -143,14 +181,12 @@ function processarUpload($arquivo, $pasta)
         return null;
     }
 
-    $extensoesPermitidas = $pasta === 'uploads'
-        ? ['jpg', 'jpeg', 'png']
-        : ['mp4', 'mov', 'avi'];
-
+    // Extensões permitidas para imagens e vídeos
+    $extensoesPermitidas = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi', 'mkv'];
     $extensao = strtolower(pathinfo($arquivo['name'], PATHINFO_EXTENSION));
 
     if (!in_array($extensao, $extensoesPermitidas)) {
-        throw new Exception("Extensão de arquivo não permitida.");
+        throw new Exception("Extensão de arquivo não permitida: " . $extensao);
     }
 
     $nomeUnico = uniqid() . '.' . $extensao;
