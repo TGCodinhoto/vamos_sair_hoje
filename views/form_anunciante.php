@@ -78,7 +78,7 @@ if (isset($_GET['msg'])) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <title>
-        Cadastrar Local
+        Cadastrar Anúncio
     </title>
     <script src="https://cdn.tailwindcss.com">
     </script>
@@ -93,7 +93,6 @@ if (isset($_GET['msg'])) {
 
 <body class="bg-gray-50 min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 md:p-8">
 
-    <!-- Pop-up de notificação -->
     <?php if (!empty($mensagem)): ?>
         <div id="notification" class="fixed top-4 right-4 z-50 bg-<?= $cor ?>-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
             <i class="fas fa-<?= $cor === 'green' ? 'check-circle' : 'exclamation-triangle' ?>"></i>
@@ -143,7 +142,7 @@ if (isset($_GET['msg'])) {
     <section class="w-full max-w-4xl bg-white rounded-lg shadow-md p-4 sm:p-8 space-y-8">
         <h1
             class="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600 font-montserrat leading-tight">
-            <?= $edicao ? 'Editar Local' : 'Cadastrar Local' ?>
+            <?= $edicao ? 'Editar Local' : 'Cadastrar Anúncio' ?>
         </h1>
         <form action="../controllers/local_controller.php" class="space-y-8" enctype="multipart/form-data" id="local-form" method="POST">
             <?php if ($edicao): ?>
@@ -238,6 +237,24 @@ if (isset($_GET['msg'])) {
                     </div>
                 </div>
 
+                <div class="flex flex-col w-full space-y-2">
+                    <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="banner">
+                        Banner
+                    </label>
+                    <div class="flex items-center space-x-4">
+                        <div
+                            class="w-40 h-16 border border-gray-300 rounded-md flex items-center justify-center overflow-hidden bg-gray-50 shrink-0">
+                            <img alt="Pré-visualização do banner, retangular, 160 por 64 pixels, fundo cinza claro"
+                                class="max-h-full max-w-full object-contain" id="preview-banner"
+                                src="https://placehold.co/160x64?text=Banner" />
+                        </div>
+                        <input accept="image/*"
+                            class="border border-gray-300 rounded-md px-2 py-1 text-sm sm:text-base file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 w-full sm:w-auto"
+                            id="banner" name="banner" type="file" />
+                    </div>
+                </div>
+
+
                 <div class="flex items-center space-x-3">
                     <input class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                         id="publicacao-pagamento" name="publicacao-pagamento" type="checkbox"
@@ -264,17 +281,28 @@ if (isset($_GET['msg'])) {
                     const reader = new FileReader();
 
                     reader.onload = function(e) {
-                        previewElement.src = e.target.result;
+                        if (previewElement.tagName.toLowerCase() === 'img' || previewElement.tagName.toLowerCase() === 'video') {
+                            previewElement.src = e.target.result;
+                            if (previewElement.tagName.toLowerCase() === 'video') {
+                                previewElement.style.display = 'block'; // Mostra o elemento de vídeo
+                                previewElement.load(); // Recarrega o vídeo para o novo src
+                            }
+                        }
                     }
-
                     reader.readAsDataURL(file);
                 } else {
                     // Reseta a pré-visualização se o usuário cancelar a seleção
-                    previewElement.src = `https://placehold.co/80x80?text=${previewId.replace('preview-', 'Foto+')}`;
+                    const defaultText = previewId.replace('preview-', '');
+                    if (previewElement.tagName.toLowerCase() === 'img') {
+                        const placeholderText = defaultText.charAt(0).toUpperCase() + defaultText.slice(1).replace(/(\d+)/, ' $1');
+                        previewElement.src = `https://placehold.co/${previewElement.width}x${previewElement.height}?text=${placeholderText}`;
+                    } else if (previewElement.tagName.toLowerCase() === 'video') {
+                        previewElement.src = `https://placehold.co/${previewElement.width}x${previewElement.height}?text=Vídeo+placeholder.mp4`;
+                        previewElement.style.display = 'block';
+                    }
                 }
             });
         });
-
 
 
         // Estado e Cidade
