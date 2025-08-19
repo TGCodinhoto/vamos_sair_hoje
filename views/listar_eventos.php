@@ -183,12 +183,12 @@ if (isset($_GET['msg'])) {
                 padding: 20px;
                 width: 95%;
             }
-            
+
             .image-modal-content {
                 width: 95%;
                 max-height: 80vh;
             }
-            
+
             .image-modal-close {
                 top: 10px;
                 right: 20px;
@@ -201,6 +201,7 @@ if (isset($_GET['msg'])) {
 <body class="min-h-screen">
 
     <div class="container mx-auto px-4 py-12 max-w-7xl">
+
         <!-- Adicione isto após o container -->
         <?php if ($mensagem): ?>
             <div class="fixed top-4 right-4 z-50">
@@ -215,7 +216,8 @@ if (isset($_GET['msg'])) {
                 </div>
             </div>
         <?php endif; ?>
-        <div class="flex justify-center space-x-4 mb-6" id="botoes">
+
+        <div class="flex justify-center space-x-4 mb-8" id="botoes">
             <a href="navegacao_forms.php"
                 class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
                 <i class="fas fa-arrow-left"></i>
@@ -226,11 +228,16 @@ if (isset($_GET['msg'])) {
                 <i class="fas fa-home"></i>
                 <span>Home</span>
             </a>
+            <a href="form_evento.php"
+                class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
+                <i class="fas fa-plus"></i>
+                <span>Inserir</span>
+            </a>
         </div>
+
         <!-- Header Section -->
         <div class="text-center mb-12">
             <h1 class="text-4xl font-bold text-gray-800 mb-4">Próximos Eventos</h1>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Descubra os melhores eventos culturais, shows e atividades em sua região</p>
         </div>
 
         <!-- Events Grid -->
@@ -298,18 +305,18 @@ if (isset($_GET['msg'])) {
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <?php if ($evento['publicacaofoto01']): ?>
                                     <div class="rounded-lg overflow-hidden">
-                                        <img src="../uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>" 
-                                             class="w-full h-48 object-cover rounded-lg image-thumbnail" 
-                                             onclick="abrirImagemModal('../uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>')"
-                                             alt="<?= htmlspecialchars($evento['publicacaonome']) ?> - Foto 1">
+                                        <img src="../uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>"
+                                            class="w-full h-48 object-cover rounded-lg image-thumbnail"
+                                            onclick="abrirImagemModal('../uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>')"
+                                            alt="<?= htmlspecialchars($evento['publicacaonome']) ?> - Foto 1">
                                     </div>
                                 <?php endif; ?>
                                 <?php if ($evento['publicacaofoto02']): ?>
                                     <div class="rounded-lg overflow-hidden">
-                                        <img src="../uploads/<?= htmlspecialchars($evento['publicacaofoto02']) ?>" 
-                                             class="w-full h-48 object-cover rounded-lg image-thumbnail" 
-                                             onclick="abrirImagemModal('../uploads/<?= htmlspecialchars($evento['publicacaofoto02']) ?>')"
-                                             alt="<?= htmlspecialchars($evento['publicacaonome']) ?> - Foto 2">
+                                        <img src="../uploads/<?= htmlspecialchars($evento['publicacaofoto02']) ?>"
+                                            class="w-full h-48 object-cover rounded-lg image-thumbnail"
+                                            onclick="abrirImagemModal('../uploads/<?= htmlspecialchars($evento['publicacaofoto02']) ?>')"
+                                            alt="<?= htmlspecialchars($evento['publicacaonome']) ?> - Foto 2">
                                     </div>
                                 <?php endif; ?>
                                 <?php if ($evento['publicacaovideo']): ?>
@@ -531,12 +538,12 @@ if (isset($_GET['msg'])) {
 
         window.onclick = function(event) {
             const imageModal = document.getElementById('imageModal');
-            
+
             if (event.target.className === 'modal') {
                 event.target.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }
-            
+
             if (event.target === imageModal) {
                 imageModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
@@ -551,7 +558,7 @@ if (isset($_GET['msg'])) {
                     modal.style.display = 'none';
                     document.body.style.overflow = 'auto';
                 });
-                
+
                 // Also close image modal
                 const imageModal = document.getElementById('imageModal');
                 if (imageModal.style.display === 'block') {

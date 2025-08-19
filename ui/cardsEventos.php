@@ -1,11 +1,19 @@
 <!-- Cards de Eventos -->
 <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-10 justify-center">
 
+    <!-- Card 1 -->
     <div class="bg-white rounded-lg shadow-xl overflow-hidden">
         <div class="relative">
             <img alt="Show Pop Rock band performing on stage with colorful lights and enthusiastic crowd"
                 class="w-full h-[500px] object-cover" height="500"
                 src="https://storage.googleapis.com/a1aa/image/210d7813-80a2-4bb7-22de-43999ca1d326.jpg" width="600" />
+             <button 
+                aria-label="Favoritar show da banda toca tudo"
+                class="absolute top-4 right-4 text-white text-2xl p-2 rounded-full bg-black/50 hover:bg-black/70 transition focus:outline-none focus:ring-2 focus:ring-white"
+                type="button"
+            >
+                <i class="far fa-heart"></i>
+            </button>    
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
                 <!-- <h3 class="text-2xl font-bold mb-2">
@@ -34,6 +42,13 @@
             <img alt="Show de banda de rock com guitarrista em destaque e público animado"
                 class="w-full h-[500px] object-cover" height="500"
                 src="https://storage.googleapis.com/a1aa/image/7bd20c86-18d4-4d79-672e-610973bb97d5.jpg" width="600" />
+             <button 
+                aria-label="Favoritar show da banda toca tudo"
+                class="absolute top-4 right-4 text-white text-2xl p-2 rounded-full bg-black/50 hover:bg-black/70 transition focus:outline-none focus:ring-2 focus:ring-white"
+                type="button"
+            >
+                <i class="far fa-heart"></i>
+            </button>
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
                 <!-- <h3 class="text-2xl font-bold mb-2">
@@ -62,6 +77,13 @@
             <img alt="Show de banda pop com vocalista feminina e iluminação colorida"
                 class="w-full h-[500px] object-cover" height="500"
                 src="https://storage.googleapis.com/a1aa/image/43a665aa-a362-48e8-4872-b1d0475a762e.jpg" width="600" />
+             <button 
+                aria-label="Favoritar show da banda toca tudo"
+                class="absolute top-4 right-4 text-white text-2xl p-2 rounded-full bg-black/50 hover:bg-black/70 transition focus:outline-none focus:ring-2 focus:ring-white"
+                type="button"
+            >
+                <i class="far fa-heart"></i>
+            </button>
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
                 <!-- <h3 class="text-2xl font-bold mb-2">
@@ -90,6 +112,13 @@
             <img alt="Show acústico intimista com violão e iluminação suave" class="w-full h-[500px] object-cover"
                 height="500" src="https://storage.googleapis.com/a1aa/image/fd04edc0-9f01-46ab-c044-0dfb20c2f0cf.jpg"
                 width="600" />
+             <button 
+                aria-label="Favoritar show da banda toca tudo"
+                class="absolute top-4 right-4 text-white text-2xl p-2 rounded-full bg-black/50 hover:bg-black/70 transition focus:outline-none focus:ring-2 focus:ring-white"
+                type="button"
+            >
+                <i class="far fa-heart"></i>
+            </button>
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
                 <!-- <h3 class="text-2xl font-bold mb-2">
@@ -118,6 +147,13 @@
             <img alt="Show de jazz com saxofonista em palco iluminado por luzes quentes"
                 class="w-full h-[500px] object-cover" height="500"
                 src="https://storage.googleapis.com/a1aa/image/8d1f08fb-282c-4760-d8ca-f02f47827861.jpg" width="600" />
+             <button 
+                aria-label="Favoritar show da banda toca tudo"
+                class="absolute top-4 right-4 text-white text-2xl p-2 rounded-full bg-black/50 hover:bg-black/70 transition focus:outline-none focus:ring-2 focus:ring-white"
+                type="button"
+            >
+                <i class="far fa-heart"></i>
+            </button>
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
                 <!-- <h3 class="text-2xl font-bold mb-2">
@@ -146,6 +182,13 @@
             <img alt="Show eletrônico com DJ e público dançando em luzes neon" class="w-full h-[500px] object-cover"
                 height="500" src="https://storage.googleapis.com/a1aa/image/4f5cfd64-9b13-46a5-c1e9-984e316fd212.jpg"
                 width="600" />
+             <button 
+                aria-label="Favoritar show da banda toca tudo"
+                class="absolute top-4 right-4 text-white text-2xl p-2 rounded-full bg-black/50 hover:bg-black/70 transition focus:outline-none focus:ring-2 focus:ring-white"
+                type="button"
+            >
+                <i class="far fa-heart"></i>
+            </button>
             <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
                 <!-- <h3 class="text-2xl font-bold mb-2">

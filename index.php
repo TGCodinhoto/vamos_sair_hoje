@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="index.css">
 </head>
 
-<body>
+<body class="bg-[url('image/bg-index.webp')] bg-cover bg-center bg-no-repeat">
     
     <!-- Header! -->
     <?php require_once 'ui/header.php' ?>
