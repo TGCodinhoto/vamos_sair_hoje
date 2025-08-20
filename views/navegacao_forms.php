@@ -33,58 +33,34 @@
             </h1>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <a href="form_tipoanuncio.php"
+                <a href="listar_eventos.php"
                     class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo de Anúncio</h2>
-                    <p class="text-gray-600">Gerenciar tipos de anúncio</p>
+                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Eventos Cadastrados</h2>
+                    <p class="text-gray-600">Listar Eventos</p>
+                </a>
+
+                <a href="listar_locais.php"
+                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Locais Cadastrados</h2>
+                    <p class="text-gray-600">Listar Locais</p>
+                </a>
+
+                <a href="listar_anunciantes.php"
+                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Anunciantes Cadastrados</h2>
+                    <p class="text-gray-600">Listar Anunciantes</p>
                 </a>
 
                 <a href="form_segmento.php"
                     class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
                     <h2 class="text-xl font-semibold text-blue-700 mb-2">Segmento</h2>
-                    <p class="text-gray-600">Gerenciar segmentos</p>
+                    <p class="text-gray-600">Gerenciar Segmentos</p>
                 </a>
 
                 <a href="form_atrativos.php"
                     class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
                     <h2 class="text-xl font-semibold text-blue-700 mb-2">Atrativos</h2>
-                    <p class="text-gray-600">Gerenciar atrativos</p>
-                </a>
-
-                <a href="form_formatoevento.php"
-                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Formato do Evento</h2>
-                    <p class="text-gray-600">Gerenciar formatos de evento</p>
-                </a>
-
-                <a href="form_tipoevento.php"
-                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo de Evento</h2>
-                    <p class="text-gray-600">Gerenciar tipos de evento</p>
-                </a>
-
-                <a href="form_categoria.php"
-                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Categoria</h2>
-                    <p class="text-gray-600">Gerenciar categorias</p>
-                </a>
-
-                <a href="form_tipopublico.php"
-                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo de Público</h2>
-                    <p class="text-gray-600">Gerenciar Tipo de Público</p>
-                </a>
-
-                <a href="form_classificacao_etaria.php"
-                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Classificação Etária</h2>
-                    <p class="text-gray-600">Gerenciar Classificação Etária</p>
-                </a>
-
-                <a href="form_tipolocal.php"
-                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo do Local</h2>
-                    <p class="text-gray-600">Gerenciar Tipo do Local</p>
+                    <p class="text-gray-600">Gerenciar Atrativos</p>
                 </a>
 
                 <a href="form_estado.php"
@@ -99,22 +75,46 @@
                     <p class="text-gray-600">Gerenciar Cidades</p>
                 </a>
 
-                <a href="form_evento.php"
+                <a href="form_categoria.php"
                     class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Eventos</h2>
-                    <p class="text-gray-600">Cadastrar Eventos</p>
+                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Categoria</h2>
+                    <p class="text-gray-600">Gerenciar Categorias</p>
                 </a>
 
-                <a href="listar_eventos.php"
+                <a href="form_formatoevento.php"
                     class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Eventos Cadastrados</h2>
-                    <p class="text-gray-600">Listar Eventos</p>
+                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Formato do Evento</h2>
+                    <p class="text-gray-600">Gerenciar Formatos de Evento</p>
                 </a>
 
-                <a href="form_local.php"
+                <a href="form_classificacao_etaria.php"
                     class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Local</h2>
-                    <p class="text-gray-600">Cadastrar Local</p>
+                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Classificação Etária</h2>
+                    <p class="text-gray-600">Gerenciar Classificação Etária</p>
+                </a>
+
+                <a href="form_tipoanuncio.php"
+                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo de Anúncio</h2>
+                    <p class="text-gray-600">Gerenciar Tipos de Anúncio</p>
+                </a>
+
+                <a href="form_tipoevento.php"
+                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo de Evento</h2>
+                    <p class="text-gray-600">Gerenciar Tipos de Evento</p>
+                </a>
+
+                <a href="form_tipopublico.php"
+                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo de Público</h2>
+                    <p class="text-gray-600">Gerenciar Tipo de Público</p>
+                </a>
+
+                <a href="form_tipolocal.php"
+                    class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                    <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo do Local</h2>
+                    <p class="text-gray-600">Gerenciar Tipo do Local</p>
                 </a>
 
                 <a href="listar_local.php"
@@ -137,7 +137,10 @@
         const backToTopBtn = document.getElementById('backToTopBtn');
 
         backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
 
         // Optional: Show button only when scrolled down a bit
