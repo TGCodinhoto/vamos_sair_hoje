@@ -1,9 +1,9 @@
 <?php
-require_once '../conexao.php';
-require_once '../models/publicacao_model.php';
-require_once '../models/atracao_model.php';
-require_once '../models/endereco_model.php';
-require_once '../models/evento_model.php';
+require_once __DIR__ . '/../conexao.php';
+require_once __DIR__ . '/../models/publicacao_model.php';
+require_once __DIR__ . '/../models/atracao_model.php';
+require_once __DIR__ . '/../models/endereco_model.php';
+require_once __DIR__ . '/../models/evento_model.php';
 
 // Inicializa os models
 $publicacaoModel = new PublicacaoModel($conexao);
