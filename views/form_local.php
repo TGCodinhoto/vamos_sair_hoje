@@ -132,7 +132,7 @@ if (isset($_GET['msg'])) {
             </span>
         </a>
         <a class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2"
-            href="../views/listar_eventos.php">
+            href="../views/listar_local.php">
             <i class="fas fa-list">
             </i>
             <span class="hidden sm:block">
