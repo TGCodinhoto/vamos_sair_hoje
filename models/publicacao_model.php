@@ -8,6 +8,40 @@ class PublicacaoModel
         $this->conexao = $conexao;
     }
 
+
+    public function listarTudo()
+    {
+        try {
+            $sql = "
+                SELECT 
+                    p.publicacaoid,
+                    p.userid,
+                    p.publicacaonome,
+                    p.publicacaovalidadein,
+                    p.publicacaovalidadeout,
+                    p.publicacaoauditada,
+                    p.publicacaofoto01,
+                    p.publicacaofoto02,
+                    p.publicacaovideo,
+                    p.publicacaopaga,
+                    a.anunciantebanner
+                FROM 
+                    publicacao p
+                LEFT JOIN 
+                    anunciante a ON p.publicacaoid = a.publicacaoid
+                ORDER BY 
+                    p.publicacaoid DESC
+            ";
+
+            $stmt = $this->conexao->query($sql);
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+
     public function criar($dados)
     {
         try {
@@ -45,8 +79,9 @@ class PublicacaoModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function atualizar($dados) {
-    $stmt = $this->conexao->prepare("
+    public function atualizar($dados)
+    {
+        $stmt = $this->conexao->prepare("
         UPDATE publicacao SET 
             publicacaonome = :nome,
             publicacaovalidadein = :validade_inicial,
@@ -58,8 +93,8 @@ class PublicacaoModel
             publicacaopaga = :paga
         WHERE publicacaoid = :publicacao_id
     ");
-    return $stmt->execute($dados);
-}
+        return $stmt->execute($dados);
+    }
 
     public function buscarPorId($id)
     {
@@ -68,6 +103,4 @@ class PublicacaoModel
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
-    
 }
