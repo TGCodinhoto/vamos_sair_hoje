@@ -1,88 +1,79 @@
 <?php
-require_once __DIR__ . '/../conexao.php';
-require_once __DIR__ . '/../models/publicacao_model.php';
-require_once __DIR__ . '/../models/atracao_model.php';
-require_once __DIR__ . '/../models/endereco_model.php';
-require_once __DIR__ . '/../models/evento_model.php';
 
-// Inicializa os models
+require_once __DIR__ . '/../conexao.php';
+
+require_once ROOT_PATH . '/models/publicacao_model.php';
+require_once ROOT_PATH . '/models/atracao_model.php';
+require_once ROOT_PATH . '/models/endereco_model.php';
+require_once ROOT_PATH . '/models/evento_model.php';
+
 $publicacaoModel = new PublicacaoModel($conexao);
 $atracaoModel = new AtracaoModel($conexao);
 $enderecoModel = new EnderecoModel($conexao);
 $eventoModel = new EventoModel($conexao);
 
-
-// No início do arquivo, após as outras requisições
-// 2. ROTEAMENTO DE REQUISIÇÕES (O "CÉREBRO" DO CONTROLLER)
-// =================================================================
-
-// Verifica o tipo de requisição HTTP (POST para submeter dados, GET para buscar)
 $request_method = $_SERVER['REQUEST_METHOD'];
 
-// --- SE A REQUISIÇÃO FOR POST (Formulário foi enviado) ---
+
 if ($request_method === 'POST') {
 
-    // Roteia a ação com base no campo oculto 'acao' do formulário
-    $acao = $_POST['acao'] ?? 'criar'; // Se 'acao' não existir, assume que é 'criar'
+
+    $acao = $_POST['acao'] ?? 'criar';
 
     if ($acao === 'atualizar') {
-        // --- LÓGICA DE ATUALIZAÇÃO ---
+
         try {
-            // Processar uploads de imagens para a atualização
+
             $dados = $_POST;
-            
-            // Processar fotos 1 e 2 (publicacao) e vídeo
+
+
             $foto1 = processarUpload($_FILES['foto1'] ?? null, 'uploads');
             $foto2 = processarUpload($_FILES['foto2'] ?? null, 'uploads');
             $video = processarUpload($_FILES['video'] ?? null, 'uploads');
-            
-            // Adicionar as fotos processadas aos dados
+
+
             if ($foto1) $dados['foto1'] = $foto1;
             if ($foto2) $dados['foto2'] = $foto2;
             if ($video) $dados['video'] = $video;
-            
-            // Chama o método de atualização do model
+
+
             $eventoModel->atualizarEvento($dados);
-            
-            // Redireciona de volta para o formulário de edição com mensagem de sucesso
+
+
             header("Location: ../views/form_evento.php?editar=true&publicacao_id=" . $_POST['publicacao_id'] . "&msg=success");
             exit;
-
         } catch (Exception $e) {
-            // Em caso de erro, redireciona de volta com a mensagem de erro
+
             error_log("Erro ao ATUALIZAR evento: " . $e->getMessage());
             header("Location: ../views/form_evento.php?editar=true&publicacao_id=" . $_POST['publicacao_id'] . "&msg=error&erro=" . urlencode($e->getMessage()));
             exit;
         }
-
     } elseif ($acao === 'excluir') {
-        // --- LÓGICA DE EXCLUSÃO ---
+
         try {
             $publicacaoId = $_POST['publicacao_id'];
             $eventoModel->excluirPorPublicacaoId($publicacaoId);
-            
-            // Redireciona para a lista de eventos com mensagem de sucesso
+
+
             header("Location: ../views/listar_eventos.php?msg=delete_success");
             exit;
-
         } catch (Exception $e) {
-            // Em caso de erro, redireciona com a mensagem de erro
+
             error_log("Erro ao EXCLUIR evento: " . $e->getMessage());
             header("Location: ../views/listar_eventos.php?msg=delete_error&erro=" . urlencode($e->getMessage()));
             exit;
         }
-
     } else {
-        // --- LÓGICA DE CRIAÇÃO (DEFAULT) ---
+
         try {
             $conexao->beginTransaction();
 
-            // Debug: Verificar dados recebidos
+
             error_log("Dados recebidos no evento_controller:");
             error_log("Cidade: " . ($_POST['cidade'] ?? 'não definido'));
             error_log("Estado: " . ($_POST['estado'] ?? 'não definido'));
 
-            // Verificar se a cidade existe antes de tentar criar o endereço
+
             if (empty($_POST['cidade'])) {
                 throw new Exception("Cidade não foi selecionada.");
             }
@@ -90,23 +81,23 @@ if ($request_method === 'POST') {
             $stmt = $conexao->prepare("SELECT cidadeid FROM cidade WHERE cidadeid = :cidade_id");
             $stmt->bindParam(':cidade_id', $_POST['cidade']);
             $stmt->execute();
-            
+
             if ($stmt->rowCount() === 0) {
                 throw new Exception("Cidade selecionada não existe no banco de dados. ID: " . $_POST['cidade']);
             }
 
-            // 1. Processar uploads
+
             $nomeFoto1 = processarUpload($_FILES['foto1'] ?? null, 'uploads');
             $nomeFoto2 = processarUpload($_FILES['foto2'] ?? null, 'uploads');
             $nomeVideo = processarUpload($_FILES['video'] ?? null, 'uploads');
 
-            // Debug: Log das fotos processadas
+
             error_log("Arquivos processados:");
             error_log("Foto1: " . ($nomeFoto1 ?: 'null'));
             error_log("Foto2: " . ($nomeFoto2 ?: 'null'));
             error_log("Video: " . ($nomeVideo ?: 'null'));
 
-            // 2. Criar publicação
+
             $publicacaoId = $publicacaoModel->criar([
                 'nome' => $_POST['nome'],
                 'validade_inicial' => $_POST['validade-inicial'],
@@ -116,10 +107,10 @@ if ($request_method === 'POST') {
                 'foto2' => $nomeFoto2,
                 'video' => $nomeVideo,
                 'paga' => isset($_POST['publicacao-pagamento']) ? 1 : 0,
-                'user_id' => 1 // TODO: Substituir pelo ID do usuário logado
+                'user_id' => 1
             ]);
 
-            // 3. Criar endereço
+
             $enderecoId = $enderecoModel->criar([
                 'logradouro' => $_POST['logradouro'],
                 'numero' => $_POST['numero'],
@@ -130,7 +121,7 @@ if ($request_method === 'POST') {
                 'complemento' => $_POST['complemento'] ?? null
             ]);
 
-            // 4. Criar atração
+
             $atracaoModel->criar([
                 'publicacao_id' => $publicacaoId,
                 'endereco_id' => $enderecoId,
@@ -145,7 +136,7 @@ if ($request_method === 'POST') {
                 'tiktok' => $_POST['tiktok'] ?? null
             ]);
 
-            // 5. Criar evento
+
             $eventoModel->criar([
                 'publicacao_id' => $publicacaoId,
                 'tipo_evento_id' => $_POST['tipo-evento'],
@@ -163,7 +154,6 @@ if ($request_method === 'POST') {
 
             header("Location: ../views/form_evento.php?msg=success");
             exit;
-
         } catch (Exception $e) {
             if ($conexao->inTransaction()) {
                 $conexao->rollBack();
@@ -181,7 +171,7 @@ function processarUpload($arquivo, $pasta)
         return null;
     }
 
-    // Extensões permitidas para imagens e vídeos
+
     $extensoesPermitidas = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi', 'mkv'];
     $extensao = strtolower(pathinfo($arquivo['name'], PATHINFO_EXTENSION));
 
@@ -263,7 +253,20 @@ function listarEventosCompletos()
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function buscarEventoPorId($publicacao_id) {
+function listarEventosCompletos1()
+{
+    global $conexao;
+
+
+
+    $publicacaoModel = new PublicacaoModel($conexao);
+
+
+    return $publicacaoModel->listarTudo();
+}
+
+function buscarEventoPorId($publicacao_id)
+{
     global $eventoModel;
     return $eventoModel->buscarEventoPorId($publicacao_id);
 }
