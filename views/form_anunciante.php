@@ -1,60 +1,10 @@
 <?php
 require_once('../conexao.php');
 
-// Função para buscar local por ID (apenas para visualização/edição)
-function buscarLocalPorId($publicacao_id)
-{
-    global $conexao;
-    require_once('../models/local_model.php');
-
-    $localModel = new LocalModel($conexao);
-    return $localModel->buscarLocalPorId($publicacao_id);
-}
-
-// Obter dados para os dropdowns diretamente via SQL para evitar problemas com models
-try {
-    // Buscar cidades
-    $cidades = $conexao->query("
-        SELECT c.cidadeid, c.cidadenome, e.estadoid, e.estadosigla 
-        FROM cidade c 
-        JOIN estado e ON c.estadoid = e.estadoid 
-        ORDER BY c.cidadenome
-    ")->fetchAll(PDO::FETCH_ASSOC);
-
-    // Buscar estados
-    $estados = $conexao->query("SELECT * FROM estado ORDER BY estadonome")->fetchAll(PDO::FETCH_ASSOC);
-
-    // Buscar classificações etárias
-    $classificacoes = $conexao->query("SELECT * FROM classificacaoetaria ORDER BY classificacaonome")->fetchAll(PDO::FETCH_ASSOC);
-
-    // Buscar tipos de público
-    $tiposPublico = $conexao->query("SELECT * FROM tipopublico ORDER BY tipopubliconome")->fetchAll(PDO::FETCH_ASSOC);
-
-    // Buscar segmentos
-    $segmentos = $conexao->query("SELECT * FROM segmento ORDER BY segmentonome")->fetchAll(PDO::FETCH_ASSOC);
-
-    // Buscar categorias
-    $categorias = $conexao->query("SELECT * FROM categoria ORDER BY categorianome")->fetchAll(PDO::FETCH_ASSOC);
-
-    // Buscar tipos de local
-    $tiposLocal = $conexao->query("SELECT * FROM tipolocal ORDER BY tipolocalnome")->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    error_log("Erro ao carregar dados do formulário: " . $e->getMessage());
-    $cidades = [];
-    $estados = [];
-    $classificacoes = [];
-    $tiposPublico = [];
-    $segmentos = [];
-    $categorias = [];
-    $tiposLocal = [];
-}
-
 $mensagem = '';
 $cor = 'green';
 
-// Verificar se estamos editando um local
 $edicao = false;
-$local = null;
 
 if (isset($_GET['editar']) && $_GET['editar'] == 'true' && isset($_GET['publicacao_id'])) {
     $publicacao_id = $_GET['publicacao_id'];
@@ -64,7 +14,7 @@ if (isset($_GET['editar']) && $_GET['editar'] == 'true' && isset($_GET['publicac
 
 if (isset($_GET['msg'])) {
     if ($_GET['msg'] === 'success') {
-        $mensagem = $edicao ? "Local atualizado com sucesso!" : "Local cadastrado com sucesso!";
+        $mensagem = $edicao ? "Anunciante atualizado com sucesso!" : "Anunciante cadastrado com sucesso!";
     } elseif ($_GET['msg'] === 'error') {
         $cor = 'red';
         $mensagem = isset($_GET['erro']) ? $_GET['erro'] : "Erro ao processar a solicitação.";
@@ -144,7 +94,9 @@ if (isset($_GET['msg'])) {
             class="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600 font-montserrat leading-tight">
             <?= $edicao ? 'Editar Local' : 'Cadastrar Anúncio' ?>
         </h1>
-        <form action="../controllers/local_controller.php" class="space-y-8" enctype="multipart/form-data" id="local-form" method="POST">
+        <!-- A linha abaixo está correta? -->
+        <form action="../controllers/anunciante_controller.php" class="space-y-8" enctype="multipart/form-data" id="anunciante-form" method="POST">
+
             <?php if ($edicao): ?>
                 <input type="hidden" name="acao" value="atualizar">
                 <input type="hidden" name="publicacao_id" value="<?= htmlspecialchars($local['publicacaoid']) ?>">
@@ -158,7 +110,7 @@ if (isset($_GET['msg'])) {
                     </label>
                     <input
                         class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                        id="nome" name="nome" placeholder="Nome do Local" required="" type="text"
+                        id="nome" name="nome" placeholder="Anunciante" required="" type="text"
                         value="<?= $edicao ? htmlspecialchars($local['publicacaonome']) : '' ?>" />
                 </div>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
@@ -265,6 +217,15 @@ if (isset($_GET['msg'])) {
                     </label>
                 </div>
             </fieldset>
+            <!-- Este botão está DENTRO da tag <form>? -->
+            <div class="flex justify-center">
+                <button
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md px-10 py-2 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="submit"> <!-- O type="submit" é essencial! -->
+                    Cadastrar
+                </button>
+            </div>
+
         </form>
     </section>
     <script>

@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ROOT_PATH')) {
+    define('ROOT_PATH', __DIR__);
+}
+
 $servername = "br58.hostgator.com.br";
 $username = "gilma841_root";
 $password = "root@2025";
