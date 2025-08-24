@@ -176,6 +176,23 @@ if (isset($_GET['msg'])) {
             <h1 class="text-4xl font-bold text-gray-800 mb-4">Anunciantes Cadastrados</h1>
         </div>
 
+        <?php if (empty($anuncios)): ?>
+            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 shadow-md text-center">
+                <div class="flex flex-col items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gray-500 dark:text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p class="text-gray-700 dark:text-gray-300 text-lg font-semibold">
+                        Ops! Nenhum anúncio encontrado.
+                    </p>
+                    <p class="text-gray-500 dark:text-gray-400 mt-2">
+                        Parece que não há anúncios disponíveis no momento.
+                    </p>
+                </div>
+            </div>
+
+        <?php endif; ?>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php foreach ($anuncios as $anuncio): ?>
                 <div class="card" onclick="abrirModal('modal-<?= $anuncio['publicacaoid'] ?>')">
@@ -254,7 +271,6 @@ if (isset($_GET['msg'])) {
                         <div class="flex space-x-4 mt-6">
                             <form method="POST" action="../controllers/anunciante_controller.php" onsubmit="return confirm('Tem certeza que deseja excluir este anúncio?');">
                                 <input type="hidden" name="acao" value="excluir">
-                                <input type="hidden" name="publicacao_id" value="<?= $anuncio['publicacaoid'] ?>">
                                 <input type="hidden" name="publicacaoid" value="<?= $anuncio['publicacaoid'] ?>">
                                 <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Excluir</button>
                             </form>
@@ -274,15 +290,16 @@ if (isset($_GET['msg'])) {
     <script>
         // Exibe o toast se houver mensagem de sucesso
         <?php if (isset($_GET['msg']) && $_GET['msg'] === 'success'): ?>
-        document.addEventListener('DOMContentLoaded', function() {
-            var toast = document.getElementById('toast-success');
-            toast.style.display = 'flex';
-            setTimeout(function() {
-                toast.style.display = 'none';
-            }, 3000);
-        });
+            document.addEventListener('DOMContentLoaded', function() {
+                var toast = document.getElementById('toast-success');
+                toast.style.display = 'flex';
+                setTimeout(function() {
+                    toast.style.display = 'none';
+                }, 3000);
+            });
         <?php endif; ?>
-    function abrirModal(modalId) {
+
+        function abrirModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
             document.body.style.overflow = 'hidden';
         }

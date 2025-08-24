@@ -8,7 +8,12 @@ $edicao = false;
 
 if (isset($_GET['editar']) && $_GET['editar'] == 'true' && isset($_GET['publicacao_id'])) {
     $publicacao_id = $_GET['publicacao_id'];
-    $local = buscarLocalPorId($publicacao_id);
+    require_once('../models/publicacao_model.php');
+    require_once('../models/anunciante_model.php');
+    $publicacaoModel = new PublicacaoModel($conexao);
+    $anuncianteModel = new AnuncianteModel($conexao);
+    $publicacao = $publicacaoModel->buscarPorId($publicacao_id);
+    $anunciante = $anuncianteModel->buscarPorPublicacaoId($publicacao_id);
     $edicao = true;
 }
 
@@ -20,6 +25,8 @@ if (isset($_GET['msg'])) {
         $mensagem = isset($_GET['erro']) ? $_GET['erro'] : "Erro ao processar a solicitação.";
     }
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -80,6 +87,8 @@ if (isset($_GET['msg'])) {
                 Home
             </span>
         </a>
+
+        
         <a class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2"
             href="../views/listar_anunciantes.php">
             <i class="fas fa-list">
@@ -89,18 +98,22 @@ if (isset($_GET['msg'])) {
             </span>
         </a>
     </div>
+
+    
+
     <section class="w-full max-w-4xl bg-white rounded-lg shadow-md p-4 sm:p-8 space-y-8">
+             <!-- condicional para caso a lista de anunciantes esteja vazia -->
+    
         <h1
             class="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600 font-montserrat leading-tight">
-            <?= $edicao ? 'Editar Local' : 'Cadastrar Anúncio' ?>
+            <?= $edicao ? 'Editar Anunciante' : 'Cadastrar Anúncio' ?>
         </h1>
         <!-- A linha abaixo está correta? -->
         <form action="../controllers/anunciante_controller.php" class="space-y-8" enctype="multipart/form-data" id="anunciante-form" method="POST">
 
             <?php if ($edicao): ?>
                 <input type="hidden" name="acao" value="atualizar">
-                <input type="hidden" name="publicacao_id" value="<?= htmlspecialchars($local['publicacaoid']) ?>">
-                <input type="hidden" name="endereco_id" value="<?= htmlspecialchars($local['enderecoid']) ?>">
+                <input type="hidden" name="publicacao_id" value="<?= htmlspecialchars($publicacao['publicacaoid']) ?>">
             <?php endif; ?>
 
             <fieldset class="border border-gray-300 rounded-lg p-4 sm:p-6 space-y-6">
@@ -111,7 +124,7 @@ if (isset($_GET['msg'])) {
                     <input
                         class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                         id="nome" name="nome" placeholder="Anunciante" required="" type="text"
-                        value="<?= $edicao ? htmlspecialchars($local['publicacaonome']) : '' ?>" />
+                        value="<?= $edicao ? htmlspecialchars($publicacao['publicacaonome']) : '' ?>" />
                 </div>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
                     <div class="flex flex-col w-full">
@@ -122,7 +135,7 @@ if (isset($_GET['msg'])) {
                         <input
                             class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                             id="validade-inicial" name="validade-inicial" required="" type="date"
-                            value="<?= $edicao ? htmlspecialchars($local['publicacaovalidadein']) : '' ?>" />
+                            value="<?= $edicao ? htmlspecialchars($publicacao['publicacaovalidadein']) : '' ?>" />
                     </div>
                     <div class="flex flex-col w-full">
                         <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg" for="validade-final">
@@ -131,12 +144,12 @@ if (isset($_GET['msg'])) {
                         <input
                             class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                             id="validade-final" name="validade-final" required="" type="date"
-                            value="<?= $edicao ? htmlspecialchars($local['publicacaovalidadeout']) : '' ?>" />
+                            value="<?= $edicao ? htmlspecialchars($publicacao['publicacaovalidadeout']) : '' ?>" />
                     </div>
                 </div>
                 <div class="flex items-center space-x-3">
                     <input class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" id="auditado"
-                        name="auditado" type="checkbox" <?= ($edicao && $local['publicacaoauditada']) ? 'checked' : '' ?> />
+                        name="auditado" type="checkbox" <?= ($edicao && !empty($publicacao['publicacaoauditada'])) ? 'checked' : '' ?> />
                     <label class="font-medium text-gray-700 text-base sm:text-lg cursor-pointer" for="auditado">
                         Auditado
                     </label>
@@ -150,11 +163,11 @@ if (isset($_GET['msg'])) {
                             class="w-20 h-20 border border-gray-300 rounded-md flex items-center justify-center overflow-hidden bg-gray-50 shrink-0">
                             <img alt="Pré-visualização da Foto 1 do local, quadrado, 80 por 80 pixels, fundo cinza claro"
                                 class="max-h-full max-w-full object-contain" id="preview-foto1"
-                                src="https://placehold.co/80x80?text=Foto+1" />
+                                src="<?= $edicao && !empty($publicacao['publicacaofoto01']) ? '../uploads/' . htmlspecialchars($publicacao['publicacaofoto01']) : 'https://placehold.co/80x80?text=Foto+1' ?>" />
                         </div>
                         <input accept="image/*"
                             class="border border-gray-300 rounded-md px-2 py-1 text-sm sm:text-base file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 w-full sm:w-auto"
-                            id="foto1" name="foto1" required="" type="file" />
+                            id="foto1" name="foto1" <?= $edicao ? '' : 'required' ?> type="file" />
                     </div>
                 </div>
                 <div class="flex flex-col w-full space-y-2">
@@ -166,7 +179,7 @@ if (isset($_GET['msg'])) {
                             class="w-20 h-20 border border-gray-300 rounded-md flex items-center justify-center overflow-hidden bg-gray-50 shrink-0">
                             <img alt="Pré-visualização da Foto 2 do local, quadrado, 80 por 80 pixels, fundo cinza claro"
                                 class="max-h-full max-w-full object-contain" id="preview-foto2"
-                                src="https://placehold.co/80x80?text=Foto+2" />
+                                src="<?= $edicao && !empty($publicacao['publicacaofoto02']) ? '../uploads/' . htmlspecialchars($publicacao['publicacaofoto02']) : 'https://placehold.co/80x80?text=Foto+2' ?>" />
                         </div>
                         <input accept="image/*"
                             class="border border-gray-300 rounded-md px-2 py-1 text-sm sm:text-base file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 w-full sm:w-auto"
@@ -180,8 +193,8 @@ if (isset($_GET['msg'])) {
                     </label>
                     <div class="flex items-center space-x-4">
                         <div class="w-40 h-28 border border-gray-300 rounded-md flex items-center justify-center overflow-hidden bg-gray-50 shrink-0">
-                            <video aria-label="Pré-visualização do vídeo do local, retangular, 160 por 112 pixels, fundo cinza claro" class="max-h-full max-w-full object-contain" controls="" height="112" id="preview-video1" width="160">
-                                <source src="https://placehold.co/160x112?text=Vídeo+placeholder.mp4" type="video/mp4" />
+                            <video aria-label="Pré-visualização do vídeo do local, retangular, 160 por 112 pixels, fundo cinza claro" class="max-h-full max-w-full object-contain" controls height="112" id="preview-video1" width="160">
+                                <source src="<?= $edicao && !empty($publicacao['publicacaovideo']) ? '../uploads/' . htmlspecialchars($publicacao['publicacaovideo']) : 'https://placehold.co/160x112?text=Vídeo+placeholder.mp4' ?>" type="video/mp4" />
                                 Seu navegador não suporta o elemento de vídeo.
                             </video>
                         </div>
@@ -198,7 +211,7 @@ if (isset($_GET['msg'])) {
                             class="w-40 h-16 border border-gray-300 rounded-md flex items-center justify-center overflow-hidden bg-gray-50 shrink-0">
                             <img alt="Pré-visualização do banner, retangular, 160 por 64 pixels, fundo cinza claro"
                                 class="max-h-full max-w-full object-contain" id="preview-banner"
-                                src="https://placehold.co/160x64?text=Banner" />
+                                src="<?= $edicao && !empty($anunciante['anunciantebanner']) ? '../uploads/' . htmlspecialchars($anunciante['anunciantebanner']) : 'https://placehold.co/160x64?text=Banner' ?>" />
                         </div>
                         <input accept="image/*"
                             class="border border-gray-300 rounded-md px-2 py-1 text-sm sm:text-base file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 w-full sm:w-auto"
@@ -210,7 +223,7 @@ if (isset($_GET['msg'])) {
                 <div class="flex items-center space-x-3">
                     <input class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                         id="publicacao-pagamento" name="publicacao-pagamento" type="checkbox"
-                        <?= ($edicao && $local['publicacaopaga']) ? 'checked' : '' ?> />
+                        <?= ($edicao && !empty($publicacao['publicacaopaga'])) ? 'checked' : '' ?> />
                     <label class="font-medium text-gray-700 text-base sm:text-lg cursor-pointer"
                         for="publicacao-pagamento">
                         Publicação Pagamento
@@ -240,26 +253,34 @@ if (isset($_GET['msg'])) {
 
                 if (file) {
                     const reader = new FileReader();
-
                     reader.onload = function(e) {
                         if (previewElement.tagName.toLowerCase() === 'img' || previewElement.tagName.toLowerCase() === 'video') {
                             previewElement.src = e.target.result;
                             if (previewElement.tagName.toLowerCase() === 'video') {
-                                previewElement.style.display = 'block'; // Mostra o elemento de vídeo
-                                previewElement.load(); // Recarrega o vídeo para o novo src
+                                previewElement.style.display = 'block';
+                                previewElement.load();
                             }
                         }
                     }
                     reader.readAsDataURL(file);
                 } else {
                     // Reseta a pré-visualização se o usuário cancelar a seleção
-                    const defaultText = previewId.replace('preview-', '');
-                    if (previewElement.tagName.toLowerCase() === 'img') {
-                        const placeholderText = defaultText.charAt(0).toUpperCase() + defaultText.slice(1).replace(/(\d+)/, ' $1');
-                        previewElement.src = `https://placehold.co/${previewElement.width}x${previewElement.height}?text=${placeholderText}`;
-                    } else if (previewElement.tagName.toLowerCase() === 'video') {
-                        previewElement.src = `https://placehold.co/${previewElement.width}x${previewElement.height}?text=Vídeo+placeholder.mp4`;
+                    // Mantém o valor do banco se existir, senão mostra o placeholder
+                    let srcBanco = null;
+                    if (previewId === 'preview-foto1') {
+                        srcBanco = "<?= $edicao && !empty($publicacao['publicacaofoto01']) ? '../uploads/' . htmlspecialchars($publicacao['publicacaofoto01']) : '' ?>";
+                        previewElement.src = srcBanco || `https://placehold.co/${previewElement.width}x${previewElement.height}?text=Foto+1`;
+                    } else if (previewId === 'preview-foto2') {
+                        srcBanco = "<?= $edicao && !empty($publicacao['publicacaofoto02']) ? '../uploads/' . htmlspecialchars($publicacao['publicacaofoto02']) : '' ?>";
+                        previewElement.src = srcBanco || `https://placehold.co/${previewElement.width}x${previewElement.height}?text=Foto+2`;
+                    } else if (previewId === 'preview-banner') {
+                        srcBanco = "<?= $edicao && !empty($anunciante['anunciantebanner']) ? '../uploads/' . htmlspecialchars($anunciante['anunciantebanner']) : '' ?>";
+                        previewElement.src = srcBanco || `https://placehold.co/${previewElement.width}x${previewElement.height}?text=Banner`;
+                    } else if (previewId === 'preview-video1') {
+                        srcBanco = "<?= $edicao && !empty($publicacao['publicacaovideo']) ? '../uploads/' . htmlspecialchars($publicacao['publicacaovideo']) : '' ?>";
+                        previewElement.src = srcBanco || `https://placehold.co/${previewElement.width}x${previewElement.height}?text=Vídeo+placeholder.mp4`;
                         previewElement.style.display = 'block';
+                        previewElement.load();
                     }
                 }
             });
