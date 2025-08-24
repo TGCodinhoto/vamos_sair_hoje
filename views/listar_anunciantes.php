@@ -160,8 +160,11 @@ if (isset($_GET['msg'])) {
 <body class="min-h-screen">
 
     <div class="container mx-auto px-4 py-12 max-w-7xl">
-        <?php if ($mensagem): ?>
-        <?php endif; ?>
+        <!-- Toast de confirmação -->
+        <div id="toast-success" class="fixed top-6 right-6 z-50 hidden bg-green-500 text-white px-6 py-3 rounded shadow-lg flex items-center space-x-2">
+            <i class="fas fa-check-circle"></i>
+            <span id="toast-msg">Anunciante excluído com sucesso!</span>
+        </div>
 
         <div class="flex justify-center space-x-4 mb-8" id="botoes">
             <a href="navegacao_forms.php" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2"><i class="fas fa-arrow-left"></i><span>Voltar</span></a>
@@ -252,6 +255,7 @@ if (isset($_GET['msg'])) {
                             <form method="POST" action="../controllers/anunciante_controller.php" onsubmit="return confirm('Tem certeza que deseja excluir este anúncio?');">
                                 <input type="hidden" name="acao" value="excluir">
                                 <input type="hidden" name="publicacao_id" value="<?= $anuncio['publicacaoid'] ?>">
+                                <input type="hidden" name="publicacaoid" value="<?= $anuncio['publicacaoid'] ?>">
                                 <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Excluir</button>
                             </form>
                             <a href="form_anunciante.php?editar=true&publicacao_id=<?= $anuncio['publicacaoid'] ?>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
@@ -268,7 +272,17 @@ if (isset($_GET['msg'])) {
     </div>
 
     <script>
-        function abrirModal(modalId) {
+        // Exibe o toast se houver mensagem de sucesso
+        <?php if (isset($_GET['msg']) && $_GET['msg'] === 'success'): ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            var toast = document.getElementById('toast-success');
+            toast.style.display = 'flex';
+            setTimeout(function() {
+                toast.style.display = 'none';
+            }, 3000);
+        });
+        <?php endif; ?>
+    function abrirModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
             document.body.style.overflow = 'hidden';
         }

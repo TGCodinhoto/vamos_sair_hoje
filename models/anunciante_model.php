@@ -20,4 +20,10 @@ class AnuncianteModel
             ':banner' => $dados['banner']
         ]);
     }
+
+    public function excluir($publicacaoid)
+    {
+        $stmt = $this->conexao->prepare("DELETE FROM anunciante WHERE publicacaoid = :publicacaoid");
+        return $stmt->execute([':publicacaoid' => $publicacaoid]);
+    }
 }

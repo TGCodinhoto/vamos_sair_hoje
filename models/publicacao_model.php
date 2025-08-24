@@ -27,7 +27,7 @@ class PublicacaoModel
                     a.anunciantebanner
                 FROM 
                     publicacao p
-                LEFT JOIN 
+                INNER JOIN 
                     anunciante a ON p.publicacaoid = a.publicacaoid
                 ORDER BY 
                     p.publicacaoid DESC
@@ -102,5 +102,11 @@ class PublicacaoModel
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function excluir($publicacaoid)
+    {
+        $stmt = $this->conexao->prepare("DELETE FROM publicacao WHERE publicacaoid = :publicacaoid");
+        return $stmt->execute([':publicacaoid' => $publicacaoid]);
     }
 }

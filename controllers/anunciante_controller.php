@@ -76,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $anuncianteModel->criar($dadosAnunciante);
 
-
             $conexao->commit();
 
             header("Location: ../views/form_anunciante.php?msg=success");
@@ -88,6 +87,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             error_log("Erro ao CADASTRAR anunciante: " . $e->getMessage());
             header("Location: ../views/form_anunciante.php?msg=error&erro=" . urlencode($e->getMessage()));
             exit;
+        }
+    }
+
+    if ($acao === 'excluir') {
+        $publicacaoId = $_POST['publicacaoid'] ?? null;
+        if ($publicacaoId) {
+            try {
+                $conexao->beginTransaction();
+                // Exclui anunciante primeiro (por causa da FK)
+                $anuncianteModel->excluir($publicacaoId);
+                // Exclui publicação
+                $publicacaoModel->excluir($publicacaoId);
+                $conexao->commit();
+                header("Location: ../views/listar_anunciantes.php?msg=success");
+                exit;
+            } catch (Exception $e) {
+                if ($conexao->inTransaction()) {
+                    $conexao->rollBack();
+                }
+                error_log("Erro ao EXCLUIR anunciante/publicação: " . $e->getMessage());
+                header("Location: ../views/listar_anunciantes.php?msg=error&erro=" . urlencode($e->getMessage()));
+                exit;
+            }
         }
     }
 }
