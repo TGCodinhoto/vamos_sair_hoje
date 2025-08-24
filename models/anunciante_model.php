@@ -8,6 +8,14 @@ class AnuncianteModel
         $this->conexao = $conexao;
     }
 
+    public function buscarPorPublicacaoId($publicacaoid)
+    {
+        $stmt = $this->conexao->prepare("SELECT * FROM anunciante WHERE publicacaoid = :publicacaoid");
+        $stmt->bindParam(':publicacaoid', $publicacaoid);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function criar($dados)
     {
         $stmt = $this->conexao->prepare("
