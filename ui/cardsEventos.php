@@ -37,14 +37,14 @@ $eventos = array_slice($todosEventos, 0, $eventosPorPagina);
                     <h3 class="text-2xl font-bold mb-2">
                         <?= htmlspecialchars($evento['publicacaonome']) ?>
                     </h3>
-                    <p class="text-sm mb-1 flex items-center gap-2">
+                    <!-- <p class="text-sm mb-1 flex items-center gap-2">
                         <i class="fas fa-calendar-alt"></i>
                         Data: <?= date('d/m/Y', strtotime($evento['eventodia'])) ?>
                     </p>
                     <p class="text-sm mb-4 flex items-center gap-2">
                         <i class="fas fa-map-marker-alt"></i>
                         Local: <?= htmlspecialchars($evento['enderecorua'] ?? 'Local a definir') ?> - <?= htmlspecialchars($evento['nome_cidade'] ?? 'Cidade') ?>
-                    </p>
+                    </p> -->
                     <button
                         class="w-full py-3 border border-white bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
                         type="button"
