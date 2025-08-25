@@ -34,10 +34,10 @@ $eventos = array_slice($todosEventos, 0, $eventosPorPagina);
                 </button>    
                 
                 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
-                    <h3 class="text-2xl font-bold mb-2">
+                    <!--<h3 class="text-2xl font-bold mb-2">
                         <?= htmlspecialchars($evento['publicacaonome']) ?>
                     </h3>
-                    <!-- <p class="text-sm mb-1 flex items-center gap-2">
+                     <p class="text-sm mb-1 flex items-center gap-2">
                         <i class="fas fa-calendar-alt"></i>
                         Data: <?= date('d/m/Y', strtotime($evento['eventodia'])) ?>
                     </p>
