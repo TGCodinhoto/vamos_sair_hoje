@@ -244,13 +244,13 @@ $eventos = array_slice($todosEventos, 0, $eventosPorPagina);
     <div class="text-center my-8">
         <button
             id="load-more-btn"
-            class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+            class="bg-[#D9A940] text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
             onclick="carregarMaisEventos()">
             <i class="fas fa-plus-circle mr-2"></i>
             Carregar Mais Eventos
         </button>
         <div id="loading-spinner" class="hidden mt-4">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
             <p class="text-gray-600 mt-2">Carregando eventos...</p>
         </div>
     </div>

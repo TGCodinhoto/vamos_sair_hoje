@@ -15,7 +15,7 @@ if (isset($_GET['msg'])) {
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>Anunciantes | Lista Completa</title>
+    <title>Anunciantes Cadastrados</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -169,11 +169,11 @@ if (isset($_GET['msg'])) {
         <div class="flex justify-center space-x-4 mb-8" id="botoes">
             <a href="navegacao_forms.php" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2"><i class="fas fa-arrow-left"></i><span>Voltar</span></a>
             <a href="../index.php" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2"><i class="fas fa-home"></i><span>Home</span></a>
-            <a href="form_anunciante.php" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2"><i class="fas fa-plus"></i><span>Inserir Anúncio</span></a>
+            <a href="form_anunciante.php" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2"><i class="fas fa-plus"></i><span>Inserir</span></a>
         </div>
 
         <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-800 mb-4">Anunciantes Cadastrados</h1>
+            <h1 class="text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600">Anunciantes Cadastrados</h1>
         </div>
 
         <?php if (empty($anuncios)): ?>

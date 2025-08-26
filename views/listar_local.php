@@ -17,7 +17,7 @@ if (isset($_GET['msg'])) {
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>Locais Cadastrados | Lista Completa</title>
+    <title>Locais Cadastrados </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -237,7 +237,7 @@ if (isset($_GET['msg'])) {
 
         <!-- Header Section -->
         <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-800 mb-4">Locais Cadastrados</h1>
+            <h1 class="text-4xl md:text-5xl font-bold mb-8 text-center text-blue-600">Locais Cadastrados</h1>
         </div>
 
         <!-- Locais Grid -->
