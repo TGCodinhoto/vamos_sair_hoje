@@ -1,7 +1,7 @@
 <?php
 
-require_once '../conexao.php';
-require_once '../models/tipo_evento_model.php';
+require_once __DIR__ . '/../conexao.php';
+require_once __DIR__ . '/../models/tipo_evento_model.php';
 
 $tipoEventoModel = new TipoEventoModel($conexao);
 
