@@ -101,7 +101,7 @@ $cidades = $cidadeModel->listar();
       <span>Pesquisar</span>
     </button>
   </form>
-  
+
 </header>
 
 <!-- Icones -->
@@ -109,14 +109,14 @@ $cidades = $cidadeModel->listar();
   <ul class="max-w-5xl mx-auto flex flex-wrap justify-center gap-x-6 gap-y-4 md:gap-x-10 md:gap-y-6 px-4 text-center">
     <?php foreach ($tipoEvento as $tipo): ?>
       <li
-        class="flex flex-col items-center text-gray-700 text-xs sm:text-sm md:text-base font-semibold hover:text-[#1B3B57] hover:scale-105 hover:cursor-pointer transition-transform duration-200 w-20 sm:w-24 md:w-auto">
+        class="flex flex-col items-center text-gray-700 text-sm md:text-base font-semibold hover:text-[#1B3B57] hover:scale-105 hover:cursor-pointer transition-transform duration-200 w-20 sm:w-24 md:w-auto">
         <?php
-          $img = $tipo['tipoeventoimage'] ?? '';
-          $imgInvalida = empty($img) || $img === null || substr($img, 0, 1) === '[';
-          if (!$imgInvalida && file_exists(__DIR__ . '/../uploads/' . $img)) {
-            echo '<img src="uploads/' . htmlspecialchars($img) . '" class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mb-1 object-contain" />';
-            echo '<span class="truncate">' . htmlspecialchars($tipo['tipoeventonome']) . '</span>';
-          }
+        $img = $tipo['tipoeventoimage'] ?? '';
+        $imgInvalida = empty($img) || $img === null || substr($img, 0, 1) === '[';
+        if (!$imgInvalida && file_exists(__DIR__ . '/../uploads/' . $img)) {
+          echo '<img src="uploads/' . htmlspecialchars($img) . '" class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mb-1 object-contain" />';
+          echo '<span class="truncate">' . htmlspecialchars($tipo['tipoeventonome']) . '</span>';
+        }
         ?>
       </li>
     <?php endforeach; ?>
