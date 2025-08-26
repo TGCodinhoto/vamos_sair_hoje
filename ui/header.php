@@ -106,7 +106,7 @@ $cidades = $cidadeModel->listar();
 
 <!-- Icones -->
 <nav class="bg-[#f0f0f0] py-3 sm:py-4 md:py-6">
-  <ul class="max-w-5xl mx-auto flex flex-wrap justify-center gap-x-6 gap-y-4 px-4 text-center">
+  <ul class="max-w-5xl mx-auto flex flex-wrap justify-center gap-x-6 gap-y-4 md:gap-x-10 md:gap-y-6 px-4 text-center">
     <?php foreach ($tipoEvento as $tipo): ?>
       <li
         class="flex flex-col items-center text-gray-700 text-xs sm:text-sm md:text-base font-semibold hover:text-[#1B3B57] hover:scale-105 hover:cursor-pointer transition-transform duration-200 w-20 sm:w-24 md:w-auto">
