@@ -1,5 +1,4 @@
 <?php
-// Buscar eventos do banco de dados
 require_once __DIR__ . '/../controllers/tipoevento_controller.php';
 $tipoEvento = listarTiposEvento();
 
@@ -107,13 +106,14 @@ $tipoEvento = listarTiposEvento();
     <?php foreach ($tipoEvento as $tipo): ?>
       <li
         class="flex flex-col items-center text-gray-700 text-sm font-semibold hover:text-[#1B3B57] hover:scale-110 hover:cursor-pointer transition-transform duration-200">
-        <?php if (!empty($tipo['tipoeventoimage']) && file_exists(__DIR__ . '/../uploads/' . $tipo['tipoeventoimage'])): ?>
-          <img src="uploads/<?= htmlspecialchars($tipo['tipoeventoimage']) ?>" class="w-8 h-8 md:w-12 md:h-12 mb-1 object-contain" />
-        <?php else: ?>
-          <!-- icone de imagem quebrada do mesmo tamanho da imagem -->
-          <i class="fas fa-image text-gray-400 w-16 h-16 md:w-12 md:h-12 mb-1 flex items-center justify-center"></i>
-        <?php endif; ?>
-        <?= $tipo['tipoeventonome'] ?>
+        <?php
+          $img = $tipo['tipoeventoimage'] ?? '';
+          $imgInvalida = empty($img) || $img === null || substr($img, 0, 1) === '[';
+          if (!$imgInvalida && file_exists(__DIR__ . '/../uploads/' . $img)) {
+            echo '<img src="uploads/' . htmlspecialchars($img) . '" class="w-8 h-8 md:w-12 md:h-12 mb-1 object-contain" />';
+            echo htmlspecialchars($tipo['tipoeventonome']);
+          }
+        ?>
       </li>
     <?php endforeach; ?>
     
