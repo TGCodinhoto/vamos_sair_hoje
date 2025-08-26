@@ -16,23 +16,22 @@ $eventos = array_slice($todosEventos, 0, $eventosPorPagina);
             <div class="relative">
                 <?php if ($evento['publicacaofoto01']): ?>
                     <img alt="<?= htmlspecialchars($evento['publicacaonome']) ?>"
-                        class="w-full h-[500px] object-cover" 
+                        class="w-full h-[500px] object-cover"
                         src="uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>" />
                 <?php else: ?>
                     <div class="w-full h-[500px] bg-gradient-to-r from-purple-100 to-blue-100 flex items-center justify-center">
                         <i class="fas fa-calendar-alt text-6xl text-gray-400"></i>
                     </div>
                 <?php endif; ?>
-                
-                <button 
+
+                <button
                     aria-label="Favoritar <?= htmlspecialchars($evento['publicacaonome']) ?>"
-                    class="absolute top-4 right-4 text-white text-2xl p-2 rounded-full bg-black/50 hover:bg-black/70 transition focus:outline-none focus:ring-2 focus:ring-white"
+                    class="absolute top-4 right-4 text-white text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition focus:outline-none focus:ring-2 focus:ring-white"
                     type="button"
-                    onclick="toggleFavorito(<?= $evento['publicacaoid'] ?>)"
-                >
+                    onclick="toggleFavorito(<?= $evento['publicacaoid'] ?>)">
                     <i class="far fa-heart"></i>
-                </button>    
-                
+                </button>
+
                 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
                     <!--<h3 class="text-2xl font-bold mb-2">
                         <?= htmlspecialchars($evento['publicacaonome']) ?>
@@ -242,20 +241,19 @@ $eventos = array_slice($todosEventos, 0, $eventosPorPagina);
 
 <!-- Botão Load More -->
 <?php if ($totalEventos > $eventosPorPagina): ?>
-<div class="text-center my-8">
-    <button 
-        id="load-more-btn" 
-        class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
-        onclick="carregarMaisEventos()"
-    >
-        <i class="fas fa-plus-circle mr-2"></i>
-        Carregar Mais Eventos
-    </button>
-    <div id="loading-spinner" class="hidden mt-4">
-        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-        <p class="text-gray-600 mt-2">Carregando eventos...</p>
+    <div class="text-center my-8">
+        <button
+            id="load-more-btn"
+            class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+            onclick="carregarMaisEventos()">
+            <i class="fas fa-plus-circle mr-2"></i>
+            Carregar Mais Eventos
+        </button>
+        <div id="loading-spinner" class="hidden mt-4">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+            <p class="text-gray-600 mt-2">Carregando eventos...</p>
+        </div>
     </div>
-</div>
 <?php endif; ?>
 
 
@@ -267,294 +265,294 @@ $eventos = array_slice($todosEventos, 0, $eventosPorPagina);
 
 <!-- CSS adicional para os modais -->
 <style>
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 100;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-}
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+    }
 
-.modal-content {
-    background-color: #ffffff;
-    margin: 5% auto;
-    padding: 30px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 900px;
-    max-height: 85vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-.section-title {
-    position: relative;
-    padding-bottom: 8px;
-    margin-bottom: 16px;
-}
-
-.section-title:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 50px;
-    height: 3px;
-    background-color: #6366f1;
-    border-radius: 3px;
-}
-
-.tag {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    margin-right: 6px;
-    margin-bottom: 6px;
-}
-
-.btn-close {
-    color: #9ca3af;
-    font-size: 28px;
-    font-weight: bold;
-    transition: all 0.2s;
-    cursor: pointer;
-}
-
-.btn-close:hover {
-    color: #6b7280;
-    transform: scale(1.1);
-}
-
-.info-icon {
-    color: #6b7280;
-    width: 20px;
-    text-align: center;
-    margin-right: 8px;
-}
-
-.info-text {
-    color: #4b5563;
-}
-
-.image-thumbnail {
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.image-thumbnail:hover {
-    transform: scale(1.02);
-}
-
-/* Image Modal */
-.image-modal {
-    display: none;
-    position: fixed;
-    z-index: 200;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(4px);
-}
-
-.image-modal-content {
-    margin: auto;
-    display: block;
-    width: 90%;
-    max-width: 1200px;
-    max-height: 90vh;
-    object-fit: contain;
-    border-radius: 8px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.image-modal-close {
-    position: absolute;
-    top: 20px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-    cursor: pointer;
-    z-index: 201;
-}
-
-.image-modal-close:hover,
-.image-modal-close:focus {
-    color: #bbb;
-    transform: scale(1.1);
-}
-
-@media (max-width: 768px) {
     .modal-content {
-        margin: 10% auto;
-        padding: 20px;
-        width: 95%;
+        background-color: #ffffff;
+        margin: 5% auto;
+        padding: 30px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 900px;
+        max-height: 85vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .section-title {
+        position: relative;
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+    }
+
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background-color: #6366f1;
+        border-radius: 3px;
+    }
+
+    .tag {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        margin-right: 6px;
+        margin-bottom: 6px;
+    }
+
+    .btn-close {
+        color: #9ca3af;
+        font-size: 28px;
+        font-weight: bold;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+
+    .btn-close:hover {
+        color: #6b7280;
+        transform: scale(1.1);
+    }
+
+    .info-icon {
+        color: #6b7280;
+        width: 20px;
+        text-align: center;
+        margin-right: 8px;
+    }
+
+    .info-text {
+        color: #4b5563;
+    }
+
+    .image-thumbnail {
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+
+    .image-thumbnail:hover {
+        transform: scale(1.02);
+    }
+
+    /* Image Modal */
+    .image-modal {
+        display: none;
+        position: fixed;
+        z-index: 200;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(4px);
     }
 
     .image-modal-content {
-        width: 95%;
-        max-height: 80vh;
+        margin: auto;
+        display: block;
+        width: 90%;
+        max-width: 1200px;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: 8px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
     .image-modal-close {
-        top: 10px;
-        right: 20px;
-        font-size: 30px;
+        position: absolute;
+        top: 20px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+        cursor: pointer;
+        z-index: 201;
     }
-}
+
+    .image-modal-close:hover,
+    .image-modal-close:focus {
+        color: #bbb;
+        transform: scale(1.1);
+    }
+
+    @media (max-width: 768px) {
+        .modal-content {
+            margin: 10% auto;
+            padding: 20px;
+            width: 95%;
+        }
+
+        .image-modal-content {
+            width: 95%;
+            max-height: 80vh;
+        }
+
+        .image-modal-close {
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
+        }
+    }
 </style>
 
 <script>
-function abrirModalEvento(modalId) {
-    document.getElementById(modalId).style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
+    function abrirModalEvento(modalId) {
+        document.getElementById(modalId).style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
 
-function fecharModalEvento(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-function abrirImagemModal(imageSrc) {
-    const modal = document.getElementById('imageModal');
-    const modalImg = document.getElementById('modalImage');
-    modal.style.display = 'block';
-    modalImg.src = imageSrc;
-    document.body.style.overflow = 'hidden';
-}
-
-function fecharImagemModal() {
-    const modal = document.getElementById('imageModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-window.onclick = function(event) {
-    const imageModal = document.getElementById('imageModal');
-
-    if (event.target.className === 'modal') {
-        event.target.style.display = 'none';
+    function fecharModalEvento(modalId) {
+        document.getElementById(modalId).style.display = 'none';
         document.body.style.overflow = 'auto';
     }
 
-    if (event.target === imageModal) {
-        imageModal.style.display = 'none';
+    function abrirImagemModal(imageSrc) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        modal.style.display = 'block';
+        modalImg.src = imageSrc;
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharImagemModal() {
+        const modal = document.getElementById('imageModal');
+        modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
-}
 
-function toggleFavorito(eventoId) {
-    // Por enquanto, sempre redirecionar para login até implementar sistema de autenticação
-    window.location.href = 'views/login.php';
-    return;
-    
-    // TODO: Implementar funcionalidade de favoritar quando houver sistema de login
-    /*
-    // Código para quando implementar sistema de login
-    fetch('controllers/favoritos_controller.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            evento_id: eventoId,
-            action: 'toggle'
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Alterar o ícone do coração baseado no status
-            const button = event.target.closest('button');
-            const icon = button.querySelector('i');
-            
-            if (data.favorited) {
-                icon.className = 'fas fa-heart'; // Coração preenchido
-                button.setAttribute('aria-label', 'Remover dos favoritos');
-            } else {
-                icon.className = 'far fa-heart'; // Coração vazio
-                button.setAttribute('aria-label', 'Adicionar aos favoritos');
-            }
+    window.onclick = function(event) {
+        const imageModal = document.getElementById('imageModal');
+
+        if (event.target.className === 'modal') {
+            event.target.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
-    })
-    .catch(error => {
-        console.error('Erro ao favoritar:', error);
-    });
-    */
-}
 
-let currentOffset = <?= $eventosPorPagina ?>;
-const eventosPerPage = <?= $eventosPorPagina ?>;
+        if (event.target === imageModal) {
+            imageModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
 
-function carregarMaisEventos() {
-    const loadMoreBtn = document.getElementById('load-more-btn');
-    const loadingSpinner = document.getElementById('loading-spinner');
-    const eventosContainer = document.getElementById('eventos-container');
-    
-    // Mostrar loading
-    loadMoreBtn.classList.add('hidden');
-    loadingSpinner.classList.remove('hidden');
-    
-    fetch(`ajax/carregar_mais_eventos.php?offset=${currentOffset}&limit=${eventosPerPage}`)
+    function toggleFavorito(eventoId) {
+        // Por enquanto, sempre redirecionar para login até implementar sistema de autenticação
+        window.location.href = 'views/login.php';
+        return;
+
+        // TODO: Implementar funcionalidade de favoritar quando houver sistema de login
+        /*
+        // Código para quando implementar sistema de login
+        fetch('controllers/favoritos_controller.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                evento_id: eventoId,
+                action: 'toggle'
+            })
+        })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Adicionar novos eventos ao container
-                eventosContainer.insertAdjacentHTML('beforeend', data.html);
+                // Alterar o ícone do coração baseado no status
+                const button = event.target.closest('button');
+                const icon = button.querySelector('i');
                 
-                // Atualizar offset
-                currentOffset = data.nextOffset;
-                
-                // Esconder loading
-                loadingSpinner.classList.add('hidden');
-                
-                // Mostrar/esconder botão baseado em se há mais eventos
-                if (data.hasMore) {
-                    loadMoreBtn.classList.remove('hidden');
+                if (data.favorited) {
+                    icon.className = 'fas fa-heart'; // Coração preenchido
+                    button.setAttribute('aria-label', 'Remover dos favoritos');
                 } else {
-                    // Se não há mais eventos, esconder o botão
-                    loadMoreBtn.style.display = 'none';
+                    icon.className = 'far fa-heart'; // Coração vazio
+                    button.setAttribute('aria-label', 'Adicionar aos favoritos');
                 }
-            } else {
-                console.error('Erro ao carregar mais eventos:', data.error);
-                loadingSpinner.classList.add('hidden');
-                loadMoreBtn.classList.remove('hidden');
-                loadMoreBtn.textContent = 'Erro ao carregar. Tente novamente';
-                loadMoreBtn.className = loadMoreBtn.className.replace('from-purple-600 to-blue-600', 'from-red-600 to-red-700');
             }
         })
         .catch(error => {
-            console.error('Erro na requisição:', error);
-            loadingSpinner.classList.add('hidden');
-            loadMoreBtn.classList.remove('hidden');
-            loadMoreBtn.textContent = 'Erro ao carregar. Tente novamente';
+            console.error('Erro ao favoritar:', error);
         });
-}
-
-document.onkeydown = function(evt) {
-    evt = evt || window.event;
-    if (evt.key === "Escape") {
-        const modals = document.querySelectorAll('.modal');
-        modals.forEach(modal => {
-            modal.style.display = 'none';
-        });
-        const imageModal = document.getElementById('imageModal');
-        imageModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
+        */
     }
-};
+
+    let currentOffset = <?= $eventosPorPagina ?>;
+    const eventosPerPage = <?= $eventosPorPagina ?>;
+
+    function carregarMaisEventos() {
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const eventosContainer = document.getElementById('eventos-container');
+
+        // Mostrar loading
+        loadMoreBtn.classList.add('hidden');
+        loadingSpinner.classList.remove('hidden');
+
+        fetch(`ajax/carregar_mais_eventos.php?offset=${currentOffset}&limit=${eventosPerPage}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Adicionar novos eventos ao container
+                    eventosContainer.insertAdjacentHTML('beforeend', data.html);
+
+                    // Atualizar offset
+                    currentOffset = data.nextOffset;
+
+                    // Esconder loading
+                    loadingSpinner.classList.add('hidden');
+
+                    // Mostrar/esconder botão baseado em se há mais eventos
+                    if (data.hasMore) {
+                        loadMoreBtn.classList.remove('hidden');
+                    } else {
+                        // Se não há mais eventos, esconder o botão
+                        loadMoreBtn.style.display = 'none';
+                    }
+                } else {
+                    console.error('Erro ao carregar mais eventos:', data.error);
+                    loadingSpinner.classList.add('hidden');
+                    loadMoreBtn.classList.remove('hidden');
+                    loadMoreBtn.textContent = 'Erro ao carregar. Tente novamente';
+                    loadMoreBtn.className = loadMoreBtn.className.replace('from-purple-600 to-blue-600', 'from-red-600 to-red-700');
+                }
+            })
+            .catch(error => {
+                console.error('Erro na requisição:', error);
+                loadingSpinner.classList.add('hidden');
+                loadMoreBtn.classList.remove('hidden');
+                loadMoreBtn.textContent = 'Erro ao carregar. Tente novamente';
+            });
+    }
+
+    document.onkeydown = function(evt) {
+        evt = evt || window.event;
+        if (evt.key === "Escape") {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            const imageModal = document.getElementById('imageModal');
+            imageModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    };
 </script>
