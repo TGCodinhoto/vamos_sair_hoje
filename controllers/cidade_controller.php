@@ -1,6 +1,6 @@
 <?php
-require_once '../conexao.php';
-require_once '../models/cidade_model.php';
+require_once  __DIR__ . '/../conexao.php';
+require_once  __DIR__ . '/../models/cidade_model.php';
 
 $cidadeModel = new CidadeModel($conexao);
 
