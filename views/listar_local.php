@@ -228,12 +228,16 @@ if (isset($_GET['msg'])) {
                 <i class="fas fa-home"></i>
                 <span>Home</span>
             </a>
+            <a href="form_local.php"
+                class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition flex items-center space-x-2">
+                <i class="fas fa-plus"></i>
+                <span>Inserir</span>
+            </a>
         </div>
 
         <!-- Header Section -->
         <div class="text-center mb-12">
             <h1 class="text-4xl font-bold text-gray-800 mb-4">Locais Cadastrados</h1>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Descubra os melhores locais, restaurantes e pontos de interesse em sua região</p>
         </div>
 
         <!-- Locais Grid -->

@@ -101,30 +101,28 @@ $cidades = $cidadeModel->listar();
       <span>Pesquisar</span>
     </button>
   </form>
+  
 </header>
 
 <!-- Icones -->
-<nav class="bg-[#f0f0f0] py-4 md:py-8">
-  <ul
-    class="max-w-5xl mx-auto flex flex-wrap justify-center gap-x-12 gap-y-3 text-center">
-
+<nav class="bg-[#f0f0f0] py-3 sm:py-4 md:py-6">
+  <ul class="max-w-5xl mx-auto flex flex-wrap justify-center gap-x-6 gap-y-4 px-4 text-center">
     <?php foreach ($tipoEvento as $tipo): ?>
       <li
-        class="flex flex-col items-center text-gray-700 text-sm font-semibold hover:text-[#1B3B57] hover:scale-110 hover:cursor-pointer transition-transform duration-200">
+        class="flex flex-col items-center text-gray-700 text-xs sm:text-sm md:text-base font-semibold hover:text-[#1B3B57] hover:scale-105 hover:cursor-pointer transition-transform duration-200 w-20 sm:w-24 md:w-auto">
         <?php
           $img = $tipo['tipoeventoimage'] ?? '';
           $imgInvalida = empty($img) || $img === null || substr($img, 0, 1) === '[';
           if (!$imgInvalida && file_exists(__DIR__ . '/../uploads/' . $img)) {
-            echo '<img src="uploads/' . htmlspecialchars($img) . '" class="w-8 h-8 md:w-12 md:h-12 mb-1 object-contain" />';
-            echo htmlspecialchars($tipo['tipoeventonome']);
+            echo '<img src="uploads/' . htmlspecialchars($img) . '" class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mb-1 object-contain" />';
+            echo '<span class="truncate">' . htmlspecialchars($tipo['tipoeventonome']) . '</span>';
           }
         ?>
       </li>
     <?php endforeach; ?>
-    
-    
   </ul>
 </nav>
+
 
 <script>
   function toggleMenu() {

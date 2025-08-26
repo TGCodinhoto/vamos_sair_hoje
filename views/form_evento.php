@@ -217,8 +217,9 @@ if (isset($_GET['msg'])) {
                 class="max-h-full max-w-full object-contain" />
             </div>
             <input id="foto2" name="foto2" type="file" accept="image/*"
-              <?= !$edicao ? 'required' : '' ?>
-              class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg file:mr-3 file:py-2 file:px-4 file:rounded file:border-0 file:text-base file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
+      <?= '' ?>
+      class="border border-gray-300 rounded-md px-3 py-2 text-base sm:text-lg file:mr-3 file:py-2 file:px-4 file:rounded file:border-0 file:text-base file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
+
           </div>
         </div>
         <div class="flex flex-col w-full">
