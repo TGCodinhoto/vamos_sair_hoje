@@ -1,4 +1,13 @@
+<?php
+// Buscar eventos do banco de dados
+require_once __DIR__ . '/../controllers/tipoevento_controller.php';
+$tipoEvento = listarTiposEvento();
+
+// var_dump($tipoEvento);
+?>
+
 <!-- Header -->
+
 <header class="bg-[#1B3B57] text-white py-5 sm:py-6 relative z-50">
   <div class="max-w-5xl mx-auto px-4 flex items-center justify-between sm:justify-center sm:space-x-6">
 
@@ -94,36 +103,21 @@
 <nav class="bg-[#f0f0f0] py-4 md:py-8">
   <ul
     class="max-w-5xl mx-auto flex flex-wrap justify-center gap-x-12 gap-y-3 text-center">
-    <li
-      class="flex flex-col items-center text-gray-700 text-sm font-semibold hover:text-[#1B3B57] hover:scale-110 hover:cursor-pointer transition-transform duration-200">
-      <i class="fas fa-music text-gray-700 text-2xl md:text-3xl mb-1"></i>
-      Shows
-    </li>
-    <li
-      class="flex flex-col items-center text-gray-700 text-sm font-semibold hover:text-[#1B3B57] hover:scale-110 hover:cursor-pointer transition-transform duration-200">
-      <i class="fas fa-compact-disc text-gray-700 text-2xl md:text-3xl mb-1"></i>
-      Bailes
-    </li>
-    <li
-      class="flex flex-col items-center text-gray-700 text-sm font-semibold hover:text-[#1B3B57] hover:scale-110 hover:cursor-pointer transition-transform duration-200">
-      <i class="fas fa-theater-masks text-gray-700 text-2xl md:text-3xl mb-1"></i>
-      Teatro
-    </li>
-    <li
-      class="flex flex-col items-center text-gray-700 text-sm font-semibold hover:text-[#1B3B57] hover:scale-110 hover:cursor-pointer transition-transform duration-200">
-      <i class="fas fa-futbol text-gray-700 text-2xl md:text-3xl mb-1"></i>
-      Esporte
-    </li>
-    <li
-      class="flex flex-col items-center text-gray-700 text-sm font-semibold hover:text-[#1B3B57] hover:scale-110 hover:cursor-pointer transition-transform duration-200">
-      <i class="fas fa-paint-brush text-gray-700 text-2xl md:text-3xl mb-1"></i>
-      Exposições
-    </li>
-    <li
-      class="flex flex-col items-center text-gray-700 text-sm font-semibold hover:text-[#1B3B57] hover:scale-110 hover:cursor-pointer transition-transform duration-200">
-      <i class="fas fa-fire text-gray-700 text-2xl md:text-3xl mb-1"></i>
-      Festivais
-    </li>
+
+    <?php foreach ($tipoEvento as $tipo): ?>
+      <li
+        class="flex flex-col items-center text-gray-700 text-sm font-semibold hover:text-[#1B3B57] hover:scale-110 hover:cursor-pointer transition-transform duration-200">
+        <?php if (!empty($tipo['tipoeventoimage']) && file_exists(__DIR__ . '/../uploads/' . $tipo['tipoeventoimage'])): ?>
+          <img src="uploads/<?= htmlspecialchars($tipo['tipoeventoimage']) ?>" class="w-8 h-8 md:w-12 md:h-12 mb-1 object-contain" />
+        <?php else: ?>
+          <!-- icone de imagem quebrada do mesmo tamanho da imagem -->
+          <i class="fas fa-image text-gray-400 w-16 h-16 md:w-12 md:h-12 mb-1 flex items-center justify-center"></i>
+        <?php endif; ?>
+        <?= $tipo['tipoeventonome'] ?>
+      </li>
+    <?php endforeach; ?>
+    
+    
   </ul>
 </nav>
 
