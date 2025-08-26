@@ -1,8 +1,11 @@
 <?php
-require_once __DIR__ . '/../controllers/tipoevento_controller.php';
-$tipoEvento = listarTiposEvento();
-
-// var_dump($tipoEvento);
+require_once __DIR__ . '/../conexao.php';
+require_once __DIR__ . '/../models/tipo_evento_model.php';
+require_once __DIR__ . '/../models/cidade_model.php';
+$tipoEventoModel = new TipoEventoModel($conexao);
+$tipoEvento = $tipoEventoModel->listar();
+$cidadeModel = new CidadeModel($conexao);
+$cidades = $cidadeModel->listar();
 ?>
 
 <!-- Header -->
@@ -39,10 +42,11 @@ $tipoEvento = listarTiposEvento();
       <select aria-label="Cidade do evento"
         class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full">
         <option selected disabled>Cidade do evento</option>
-        <option>São Paulo</option>
-        <option>Rio de Janeiro</option>
-        <option>Belo Horizonte</option>
-        <option>Curitiba</option>
+        <?php foreach ($cidades as $cidade): ?>
+          <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>">
+            <?= htmlspecialchars($cidade['cidadenome']) ?>
+          </option>
+        <?php endforeach; ?>
       </select>
       <input type="date" aria-label="Data inicial"
         class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full" />
@@ -71,10 +75,11 @@ $tipoEvento = listarTiposEvento();
     <select aria-label="Cidade do evento"
       class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[220px]">
       <option selected disabled>Cidade do evento</option>
-      <option>São Paulo</option>
-      <option>Rio de Janeiro</option>
-      <option>Belo Horizonte</option>
-      <option>Curitiba</option>
+      <?php foreach ($cidades as $cidade): ?>
+        <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>">
+          <?= htmlspecialchars($cidade['cidadenome']) ?>
+        </option>
+      <?php endforeach; ?>
     </select>
     <input type="date" aria-label="Data inicial"
       class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[200px]" />
