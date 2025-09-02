@@ -247,7 +247,7 @@ function listarEventosCompletos()
         LEFT JOIN tipopublico tp ON a.tipopublicoid = tp.tipopublicoid
         LEFT JOIN segmento s ON a.segmentoid = s.segmentoid
         LEFT JOIN categoria cat ON a.categoriaid = cat.categoriaid
-        ORDER BY p.publicacaoid DESC
+    ORDER BY e.eventodia ASC, e.eventohora ASC
     ");
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);

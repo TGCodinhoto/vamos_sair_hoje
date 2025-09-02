@@ -46,19 +46,25 @@ $cidades = $cidadeModel->listar();
     </a>
     <form class="mt-4 flex flex-col gap-4 pb-4" aria-label="Formulário de filtro de eventos">
       <form method="GET" action="index.php" class="mt-4 flex flex-col gap-4 pb-4" aria-label="Formulário de filtro de eventos">
+        <?php
+        $cidadeSelecionada = $_GET['cidade'] ?? '';
+        $dataInicialSelecionada = $_GET['data_inicial'] ?? '';
+        $dataFinalSelecionada = $_GET['data_final'] ?? '';
+        $tipoEventoSelecionado = $_GET['tipo_evento'] ?? '';
+        ?>
         <select name="cidade" aria-label="Cidade do evento"
           class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full">
-          <option selected disabled value="">Cidade do evento</option>
+          <option value=""<?= $cidadeSelecionada === '' ? ' selected' : '' ?>>Todas as cidades</option>
           <?php foreach ($cidades as $cidade): ?>
-            <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>">
+            <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>"<?= $cidadeSelecionada == $cidade['cidadeid'] ? ' selected' : '' ?>>
               <?= htmlspecialchars($cidade['cidadenome']) ?>
             </option>
           <?php endforeach; ?>
         </select>
         <input type="date" name="data_inicial" aria-label="Data inicial"
-          class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full" />
+          class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full" value="<?= htmlspecialchars($dataInicialSelecionada) ?>" />
         <input type="date" name="data_final" aria-label="Data final"
-          class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full" />
+          class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full" value="<?= htmlspecialchars($dataFinalSelecionada) ?>" />
         <!-- <select name="tipo_evento" aria-label="Tipo de Evento"
           class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full">
           <option selected disabled value="">Tipo de evento</option>
@@ -68,30 +74,38 @@ $cidades = $cidadeModel->listar();
             </option>
           <?php endforeach; ?>
         </select> -->
-        <button type="submit"
-          class="bg-gray-600 hover:bg-blue-700 text-white font-medium rounded-md px-4 py-2 flex items-center justify-center space-x-2">
-          <i class="fas fa-search"></i>
-          <span>Pesquisar</span>
-        </button>
+        <div class="flex gap-2">
+          <button type="submit"
+            class="bg-gray-600 hover:bg-blue-700 text-white font-medium rounded-md px-4 py-2 flex items-center justify-center space-x-2">
+            <i class="fas fa-search"></i>
+            <span>Pesquisar</span>
+          </button>
+        </div>
       </form>
   </nav>
 
   <form class="hidden sm:flex mt-6 sm:mt-8 flex-col sm:flex-row justify-center gap-4 sm:gap-6 px-4 max-w-6xl mx-auto"
     aria-label="Formulário de filtro de eventos">
     <form method="GET" action="index.php" class="hidden sm:flex mt-6 sm:mt-8 flex-col sm:flex-row justify-center gap-4 sm:gap-6 px-4 max-w-6xl mx-auto">
+      <?php
+      $cidadeSelecionada = $_GET['cidade'] ?? '';
+      $dataInicialSelecionada = $_GET['data_inicial'] ?? '';
+      $dataFinalSelecionada = $_GET['data_final'] ?? '';
+      $tipoEventoSelecionado = $_GET['tipo_evento'] ?? '';
+      ?>
       <select name="cidade" aria-label="Cidade do evento"
         class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[220px]">
-        <option selected disabled value="">Cidade do evento</option>
+  <option value=""<?= $cidadeSelecionada === '' ? ' selected' : '' ?>>Todas as cidades</option>
         <?php foreach ($cidades as $cidade): ?>
-          <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>">
+          <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>"<?= $cidadeSelecionada == $cidade['cidadeid'] ? ' selected' : '' ?>>
             <?= htmlspecialchars($cidade['cidadenome']) ?>
           </option>
         <?php endforeach; ?>
       </select>
       <input type="date" name="data_inicial" aria-label="Data inicial"
-        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[200px]" />
+        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[200px]" value="<?= htmlspecialchars($dataInicialSelecionada) ?>" />
       <input type="date" name="data_final" aria-label="Data final"
-        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[200px]" />
+        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[200px]" value="<?= htmlspecialchars($dataFinalSelecionada) ?>" />
       <!-- <select name="tipo_evento" aria-label="Tipo de Evento"
         class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[220px]">
         <option selected disabled value="">Tipo de evento</option>
@@ -101,11 +115,13 @@ $cidades = $cidadeModel->listar();
           </option>
         <?php endforeach; ?>
       </select> -->
-      <button type="submit"
-        class="bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-md px-6 py-2  flex items-center justify-center space-x-2 shrink-0">
-        <i class="fas fa-search"></i>
-        <span>Pesquisar</span>
-      </button>
+      <div class="flex gap-2">
+        <button type="submit"
+          class="bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-md px-6 py-2  flex items-center justify-center space-x-2 shrink-0">
+          <i class="fas fa-search"></i>
+          <span>Pesquisar</span>
+        </button>
+      </div>
     </form>
 
 </header>

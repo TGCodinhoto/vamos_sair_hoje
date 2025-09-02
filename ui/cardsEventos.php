@@ -6,6 +6,14 @@ $totalEventos = isset($eventos) ? count($eventos) : 0;
 
 <!-- Cards de Eventos -->
 <section id="eventos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-10 justify-center">
+    <?php if (empty($eventos)): ?>
+        <div class="col-span-full text-center py-12">
+            <div class="inline-block bg-yellow-100 border border-yellow-400 text-yellow-800 px-6 py-4 rounded shadow">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                Nenhum evento encontrado para os filtros selecionados.
+            </div>
+        </div>
+    <?php endif; ?>
     <?php foreach ($eventos as $evento): ?>
         <!-- Card Evento -->
         <div class="bg-white rounded-lg shadow-xl overflow-hidden">
