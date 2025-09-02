@@ -1,11 +1,7 @@
 <?php
-// Buscar eventos do banco de dados
-require_once 'controllers/evento_controller.php';
-$todosEventos = listarEventosCompletos();
-$totalEventos = count($todosEventos);
+// O array $eventos já é definido no index.php, conforme filtros aplicados.
 $eventosPorPagina = 6;
-// Mostrar os primeiros 6 eventos inicialmente
-$eventos = array_slice($todosEventos, 0, $eventosPorPagina);
+$totalEventos = isset($eventos) ? count($eventos) : 0;
 ?>
 
 <!-- Cards de Eventos -->
@@ -507,7 +503,11 @@ $eventos = array_slice($todosEventos, 0, $eventosPorPagina);
         loadMoreBtn.classList.add('hidden');
         loadingSpinner.classList.remove('hidden');
 
-        fetch(`ajax/carregar_mais_eventos.php?offset=${currentOffset}&limit=${eventosPerPage}`)
+    // Captura filtros da URL
+    const params = new URLSearchParams(window.location.search);
+    params.set('offset', currentOffset);
+    params.set('limit', eventosPerPage);
+    fetch(`ajax/carregar_mais_eventos.php?${params.toString()}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
