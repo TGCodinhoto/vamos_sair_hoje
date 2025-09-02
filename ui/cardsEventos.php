@@ -73,7 +73,7 @@ $totalEventos = isset($eventos) ? count($eventos) : 0;
                         <?php if ($evento['publicacaofoto01']): ?>
                             <div class="rounded-lg overflow-hidden">
                                 <img src="uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>"
-                                    class="w-full h-48 object-cover rounded-lg image-thumbnail"
+                                    class="w-full h-[500px] object-cover rounded-lg image-thumbnail"
                                     onclick="abrirImagemModal('uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>')"
                                     alt="<?= htmlspecialchars($evento['publicacaonome']) ?> - Foto 1">
                             </div>
@@ -81,14 +81,14 @@ $totalEventos = isset($eventos) ? count($eventos) : 0;
                         <?php if ($evento['publicacaofoto02']): ?>
                             <div class="rounded-lg overflow-hidden">
                                 <img src="uploads/<?= htmlspecialchars($evento['publicacaofoto02']) ?>"
-                                    class="w-full h-48 object-cover rounded-lg image-thumbnail"
+                                    class="w-full h-[500px] object-cover rounded-lg image-thumbnail"
                                     onclick="abrirImagemModal('uploads/<?= htmlspecialchars($evento['publicacaofoto02']) ?>')"
                                     alt="<?= htmlspecialchars($evento['publicacaonome']) ?> - Foto 2">
                             </div>
                         <?php endif; ?>
                         <?php if ($evento['publicacaovideo']): ?>
                             <div class="rounded-lg overflow-hidden">
-                                <video controls class="w-full h-48 object-cover rounded-lg">
+                                <video controls class="w-full h-[500px] object-cover rounded-lg">
                                     <source src="uploads/<?= htmlspecialchars($evento['publicacaovideo']) ?>" type="video/mp4">
                                     <source src="uploads/<?= htmlspecialchars($evento['publicacaovideo']) ?>" type="video/mov">
                                     <source src="uploads/<?= htmlspecialchars($evento['publicacaovideo']) ?>" type="video/avi">

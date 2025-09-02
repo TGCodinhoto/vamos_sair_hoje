@@ -25,10 +25,16 @@ $cidades = $cidadeModel->listar();
       <i class="fas fa-bars"></i>
     </button>
 
-    <a href="views/navegacao_forms.php"
+    <!-- <a href="views/navegacao_forms.php"
       class="hidden sm:inline-flex border border-white bg-white bg-opacity-20 hover:bg-opacity-40 text-white px-4 py-2 rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm">
       <i class="fas fa-cog mr-1"></i>Administração
-    </a>
+    </a> -->
+
+    <a class="hidden sm:inline-flex border border-white bg-white bg-opacity-20 hover:bg-opacity-40 text-white px-4 py-2 rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm" href="/login">
+    <i class="fas fa-sign-in-alt mr-1">
+    </i>
+    Login
+   </a>
   </div>
 
   <!-- Mobile -->
