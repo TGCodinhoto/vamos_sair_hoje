@@ -6,10 +6,20 @@ try {
     
     $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
     $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 6;
-    
-    // Buscar todos os eventos
-    $todosEventos = listarEventosCompletos();
-    
+
+    // Captura filtros
+    $cidade = $_GET['cidade'] ?? null;
+    $dataInicial = $_GET['data_inicial'] ?? null;
+    $dataFinal = $_GET['data_final'] ?? null;
+    $tipoEvento = $_GET['tipo_evento'] ?? null;
+
+    // Buscar eventos filtrados ou todos
+    if ($cidade || $dataInicial || $dataFinal || $tipoEvento) {
+        $todosEventos = buscarEventosFiltrados($conexao, $cidade, $dataInicial, $dataFinal, $tipoEvento);
+    } else {
+        $todosEventos = listarEventosCompletos();
+    }
+
     // Pegar os eventos da página solicitada
     $eventos = array_slice($todosEventos, $offset, $limit);
     

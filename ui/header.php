@@ -39,68 +39,68 @@ $cidades = $cidadeModel->listar();
       <i class="fas fa-cog mr-2"></i>Administração
     </a>
     <form class="mt-4 flex flex-col gap-4 pb-4" aria-label="Formulário de filtro de eventos">
-      <select aria-label="Cidade do evento"
-        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full">
-        <option selected disabled>Cidade do evento</option>
+      <form method="GET" action="index.php" class="mt-4 flex flex-col gap-4 pb-4" aria-label="Formulário de filtro de eventos">
+        <select name="cidade" aria-label="Cidade do evento"
+          class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full">
+          <option selected disabled value="">Cidade do evento</option>
+          <?php foreach ($cidades as $cidade): ?>
+            <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>">
+              <?= htmlspecialchars($cidade['cidadenome']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+        <input type="date" name="data_inicial" aria-label="Data inicial"
+          class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full" />
+        <input type="date" name="data_final" aria-label="Data final"
+          class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full" />
+        <!-- <select name="tipo_evento" aria-label="Tipo de Evento"
+          class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full">
+          <option selected disabled value="">Tipo de evento</option>
+          <?php foreach ($tipoEvento as $tipo): ?>
+            <option value="<?= htmlspecialchars($tipo['tipoeventoid']) ?>">
+              <?= htmlspecialchars($tipo['tipoeventonome']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select> -->
+        <button type="submit"
+          class="bg-gray-600 hover:bg-blue-700 text-white font-medium rounded-md px-4 py-2 flex items-center justify-center space-x-2">
+          <i class="fas fa-search"></i>
+          <span>Pesquisar</span>
+        </button>
+      </form>
+  </nav>
+
+  <form class="hidden sm:flex mt-6 sm:mt-8 flex-col sm:flex-row justify-center gap-4 sm:gap-6 px-4 max-w-6xl mx-auto"
+    aria-label="Formulário de filtro de eventos">
+    <form method="GET" action="index.php" class="hidden sm:flex mt-6 sm:mt-8 flex-col sm:flex-row justify-center gap-4 sm:gap-6 px-4 max-w-6xl mx-auto">
+      <select name="cidade" aria-label="Cidade do evento"
+        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[220px]">
+        <option selected disabled value="">Cidade do evento</option>
         <?php foreach ($cidades as $cidade): ?>
           <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>">
             <?= htmlspecialchars($cidade['cidadenome']) ?>
           </option>
         <?php endforeach; ?>
       </select>
-      <input type="date" aria-label="Data inicial"
-        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full" />
-      <input type="date" aria-label="Data final"
-        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full" />
-      <!-- <select aria-label="Tipo de Evento"
-          class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full">
-          <option selected disabled>Tipo de evento</option>
-          <option>Shows</option>
-          <option>Bailes</option>
-          <option>Teatro</option>
-          <option>Esporte</option>
-          <option>Exposições</option>
-          <option>Festivais</option>
-        </select> -->
+      <input type="date" name="data_inicial" aria-label="Data inicial"
+        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[200px]" />
+      <input type="date" name="data_final" aria-label="Data final"
+        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[200px]" />
+      <!-- <select name="tipo_evento" aria-label="Tipo de Evento"
+        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[220px]">
+        <option selected disabled value="">Tipo de evento</option>
+        <?php foreach ($tipoEvento as $tipo): ?>
+          <option value="<?= htmlspecialchars($tipo['tipoeventoid']) ?>">
+            <?= htmlspecialchars($tipo['tipoeventonome']) ?>
+          </option>
+        <?php endforeach; ?>
+      </select> -->
       <button type="submit"
-        class="bg-gray-600 hover:bg-blue-700 text-white font-medium rounded-md px-4 py-2 flex items-center justify-center space-x-2">
+        class="bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-md px-6 py-2  flex items-center justify-center space-x-2 shrink-0">
         <i class="fas fa-search"></i>
         <span>Pesquisar</span>
       </button>
     </form>
-  </nav>
-
-  <form class="hidden sm:flex mt-6 sm:mt-8 flex-col sm:flex-row justify-center gap-4 sm:gap-6 px-4 max-w-6xl mx-auto"
-    aria-label="Formulário de filtro de eventos">
-    <select aria-label="Cidade do evento"
-      class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[220px]">
-      <option selected disabled>Cidade do evento</option>
-      <?php foreach ($cidades as $cidade): ?>
-        <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>">
-          <?= htmlspecialchars($cidade['cidadenome']) ?>
-        </option>
-      <?php endforeach; ?>
-    </select>
-    <input type="date" aria-label="Data inicial"
-      class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[200px]" />
-    <input type="date" aria-label="Data final"
-      class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[200px]" />
-    <!-- <select aria-label="Tipo de Evento"
-        class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[220px]">
-        <option selected disabled>Tipo de evento</option>
-        <option>Shows</option>
-        <option>Bailes</option>
-        <option>Teatro</option>
-        <option>Esporte</option>
-        <option>Exposições</option>
-        <option>Festivais</option>
-      </select> -->
-    <button type="submit"
-      class="bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-md px-6 py-2  flex items-center justify-center space-x-2 shrink-0">
-      <i class="fas fa-search"></i>
-      <span>Pesquisar</span>
-    </button>
-  </form>
 
 </header>
 
@@ -108,16 +108,22 @@ $cidades = $cidadeModel->listar();
 <nav class="bg-[#f0f0f0] py-3 sm:py-4 md:py-6">
   <ul class="max-w-5xl mx-auto flex flex-wrap justify-center gap-x-6 gap-y-4 md:gap-x-10 md:gap-y-6 px-4 text-center">
     <?php foreach ($tipoEvento as $tipo): ?>
-      <li
-        class="flex flex-col items-center text-gray-700 text-sm md:text-base font-semibold hover:text-[#1B3B57] hover:scale-105 hover:cursor-pointer transition-transform duration-200 w-20 sm:w-24 md:w-auto">
-        <?php
-        $img = $tipo['tipoeventoimage'] ?? '';
-        $imgInvalida = empty($img) || $img === null || substr($img, 0, 1) === '[';
-        if (!$imgInvalida && file_exists(__DIR__ . '/../uploads/' . $img)) {
-          echo '<img src="uploads/' . htmlspecialchars($img) . '" class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mb-1 object-contain" />';
-          echo '<span class="truncate">' . htmlspecialchars($tipo['tipoeventonome']) . '</span>';
-        }
-        ?>
+      <li>
+        <a href="index.php?tipo_evento=<?= htmlspecialchars($tipo['tipoeventoid']) ?>"
+          class="flex flex-col items-center text-gray-700 text-sm md:text-base font-semibold hover:text-[#1B3B57] hover:scale-105 hover:cursor-pointer transition-transform duration-200 w-20 sm:w-24 md:w-auto"
+          title="Filtrar por <?= htmlspecialchars($tipo['tipoeventonome']) ?>">
+          <?php
+          $img = $tipo['tipoeventoimage'] ?? '';
+          $imgInvalida = empty($img) || $img === null || substr($img, 0, 1) === '[';
+          if (!$imgInvalida && file_exists(__DIR__ . '/../uploads/' . $img)) {
+            echo '<img src="uploads/' . htmlspecialchars($img) . '" class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mb-1 object-contain" />';
+          } else {
+            // Imagem padrão para tipos sem imagem
+            echo '<img src="image/favicon.svg" class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mb-1 object-contain opacity-60" alt="Tipo de evento" />';
+          }
+          ?>
+          <span class="truncate"><?= htmlspecialchars($tipo['tipoeventonome']) ?></span>
+        </a>
       </li>
     <?php endforeach; ?>
   </ul>
