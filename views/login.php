@@ -6,7 +6,7 @@
     <title>
         Tela de Login
     </title>
-    <link rel="shortcut icon" href="image/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="../image/favicon.svg" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com">
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet" />
@@ -21,7 +21,7 @@
 <body class="h-full flex items-center justify-center px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
         <div class="flex justify-center">
-            <a href="index.php"><img alt="Logotipo da empresa em fundo branco, com ícone abstrato azul e texto ao lado" class="h-20 w-20" height="100" src="image/favicon.svg" width="100" /></a>
+            <a href="index.php"><img alt="Logotipo da empresa em fundo branco, com ícone abstrato azul e texto ao lado" class="h-20 w-20" height="100" src="../image/favicon.svg" width="100" /></a>
         </div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Entrar na sua conta
