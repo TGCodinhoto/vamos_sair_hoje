@@ -1,7 +1,28 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once('../utils/admin_verification.php');
 require_once('../controllers/local_controller.php');
+require_once('../conexao.php');
 
-$locais = listarLocaisCompletos();
+if (!isset($_SESSION['userid'])) {
+    header('Location: login.php');
+    exit();
+}
+
+$conexao = Conexao::getInstance();
+$localController = new LocalController();
+
+// Verifica o tipo de usuário e lista os locais de acordo
+if (isAdmin()) { // Administrador
+    $locais = $localController->listarLocaisCompletos();
+} else if ($_SESSION['usertipo'] == 2) { // Usuário CNPJ
+    $locais = $localController->listarLocaisCompletos($_SESSION['userid']);
+} else {
+    header('Location: ../index.php');
+    exit();
+}
 
 // Tratamento de mensagens
 $mensagem = '';

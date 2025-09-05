@@ -6,6 +6,7 @@ require_once '../conexao.php';
 require_once '../models/publicacao_model.php';
 require_once '../models/anunciante_model.php';
 
+$conexao = Conexao::getInstance();
 $publicacaoModel = new PublicacaoModel($conexao);
 $anuncianteModel = new AnuncianteModel($conexao);
 

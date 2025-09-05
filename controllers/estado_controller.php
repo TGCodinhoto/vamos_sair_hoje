@@ -2,6 +2,7 @@
 require_once '../conexao.php';
 require_once '../models/estado_model.php';
 
+$conexao = Conexao::getInstance();
 $estadoModel = new EstadoModel($conexao);
 
 

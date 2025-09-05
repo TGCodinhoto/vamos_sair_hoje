@@ -1,5 +1,40 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+error_log('=== INÍCIO FORM_LOCAL.PHP ===');
+error_log('Status da sessão: ' . session_status());
+error_log('Session ID: ' . session_id());
+
+// Debug detalhado
+error_log('============= DEBUG FORM_LOCAL.PHP =============');
+error_log('Todas as variáveis de sessão:');
+error_log(print_r($_SESSION, true));
+error_log('userid: ' . (isset($_SESSION['userid']) ? $_SESSION['userid'] : 'não definido'));
+error_log('usertipo: ' . (isset($_SESSION['usertipo']) ? $_SESSION['usertipo'] : 'não definido'));
+error_log('POST data:');
+error_log(print_r($_POST, true));
+error_log('============= FIM DEBUG =============');
+
+// Verifica se o usuário está logado e é do tipo 1 (adm) ou 2 (estabelecimento)
+if (!isset($_SESSION['userid'])) {
+    error_log('Redirecionando: userid não está definido na sessão');
+    header("Location: ../views/login.php");
+    exit();
+}
+
+// Converte para inteiro para garantir comparação correta
+$tipo = intval($_SESSION['usertipo']);
+if ($tipo !== 1 && $tipo !== 2) {
+    error_log('Redirecionando: usertipo (' . $tipo . ') não é 1 nem 2');
+    header("Location: ../views/login.php");
+    exit();
+}
+
 require_once('../conexao.php');
+
+$conexao = Conexao::getInstance();
 
 // Função para buscar local por ID (apenas para visualização/edição)
 function buscarLocalPorId($publicacao_id) {

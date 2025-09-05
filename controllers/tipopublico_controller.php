@@ -2,6 +2,7 @@
 require_once '../conexao.php';
 require_once '../models/tipo_publico_model.php';
 
+$conexao = Conexao::getInstance();
 $tipoPublicoModel = new TipoPublicoModel($conexao);
 
 if (isset($_GET['delete'])) {

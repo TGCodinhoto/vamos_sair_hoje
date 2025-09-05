@@ -3,6 +3,7 @@
 require_once '../conexao.php';
 require_once '../models/atrativos_model.php';
 
+$conexao = Conexao::getInstance();
 $atrativosModel = new AtrativosModel($conexao);
 
 if (isset($_GET['delete'])) {

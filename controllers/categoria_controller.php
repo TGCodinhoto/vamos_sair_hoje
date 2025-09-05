@@ -2,6 +2,7 @@
 require_once '../conexao.php';
 require_once '../models/categoria_model.php';
 
+$conexao = Conexao::getInstance();
 $categoriaModel = new CategoriaModel($conexao);
 
 if (isset($_GET['delete'])) {

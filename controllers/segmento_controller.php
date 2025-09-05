@@ -2,6 +2,7 @@
 require_once '../conexao.php';
 require_once '../models/segmento_model.php';
 
+$conexao = Conexao::getInstance();
 $segmentoModel = new SegmentoModel($conexao);
 
 if (isset($_GET['delete'])) {

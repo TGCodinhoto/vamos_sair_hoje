@@ -1,4 +1,19 @@
 <?php
+session_start();
+
+// Verifica se o usuário está logado e é do tipo 1 (adm) ou 2 (estabelecimento)
+if (!isset($_SESSION['userid'])) {
+    header("Location: ../views/login.php");
+    exit();
+}
+
+// Converte para inteiro para garantir comparação correta
+$tipo = intval($_SESSION['usertipo']);
+if ($tipo !== 1 && $tipo !== 2) {
+    header("Location: login.php");
+    exit();
+}
+
 require_once('../controllers/estado_controller.php');
 
 $mensagem = '';

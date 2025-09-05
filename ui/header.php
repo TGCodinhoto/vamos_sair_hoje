@@ -1,7 +1,15 @@
 <?php
+ob_start(); // Inicia o buffer de saída
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once __DIR__ . '/../conexao.php';
 require_once __DIR__ . '/../models/tipo_evento_model.php';
 require_once __DIR__ . '/../models/cidade_model.php';
+
+$conexao = Conexao::getInstance();
 $tipoEventoModel = new TipoEventoModel($conexao);
 $tipoEvento = $tipoEventoModel->listar();
 $cidadeModel = new CidadeModel($conexao);
@@ -25,19 +33,51 @@ $cidades = $cidadeModel->listar();
       <i class="fas fa-bars"></i>
     </button>
 
-    <a href="views/navegacao_forms.php"
-      class="hidden sm:inline-flex border border-white bg-white bg-opacity-20 hover:bg-opacity-40 text-white px-4 py-2 rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm">
-      <i class="fas fa-cog mr-1"></i>Administração
-    </a>
+    <?php if (isset($_SESSION['userid'])): ?>
+      <div class="hidden sm:flex items-center gap-4">
+        <?php if ($_SESSION['usertipo'] == 2 || $_SESSION['usertipo'] == 1): ?>
+          <a href="views/navegacao_forms.php"
+            class="border border-white bg-white bg-opacity-20 hover:bg-opacity-40 text-white px-4 py-2 rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm">
+            <i class="fas fa-cog mr-1"></i>Administração
+          </a>
+        <?php endif; ?>
+        <span class="text-white mr-2">Olá, <?= htmlspecialchars($_SESSION['usernome']) ?></span>
+        <a href="views/logout.php" class="text-white hover:text-gray-200">
+          <i class="fas fa-sign-out-alt"></i> Sair
+        </a>
+      </div>
+    <?php else: ?>
+      <div class="hidden sm:flex items-center space-x-4">
+        <a href="views/login.php" class="text-white hover:text-gray-200">
+          <i class="fas fa-sign-in-alt mr-1"></i> Login
+        </a>
+      </div>
+    <?php endif; ?>
   </div>
 
   <!-- Mobile -->
   <nav id="mobile-menu"
     class="sm:hidden hidden absolute top-full left-0 right-0 py-1 px-4 max-w-5xl mx-auto bg-[#1B3B57] shadow-lg z-50 rounded-b-md">
-    <a href="views/navegacao_forms.php"
-      class="block border border-white bg-white bg-opacity-20 hover:bg-opacity-40 text-white rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm px-4 py-2 mt-2">
-      <i class="fas fa-cog mr-2"></i>Administração
-    </a>
+    <?php if (isset($_SESSION['userid'])): ?>
+      <div class="flex flex-col gap-2 mt-2 mb-4">
+        <?php if ($_SESSION['usertipo'] == 2): ?>
+          <a href="views/navegacao_forms.php"
+            class="block border border-white bg-white bg-opacity-20 hover:bg-opacity-40 text-white rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm px-4 py-2 mt-2">
+            <i class="fas fa-cog mr-2"></i>Administração
+          </a>
+        <?php endif; ?>
+        <span class="text-white">Olá, <?= htmlspecialchars($_SESSION['usernome']) ?></span>
+        <a href="views/logout.php" class="text-white hover:text-gray-200 flex items-center">
+          <i class="fas fa-sign-out-alt mr-2"></i> Sair
+        </a>
+      </div>
+    <?php else: ?>
+      <div class="flex flex-col gap-2 mt-2 mb-4">
+        <a href="views/login.php" class="text-white hover:text-gray-200 flex items-center">
+          <i class="fas fa-sign-in-alt mr-2"></i> Login
+        </a>
+      </div>
+    <?php endif; ?>
     <form class="mt-4 flex flex-col gap-4 pb-4" aria-label="Formulário de filtro de eventos">
       <select aria-label="Cidade do evento"
         class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full">

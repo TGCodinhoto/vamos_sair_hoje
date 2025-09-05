@@ -1,5 +1,11 @@
 <?php
+require_once('../utils/admin_verification.php');
 require_once('../controllers/evento_controller.php');
+
+if (!isAdmin()) {
+    header('Location: ../index.php');
+    exit();
+}
 
 $eventos = listarEventosCompletos();
 

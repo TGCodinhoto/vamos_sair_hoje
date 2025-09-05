@@ -1,7 +1,8 @@
 <?php
 // Buscar eventos do banco de dados
-require_once 'controllers/evento_controller.php';
-$todosEventos = listarEventosCompletos();
+require_once __DIR__ . '/../controllers/evento_controller.php';
+$controller = new EventoController();
+$todosEventos = $controller->listarEventosCompletos();
 $totalEventos = count($todosEventos);
 $eventosPorPagina = 6;
 // Mostrar os primeiros 6 eventos inicialmente

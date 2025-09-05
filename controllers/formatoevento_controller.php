@@ -2,6 +2,7 @@
 require_once '../conexao.php';
 require_once '../models/formato_evento_model.php';
 
+$conexao = Conexao::getInstance();
 $formatoEventoModel = new FormatoEventoModel($conexao);
 
 if (isset($_GET['delete'])) {

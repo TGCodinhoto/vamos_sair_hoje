@@ -2,6 +2,7 @@
 require_once '../conexao.php';
 require_once '../models/classificacao_etaria_model.php';
 
+$conexao = Conexao::getInstance();
 $classificacaoEtariaModel = new ClassificacaoEtariaModel($conexao);
 
 if (isset($_GET['delete'])) {
