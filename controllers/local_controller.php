@@ -85,11 +85,11 @@ class LocalController extends BaseController {
             $publicacaoId = $_POST['publicacao_id'];
             $this->localModel->excluirPorPublicacaoId($publicacaoId);
             
-            header("Location: ../views/listar_eventos.php?msg=delete_success");
+            header("Location: ../views/listar_local.php?msg=delete_success");
             exit;
         } catch (Exception $e) {
             error_log("Erro ao EXCLUIR local: " . $e->getMessage());
-            header("Location: ../views/listar_eventos.php?msg=delete_error&erro=" . urlencode($e->getMessage()));
+            header("Location: ../views/listar_local.php?msg=delete_error&erro=" . urlencode($e->getMessage()));
             exit;
         }
     }
