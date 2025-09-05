@@ -1,8 +1,11 @@
 <?php
-require_once __DIR__ . '/../middleware/apply_middleware.php';
+session_start();
 
-// Aplica o middleware de guest (usuário não autenticado)
-applyMiddleware(['guestMiddleware']);
+// Verifica se o usuário já está autenticado
+if (isset($_SESSION['usuario_id'])) {
+    header('Location: perfil.php');
+    exit();
+}
 
 $erro = isset($_SESSION['erro']) ? $_SESSION['erro'] : '';
 $formData = isset($_SESSION['form_data']) ? $_SESSION['form_data'] : [];
@@ -242,7 +245,12 @@ unset($_SESSION['form_data']);
     </style>
 </head>
 <body class="h-full flex items-center justify-center px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg relative">
+        <a href="login.php" class="absolute left-4 top-4 text-gray-600 hover:text-gray-900">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+        </a>
         <div>
             <div class="flex justify-center">
                 <a href="../index.php">

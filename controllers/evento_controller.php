@@ -10,6 +10,88 @@ require_once ROOT_PATH . '/models/endereco_model.php';
 require_once ROOT_PATH . '/models/evento_model.php';
 
 class EventoController extends BaseController {
+    // Função para busca dinâmica de eventos
+    public function buscarEventosFiltrados($cidade = null, $dataInicial = null, $dataFinal = null, $tipoEvento = null) {
+        $sql = "SELECT 
+                    p.publicacaoid,
+                    p.publicacaonome,
+                    p.publicacaofoto01,
+                    p.publicacaofoto02,
+                    p.publicacaovalidadein,
+                    p.publicacaovalidadeout,
+                    p.publicacaovideo,
+                    p.publicacaoauditada,
+                    p.publicacaopaga,
+
+                    e.eventodia,
+                    e.eventohora,
+                    e.eventoduracao,
+                    e.eventoexpectativa,
+                    e.eventoinformacao,
+                    e.eventolinkingresso,
+                
+                    a.atracaotelefone,
+                    a.atracaowebsite,
+                    a.atracaotelefonewz,
+                    a.atracaoinstagram,
+                    a.atracaotictoc,
+                
+                    te.tipoeventonome,
+                    fe.formatonome,
+                
+                    en.enderecorua, 
+                    en.endereconumero, 
+                    en.enderecobairro, 
+                    en.enderecocep, 
+                    en.enderecocomplemento,
+                    c.cidadenome AS nome_cidade, 
+                    es.estadosigla,
+                
+                    cl.classificacaonome,
+                    tp.tipopubliconome,
+                    s.segmentonome,
+                    cat.categorianome
+                FROM 
+                    publicacao p
+                JOIN evento e ON p.publicacaoid = e.publicacaoid
+                JOIN atracao a ON p.publicacaoid = a.publicacaoid
+                LEFT JOIN tipoevento te ON e.tipoeventoid = te.tipoeventoid
+                LEFT JOIN formatoevento fe ON e.formatoid = fe.formatoid
+                LEFT JOIN endereco en ON a.enderecoid = en.enderecoid
+                LEFT JOIN cidade c ON en.cidadeid = c.cidadeid
+                LEFT JOIN estado es ON c.estadoid = es.estadoid
+                LEFT JOIN classificacaoetaria cl ON a.classificacaoid = cl.classificacaoid
+                LEFT JOIN tipopublico tp ON a.tipopublicoid = tp.tipopublicoid
+                LEFT JOIN segmento s ON a.segmentoid = s.segmentoid
+                LEFT JOIN categoria cat ON a.categoriaid = cat.categoriaid
+                WHERE 1=1";
+        $params = [];
+
+        if ($cidade) {
+            $sql .= " AND c.cidadeid = :cidade";
+            $params[':cidade'] = $cidade;
+        }
+        if ($dataInicial) {
+            $sql .= " AND e.eventodia >= :data_inicial";
+            $params[':data_inicial'] = $dataInicial;
+        }
+        if ($dataFinal) {
+            $sql .= " AND e.eventodia <= :data_final";
+            $params[':data_final'] = $dataFinal;
+        }
+        if ($tipoEvento) {
+            $sql .= " AND e.tipoeventoid = :tipo_evento";
+            $params[':tipo_evento'] = $tipoEvento;
+        }
+        $sql .= " ORDER BY p.publicacaoid DESC";
+
+        $stmt = $this->conexao->prepare($sql);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     private $conexao;
     private $publicacaoModel;
     private $atracaoModel;
@@ -206,57 +288,52 @@ class EventoController extends BaseController {
                 p.publicacaoauditada,
                 p.publicacaopaga,
 
-                e.eventodia,
-                e.eventohora,
-                e.eventoduracao,
-                e.eventoexpectativa,
-                e.eventoinformacao,
-                e.eventolinkingresso,
-                
-                a.atracaotelefone,
-                a.atracaowebsite,
-                a.atracaotelefonewz,
-                a.atracaoinstagram,
-                a.atracaotictoc,
-                
-                te.tipoeventonome,
-                fe.formatonome,
-                
-                en.enderecorua, 
-                en.endereconumero, 
-                en.enderecobairro, 
-                en.enderecocep, 
-                en.enderecocomplemento,
-                c.cidadenome AS nome_cidade, 
-                es.estadosigla,
-                
-                cl.classificacaonome,
-                tp.tipopubliconome,
-                s.segmentonome,
-                cat.categorianome
-                
-            FROM 
-                publicacao p
-            JOIN evento e ON p.publicacaoid = e.publicacaoid
-            JOIN atracao a ON p.publicacaoid = a.publicacaoid
-            LEFT JOIN tipoevento te ON e.tipoeventoid = te.tipoeventoid
-            LEFT JOIN formatoevento fe ON e.formatoid = fe.formatoid
-            LEFT JOIN endereco en ON a.enderecoid = en.enderecoid
-            LEFT JOIN cidade c ON en.cidadeid = c.cidadeid
-            LEFT JOIN estado es ON c.estadoid = es.estadoid
-            LEFT JOIN classificacaoetaria cl ON a.classificacaoid = cl.classificacaoid
-            LEFT JOIN tipopublico tp ON a.tipopublicoid = tp.tipopublicoid
-            LEFT JOIN segmento s ON a.segmentoid = s.segmentoid
-            LEFT JOIN categoria cat ON a.categoriaid = cat.categoriaid
-            ORDER BY p.publicacaoid DESC
-        ");
+            e.eventodia,
+            e.eventohora,
+            e.eventoduracao,
+            e.eventoexpectativa,
+            e.eventoinformacao,
+            e.eventolinkingresso,
+            
+            a.atracaotelefone,
+            a.atracaowebsite,
+            a.atracaotelefonewz,
+            a.atracaoinstagram,
+            a.atracaotictoc,
+            
+            te.tipoeventonome,
+            fe.formatonome,
+            
+            en.enderecorua, 
+            en.endereconumero, 
+            en.enderecobairro, 
+            en.enderecocep, 
+            en.enderecocomplemento,
+            c.cidadenome AS nome_cidade, 
+            es.estadosigla,
+            
+            cl.classificacaonome,
+            tp.tipopubliconome,
+            s.segmentonome,
+            cat.categorianome
+            
+        FROM 
+            publicacao p
+        JOIN evento e ON p.publicacaoid = e.publicacaoid
+        JOIN atracao a ON p.publicacaoid = a.publicacaoid
+        LEFT JOIN tipoevento te ON e.tipoeventoid = te.tipoeventoid
+        LEFT JOIN formatoevento fe ON e.formatoid = fe.formatoid
+        LEFT JOIN endereco en ON a.enderecoid = en.enderecoid
+        LEFT JOIN cidade c ON en.cidadeid = c.cidadeid
+        LEFT JOIN estado es ON c.estadoid = es.estadoid
+        LEFT JOIN classificacaoetaria cl ON a.classificacaoid = cl.classificacaoid
+        LEFT JOIN tipopublico tp ON a.tipopublicoid = tp.tipopublicoid
+        LEFT JOIN segmento s ON a.segmentoid = s.segmentoid
+        LEFT JOIN categoria cat ON a.categoriaid = cat.categoriaid
+    ORDER BY e.eventodia ASC, e.eventohora ASC
+    ");
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function listarEventosCompletos1() {
-        $this->verificarSessao(false); // false = não requer login
-        return $this->publicacaoModel->listarTudo();
     }
 
     public function buscarEventoPorId($publicacao_id) {
@@ -273,3 +350,5 @@ if (basename($_SERVER['PHP_SELF']) === 'evento_controller.php') {
     $controller->processarRequisicao();
     ob_end_flush();
 }
+
+

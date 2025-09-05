@@ -29,6 +29,27 @@ session_start();
 
 <body class="bg-white bg-cover bg-center bg-no-repeat">
     
+    <?php
+    require_once 'conexao.php';
+    require_once 'controllers/evento_controller.php';
+
+    // Captura dos filtros
+    $cidade = $_GET['cidade'] ?? null;
+    $dataInicial = $_GET['data_inicial'] ?? null;
+    $dataFinal = $_GET['data_final'] ?? null;
+    $tipoEvento = $_GET['tipo_evento'] ?? null;
+
+    // Cria uma instância do EventoController
+    $eventoController = new EventoController();
+
+    // Busca eventos conforme filtros
+    if ($cidade || $dataInicial || $dataFinal || $tipoEvento) {
+        $eventos = $eventoController->buscarEventosFiltrados($cidade, $dataInicial, $dataFinal, $tipoEvento);
+    } else {
+        $eventos = $eventoController->listarEventosCompletos();
+    }
+    ?>
+
     <!-- Header! -->
     <?php require_once 'ui/header.php' ?>
 
@@ -36,7 +57,7 @@ session_start();
     <main class="max-w-6xl mx-auto px-5">
 
         <!-- Carrossel de Propaganda -->
-        <?php require_once 'ui/carrosselPropaganda.php' ?>
+        
 
         <!-- Cards de Eventos -->
         <?php require_once 'ui/cardsEventos.php' ?>

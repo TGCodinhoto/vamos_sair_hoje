@@ -6,10 +6,20 @@ try {
     
     $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
     $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 6;
-    
-    // Buscar todos os eventos
-    $todosEventos = listarEventosCompletos();
-    
+
+    // Captura filtros
+    $cidade = $_GET['cidade'] ?? null;
+    $dataInicial = $_GET['data_inicial'] ?? null;
+    $dataFinal = $_GET['data_final'] ?? null;
+    $tipoEvento = $_GET['tipo_evento'] ?? null;
+
+    // Buscar eventos filtrados ou todos
+    if ($cidade || $dataInicial || $dataFinal || $tipoEvento) {
+        $todosEventos = buscarEventosFiltrados($conexao, $cidade, $dataInicial, $dataFinal, $tipoEvento);
+    } else {
+        $todosEventos = listarEventosCompletos();
+    }
+
     // Pegar os eventos da página solicitada
     $eventos = array_slice($todosEventos, $offset, $limit);
     
@@ -41,17 +51,6 @@ try {
                 </button>    
                 
                 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
-                    <h3 class="text-2xl font-bold mb-2">
-                        <?= htmlspecialchars($evento['publicacaonome']) ?>
-                    </h3>
-                    <p class="text-sm mb-1 flex items-center gap-2">
-                        <i class="fas fa-calendar-alt"></i>
-                        Data: <?= date('d/m/Y', strtotime($evento['eventodia'])) ?>
-                    </p>
-                    <p class="text-sm mb-4 flex items-center gap-2">
-                        <i class="fas fa-map-marker-alt"></i>
-                        Local: <?= htmlspecialchars($evento['enderecorua'] ?? 'Local a definir') ?> - <?= htmlspecialchars($evento['nome_cidade'] ?? 'Cidade') ?>
-                    </p>
                     <button
                         class="w-full py-3 border border-white bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
                         type="button"

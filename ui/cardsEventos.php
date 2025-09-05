@@ -5,55 +5,55 @@ $controller = new EventoController();
 $todosEventos = $controller->listarEventosCompletos();
 $totalEventos = count($todosEventos);
 $eventosPorPagina = 6;
-// Mostrar os primeiros 6 eventos inicialmente
-$eventos = array_slice($todosEventos, 0, $eventosPorPagina);
+$totalEventos = isset($eventos) ? count($eventos) : 0;
 ?>
 
 <!-- Cards de Eventos -->
 <section id="eventos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-10 justify-center">
-    <?php foreach ($eventos as $evento): ?>
-        <!-- Card Evento -->
-        <div class="bg-white rounded-lg shadow-xl overflow-hidden">
-            <div class="relative">
-                <?php if ($evento['publicacaofoto01']): ?>
-                    <img alt="<?= htmlspecialchars($evento['publicacaonome']) ?>"
-                        class="w-full h-[500px] object-cover"
-                        src="uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>" />
-                <?php else: ?>
-                    <div class="w-full h-[500px] bg-gradient-to-r from-purple-100 to-blue-100 flex items-center justify-center">
-                        <i class="fas fa-calendar-alt text-6xl text-gray-400"></i>
-                    </div>
-                <?php endif; ?>
-
-                <button
-                    aria-label="Favoritar <?= htmlspecialchars($evento['publicacaonome']) ?>"
-                    class="absolute top-4 right-4 text-white text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition focus:outline-none focus:ring-2 focus:ring-white"
-                    type="button"
-                    onclick="toggleFavorito(<?= $evento['publicacaoid'] ?>)">
-                    <i class="far fa-heart"></i>
-                </button>
-
-                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
-                    <!--<h3 class="text-2xl font-bold mb-2">
-                        <?= htmlspecialchars($evento['publicacaonome']) ?>
-                    </h3>
-                     <p class="text-sm mb-1 flex items-center gap-2">
-                        <i class="fas fa-calendar-alt"></i>
-                        Data: <?= date('d/m/Y', strtotime($evento['eventodia'])) ?>
-                    </p>
-                    <p class="text-sm mb-4 flex items-center gap-2">
-                        <i class="fas fa-map-marker-alt"></i>
-                        Local: <?= htmlspecialchars($evento['enderecorua'] ?? 'Local a definir') ?> - <?= htmlspecialchars($evento['nome_cidade'] ?? 'Cidade') ?>
-                    </p> -->
-                    <button
-                        class="w-full py-3 border border-white bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
-                        type="button"
-                        onclick="abrirModalEvento('modal-home-<?= $evento['publicacaoid'] ?>')">
-                        Ver Detalhes
-                    </button>
-                </div>
+    <?php if (empty($eventos)): ?>
+        <div class="col-span-full text-center py-12">
+            <div class="inline-block bg-yellow-100 border border-yellow-400 text-yellow-800 px-6 py-4 rounded shadow">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                Nenhum evento encontrado para os filtros selecionados.
             </div>
         </div>
+    <?php endif; ?>
+    <?php foreach ($eventos as $evento): ?>
+
+        <!-- Card Evento -->
+<a href="javascript:void(0)" onclick="abrirModalEvento('modal-home-<?= $evento['publicacaoid'] ?>')" >
+    <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+        <div class="relative group overflow-hidden">
+            <?php if ($evento['publicacaofoto01']): ?>
+                <img alt="<?= htmlspecialchars($evento['publicacaonome']) ?>"
+                    class="w-full h-[500px] object-cover transform transition-transform duration-500 group-hover:scale-110"
+                    src="uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>" />
+            <?php else: ?>
+                <div class="w-full h-[500px] bg-gradient-to-r from-purple-100 to-blue-100 flex items-center justify-center">
+                    <i class="fas fa-calendar-alt text-6xl text-gray-400"></i>
+                </div>
+            <?php endif; ?>
+
+            <button
+                aria-label="Favoritar <?= htmlspecialchars($evento['publicacaonome']) ?>"
+                class="absolute top-4 right-4 text-white text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition focus:outline-none focus:ring-2 focus:ring-white"
+                type="button"
+                onclick="toggleFavorito(<?= $evento['publicacaoid'] ?>)">
+                <i class="far fa-heart"></i>
+            </button>
+
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
+                <button
+                    class="w-full py-3 bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
+                    type="button"
+                    onclick="abrirModalEvento('modal-home-<?= $evento['publicacaoid'] ?>')">
+                    Ver Detalhes
+                </button>
+            </div>
+        </div>
+    </div>
+</a>
+
 
         <!-- Modal Evento Home -->
         <div id="modal-home-<?= $evento['publicacaoid'] ?>" class="modal">
@@ -78,7 +78,7 @@ $eventos = array_slice($todosEventos, 0, $eventosPorPagina);
                         <?php if ($evento['publicacaofoto01']): ?>
                             <div class="rounded-lg overflow-hidden">
                                 <img src="uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>"
-                                    class="w-full h-48 object-cover rounded-lg image-thumbnail"
+                                    class="w-full h-[500px] object-cover rounded-lg image-thumbnail"
                                     onclick="abrirImagemModal('uploads/<?= htmlspecialchars($evento['publicacaofoto01']) ?>')"
                                     alt="<?= htmlspecialchars($evento['publicacaonome']) ?> - Foto 1">
                             </div>
@@ -86,14 +86,14 @@ $eventos = array_slice($todosEventos, 0, $eventosPorPagina);
                         <?php if ($evento['publicacaofoto02']): ?>
                             <div class="rounded-lg overflow-hidden">
                                 <img src="uploads/<?= htmlspecialchars($evento['publicacaofoto02']) ?>"
-                                    class="w-full h-48 object-cover rounded-lg image-thumbnail"
+                                    class="w-full h-[500px] object-cover rounded-lg image-thumbnail"
                                     onclick="abrirImagemModal('uploads/<?= htmlspecialchars($evento['publicacaofoto02']) ?>')"
                                     alt="<?= htmlspecialchars($evento['publicacaonome']) ?> - Foto 2">
                             </div>
                         <?php endif; ?>
                         <?php if ($evento['publicacaovideo']): ?>
                             <div class="rounded-lg overflow-hidden">
-                                <video controls class="w-full h-48 object-cover rounded-lg">
+                                <video controls class="w-full h-[500px] object-cover rounded-lg">
                                     <source src="uploads/<?= htmlspecialchars($evento['publicacaovideo']) ?>" type="video/mp4">
                                     <source src="uploads/<?= htmlspecialchars($evento['publicacaovideo']) ?>" type="video/mov">
                                     <source src="uploads/<?= htmlspecialchars($evento['publicacaovideo']) ?>" type="video/avi">
@@ -508,7 +508,11 @@ $eventos = array_slice($todosEventos, 0, $eventosPorPagina);
         loadMoreBtn.classList.add('hidden');
         loadingSpinner.classList.remove('hidden');
 
-        fetch(`ajax/carregar_mais_eventos.php?offset=${currentOffset}&limit=${eventosPerPage}`)
+        // Captura filtros da URL
+        const params = new URLSearchParams(window.location.search);
+        params.set('offset', currentOffset);
+        params.set('limit', eventosPerPage);
+        fetch(`ajax/carregar_mais_eventos.php?${params.toString()}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {

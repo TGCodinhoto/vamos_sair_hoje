@@ -1,8 +1,19 @@
 <?php
-require_once __DIR__ . '/../middleware/apply_middleware.php';
+session_start();
 
-// Aplica múltiplos middlewares - primeiro verifica se está autenticado, depois se é anunciante
-applyMiddleware(['authMiddleware', 'anuncianteMiddleware']);
+// Verifica se o usuário está autenticado
+if (!isset($_SESSION['usuario_id'])) {
+    $_SESSION['erro'] = 'Você precisa fazer login para acessar esta página';
+    header('Location: login.php');
+    exit();
+}
+
+// Verifica se o usuário é anunciante
+if (!isset($_SESSION['is_anunciante']) || !$_SESSION['is_anunciante']) {
+    $_SESSION['erro'] = 'Acesso restrito a anunciantes';
+    header('Location: index.php');
+    exit();
+}
 
 // Resto do código da página
 ?>
