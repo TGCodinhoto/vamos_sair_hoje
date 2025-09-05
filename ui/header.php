@@ -14,7 +14,7 @@ $cidades = $cidadeModel->listar();
   <div class="max-w-5xl mx-auto px-4 flex items-center justify-between sm:justify-center sm:space-x-6">
 
     <div class="flex items-center space-x-2 sm:space-x-4">
-      <img src="./image/LogoVSHoje.png" alt="Logo Vamos Sair Hoje" class="w-16 sm:w-28 ">
+      <a href="index.php"><img src="./image/LogoVSHoje.png" alt="Logo Vamos Sair Hoje" class="w-16 sm:w-28 "></a>
       <h1 class="font-bold text-xl md:text-4xl text-white drop-shadow-lg tracking-wide uppercase select-none">
         Vamos Sair Hoje!
       </h1>
@@ -26,11 +26,11 @@ $cidades = $cidadeModel->listar();
     </button>
 
     <a href="views/navegacao_forms.php"
-      class="hidden sm:inline-flex border border-white bg-white bg-opacity-20 hover:bg-opacity-40 text-white px-4 py-2 rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm">
+      class="hidden sm:inline-flex bg-white bg-opacity-20 hover:bg-opacity-40 text-white px-4 py-2 rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm">
       <i class="fas fa-cog mr-1"></i>Administração
     </a>
 
-    <a class="hidden sm:inline-flex border border-white bg-white bg-opacity-20 hover:bg-opacity-40 text-white px-4 py-2 rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm" href="views/login.php">
+    <a class="hidden sm:inline-flex bg-white bg-opacity-20 hover:bg-opacity-40 text-white px-4 py-2 rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm" href="views/login.php">
     <i class="fas fa-sign-in-alt mr-1">
     </i>
     Login
@@ -41,7 +41,7 @@ $cidades = $cidadeModel->listar();
   <nav id="mobile-menu"
     class="sm:hidden hidden absolute top-full left-0 right-0 py-1 px-4 max-w-5xl mx-auto bg-[#1B3B57] shadow-lg z-50 rounded-b-md">
     <a href="views/navegacao_forms.php"
-      class="block border border-white bg-white bg-opacity-20 hover:bg-opacity-40 text-white rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm px-4 py-2 mt-2">
+      class="block bg-white bg-opacity-20 hover:bg-opacity-40 text-white rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm px-4 py-2 mt-2">
       <i class="fas fa-cog mr-2"></i>Administração
     </a>
     <form class="mt-4 flex flex-col gap-4 pb-4" aria-label="Formulário de filtro de eventos">
@@ -74,9 +74,9 @@ $cidades = $cidadeModel->listar();
             </option>
           <?php endforeach; ?>
         </select> -->
-        <div class="flex gap-2">
+        <div class="flex items-center justify-center gap-2">
           <button type="submit"
-            class="bg-gray-600 hover:bg-blue-700 text-white font-medium rounded-md px-4 py-2 flex items-center justify-center space-x-2">
+            class="bg-white bg-opacity-20 hover:bg-opacity-40 text-white font-medium rounded-md px-4 py-2 flex items-center justify-center space-x-2">
             <i class="fas fa-search"></i>
             <span>Pesquisar</span>
           </button>
@@ -117,7 +117,7 @@ $cidades = $cidadeModel->listar();
       </select> -->
       <div class="flex gap-2">
         <button type="submit"
-          class="bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-md px-6 py-2  flex items-center justify-center space-x-2 shrink-0">
+          class="bg-white bg-opacity-20 hover:bg-opacity-40 text-white font-medium rounded-md px-6 py-2  flex items-center justify-center space-x-2 shrink-0">
           <i class="fas fa-search"></i>
           <span>Pesquisar</span>
         </button>

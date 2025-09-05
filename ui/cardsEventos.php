@@ -15,6 +15,7 @@ $totalEventos = isset($eventos) ? count($eventos) : 0;
         </div>
     <?php endif; ?>
     <?php foreach ($eventos as $evento): ?>
+        
         <!-- Card Evento -->
         <div class="bg-white rounded-lg shadow-xl overflow-hidden">
             <div class="relative">
@@ -49,7 +50,7 @@ $totalEventos = isset($eventos) ? count($eventos) : 0;
                         Local: <?= htmlspecialchars($evento['enderecorua'] ?? 'Local a definir') ?> - <?= htmlspecialchars($evento['nome_cidade'] ?? 'Cidade') ?>
                     </p> -->
                     <button
-                        class="w-full py-3 border border-white bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
+                        class="w-full py-3 bg-white/20 hover:bg-white/30 rounded-md font-semibold transition"
                         type="button"
                         onclick="abrirModalEvento('modal-home-<?= $evento['publicacaoid'] ?>')">
                         Ver Detalhes
