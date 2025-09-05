@@ -1,4 +1,7 @@
 <?php
+require_once('../utils/admin_verification.php');
+verificarPermissaoAdmin();
+
 require_once('../controllers/tipopublico_controller.php');
 
 $mensagem = '';

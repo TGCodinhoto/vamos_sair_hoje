@@ -1,94 +1,112 @@
 <?php
 require_once '../conexao.php';
+require_once 'base_controller.php';
 require_once '../models/publicacao_model.php';
 require_once '../models/atracao_model.php';
 require_once '../models/endereco_model.php';
 require_once '../models/local_model.php';
 
-// Inicializa os models
-$publicacaoModel = new PublicacaoModel($conexao);
-$atracaoModel = new AtracaoModel($conexao);
-$enderecoModel = new EnderecoModel($conexao);
-$localModel = new LocalModel($conexao);
+class LocalController extends BaseController {
+    private $conexao;
+    private $publicacaoModel;
+    private $atracaoModel;
+    private $enderecoModel;
+    private $localModel;
 
-// ROTEAMENTO DE REQUISIÇÕES
-$request_method = $_SERVER['REQUEST_METHOD'];
+    public function __construct() {
+        $this->conexao = Conexao::getInstance();
+        $this->publicacaoModel = new PublicacaoModel($this->conexao);
+        $this->atracaoModel = new AtracaoModel($this->conexao);
+        $this->enderecoModel = new EnderecoModel($this->conexao);
+        $this->localModel = new LocalModel($this->conexao);
+    }
 
-// --- SE A REQUISIÇÃO FOR POST (Formulário foi enviado) ---
-if ($request_method === 'POST') {
+    public function verificarPermissaoEstabelecimento() {
+        $this->verificarSessao();
+        
+        // Verifica se o usuário é do tipo 1 (admin) ou 2 (estabelecimento)
+        if ($_SESSION['usertipo'] != 1 && $_SESSION['usertipo'] != 2) {
+            header("Location: ../views/login.php");
+            exit();
+        }
+    }
 
-    // Roteia a ação com base no campo oculto 'acao' do formulário
-    $acao = $_POST['acao'] ?? 'criar'; // Se 'acao' não existir, assume que é 'criar'
+    public function processarRequisicao() {
+        $this->verificarSessao();
+        
+        // Permite acesso apenas para admin (1) ou estabelecimento (2)
+        if ($_SESSION['usertipo'] != 1 && $_SESSION['usertipo'] != 2) {
+            header("Location: ../views/login.php");
+            exit();
+        }
 
-    if ($acao === 'atualizar') {
-        // --- LÓGICA DE ATUALIZAÇÃO ---
+        $request_method = $_SERVER['REQUEST_METHOD'];
+        if ($request_method === 'POST') {
+            $acao = $_POST['acao'] ?? 'criar';
+
+            switch ($acao) {
+                case 'atualizar':
+                    $this->atualizarLocal();
+                    break;
+                case 'excluir':
+                    $this->excluirLocal();
+                    break;
+                case 'criar':
+                default:
+                    $this->criarLocal();
+                    break;
+            }
+        }
+    }
+
+    private function atualizarLocal() {
         try {
-            // Processar uploads de imagens para a atualização
             $dados = $_POST;
             
-            // Processar fotos 1 e 2 (publicacao)
-            $foto1 = processarUpload($_FILES['foto1'] ?? null, 'uploads');
-            $foto2 = processarUpload($_FILES['foto2'] ?? null, 'uploads');
+            $dados['foto01'] = $this->processarUpload($_FILES['foto1'] ?? null, 'uploads');
+            $dados['foto02'] = $this->processarUpload($_FILES['foto2'] ?? null, 'uploads');
+            $dados['foto03'] = $this->processarUpload($_FILES['foto3'] ?? null, 'uploads');
+            $dados['foto04'] = $this->processarUpload($_FILES['foto4'] ?? null, 'uploads');
+            $dados['foto05'] = $this->processarUpload($_FILES['foto5'] ?? null, 'uploads');
             
-            // Processar fotos 3, 4 e 5 (local)
-            $foto3 = processarUpload($_FILES['foto3'] ?? null, 'uploads');
-            $foto4 = processarUpload($_FILES['foto4'] ?? null, 'uploads');
-            $foto5 = processarUpload($_FILES['foto5'] ?? null, 'uploads');
+            $this->localModel->atualizarLocal($dados);
             
-            // Adicionar as fotos processadas aos dados
-            if ($foto1) $dados['foto01'] = $foto1;
-            if ($foto2) $dados['foto02'] = $foto2;
-            if ($foto3) $dados['foto03'] = $foto3;
-            if ($foto4) $dados['foto04'] = $foto4;
-            if ($foto5) $dados['foto05'] = $foto5;
-            
-            // Chama o método de atualização do model
-            $localModel->atualizarLocal($dados);
-            
-            // Redireciona de volta para o formulário de edição com mensagem de sucesso
             header("Location: ../views/form_local.php?editar=true&publicacao_id=" . $_POST['publicacao_id'] . "&msg=success");
             exit;
-
         } catch (Exception $e) {
-            // Em caso de erro, redireciona de volta com a mensagem de erro
             error_log("Erro ao ATUALIZAR local: " . $e->getMessage());
             header("Location: ../views/form_local.php?editar=true&publicacao_id=" . $_POST['publicacao_id'] . "&msg=error&erro=" . urlencode($e->getMessage()));
             exit;
         }
+    }
 
-    } elseif ($acao === 'excluir') {
-        // --- LÓGICA DE EXCLUSÃO ---
+    private function excluirLocal() {
         try {
             $publicacaoId = $_POST['publicacao_id'];
-            $localModel->excluirPorPublicacaoId($publicacaoId);
+            $this->localModel->excluirPorPublicacaoId($publicacaoId);
             
-            // Redireciona para a lista de locais com mensagem de sucesso
-            header("Location: ../views/listar_eventos.php?msg=delete_success");
+            header("Location: ../views/listar_local.php?msg=delete_success");
             exit;
-
         } catch (Exception $e) {
-            // Em caso de erro, redireciona com a mensagem de erro
             error_log("Erro ao EXCLUIR local: " . $e->getMessage());
-            header("Location: ../views/listar_eventos.php?msg=delete_error&erro=" . urlencode($e->getMessage()));
+            header("Location: ../views/listar_local.php?msg=delete_error&erro=" . urlencode($e->getMessage()));
             exit;
         }
+    }
 
-        } elseif ($acao === 'criar') {
-        // --- LÓGICA DE CRIAÇÃO (DEFAULT) ---
+    private function criarLocal() {
         try {
-            $conexao->beginTransaction();
+            $this->conexao->beginTransaction();
 
-            // Debug: Verificar dados recebidos
             error_log("Dados recebidos no local_controller:");
             error_log("Cidade: " . ($_POST['cidade'] ?? 'não definido'));
             error_log("Estado: " . ($_POST['estado'] ?? 'não definido'));
 
-            // Verificar se a cidade existe antes de tentar criar o endereço
             if (empty($_POST['cidade'])) {
                 throw new Exception("Cidade não foi selecionada.");
             }
 
-            $stmt = $conexao->prepare("SELECT cidadeid FROM cidade WHERE cidadeid = :cidade_id");
+            $stmt = $this->conexao->prepare("SELECT cidadeid FROM cidade WHERE cidadeid = :cidade_id");
             $stmt->bindParam(':cidade_id', $_POST['cidade']);
             $stmt->execute();
             
@@ -96,17 +114,12 @@ if ($request_method === 'POST') {
                 throw new Exception("Cidade selecionada não existe no banco de dados. ID: " . $_POST['cidade']);
             }
 
-            // 1. Processar uploads de imagens
-            // Fotos 1 e 2 vão para tabela publicacao
-            $nomeFoto1 = processarUpload($_FILES['foto1'] ?? null, 'uploads');
-            $nomeFoto2 = processarUpload($_FILES['foto2'] ?? null, 'uploads');
-            
-            // Fotos 3, 4 e 5 vão para tabela local
-            $nomeFoto3 = processarUpload($_FILES['foto3'] ?? null, 'uploads');
-            $nomeFoto4 = processarUpload($_FILES['foto4'] ?? null, 'uploads');
-            $nomeFoto5 = processarUpload($_FILES['foto5'] ?? null, 'uploads');
+            $nomeFoto1 = $this->processarUpload($_FILES['foto1'] ?? null, 'uploads');
+            $nomeFoto2 = $this->processarUpload($_FILES['foto2'] ?? null, 'uploads');
+            $nomeFoto3 = $this->processarUpload($_FILES['foto3'] ?? null, 'uploads');
+            $nomeFoto4 = $this->processarUpload($_FILES['foto4'] ?? null, 'uploads');
+            $nomeFoto5 = $this->processarUpload($_FILES['foto5'] ?? null, 'uploads');
 
-            // Debug: Log das fotos processadas
             error_log("Fotos processadas:");
             error_log("Foto1: " . ($nomeFoto1 ?: 'null'));
             error_log("Foto2: " . ($nomeFoto2 ?: 'null'));
@@ -114,21 +127,19 @@ if ($request_method === 'POST') {
             error_log("Foto4: " . ($nomeFoto4 ?: 'null'));
             error_log("Foto5: " . ($nomeFoto5 ?: 'null'));
 
-            // 2. Criar publicação com foto1 e foto2
-            $publicacaoId = $publicacaoModel->criar([
+            $publicacaoId = $this->publicacaoModel->criar([
                 'nome' => $_POST['nome'],
                 'validade_inicial' => $_POST['validade-inicial'],
                 'validade_final' => $_POST['validade-final'],
                 'auditado' => isset($_POST['auditado']) ? 1 : 0,
                 'foto1' => $nomeFoto1,
                 'foto2' => $nomeFoto2,
-                'video' => null, // Locais não têm vídeo no formulário atual
+                'video' => null,
                 'paga' => isset($_POST['publicacao-pagamento']) ? 1 : 0,
-                'user_id' => 1 // TODO: Substituir pelo ID do usuário logado
+                'user_id' => $_SESSION['userid']
             ]);
 
-            // 3. Criar endereço
-            $enderecoId = $enderecoModel->criar([
+            $enderecoId = $this->enderecoModel->criar([
                 'logradouro' => $_POST['logradouro'],
                 'numero' => $_POST['numero'],
                 'bairro' => $_POST['bairro'],
@@ -138,8 +149,7 @@ if ($request_method === 'POST') {
                 'complemento' => $_POST['complemento'] ?? null
             ]);
 
-            // 4. Criar atração
-            $atracaoModel->criar([
+            $this->atracaoModel->criar([
                 'publicacao_id' => $publicacaoId,
                 'endereco_id' => $enderecoId,
                 'classificacao_id' => $_POST['classificacao'],
@@ -153,8 +163,7 @@ if ($request_method === 'POST') {
                 'tiktok' => $_POST['tiktok'] ?? null
             ]);
 
-            // 5. Criar entrada na tabela local com foto3, foto4 e foto5
-            $localModel->criar([
+            $this->localModel->criar([
                 'publicacao_id' => $publicacaoId,
                 'tipo_local_id' => $_POST['tipo-local'],
                 'foto03' => $nomeFoto3,
@@ -162,52 +171,54 @@ if ($request_method === 'POST') {
                 'foto05' => $nomeFoto5
             ]);
 
-            $conexao->commit();
-
+            $this->conexao->commit();
             header("Location: ../views/form_local.php?msg=success");
             exit;
-
         } catch (Exception $e) {
-            if ($conexao->inTransaction()) {
-                $conexao->rollBack();
+            if ($this->conexao->inTransaction()) {
+                $this->conexao->rollBack();
             }
             error_log("Erro ao CADASTRAR local: " . $e->getMessage());
             header("Location: ../views/form_local.php?msg=error&erro=" . urlencode($e->getMessage()));
             exit;
         }
     }
-}
 
-function processarUpload($arquivo, $pasta)
-{
-    if (!isset($arquivo) || $arquivo['error'] !== UPLOAD_ERR_OK) {
-        return null;
+    private function processarUpload($arquivo, $pasta) {
+        if (!isset($arquivo) || $arquivo['error'] !== UPLOAD_ERR_OK) {
+            return null;
+        }
+
+        $extensoesPermitidas = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        $extensao = strtolower(pathinfo($arquivo['name'], PATHINFO_EXTENSION));
+
+        if (!in_array($extensao, $extensoesPermitidas)) {
+            throw new Exception("Extensão de arquivo não permitida.");
+        }
+
+        $nomeUnico = uniqid() . '.' . $extensao;
+        $caminhoDestino = "../$pasta/" . $nomeUnico;
+
+        if (!move_uploaded_file($arquivo['tmp_name'], $caminhoDestino)) {
+            throw new Exception("Falha ao mover o arquivo enviado.");
+        }
+
+        return $nomeUnico;
     }
 
-    $extensoesPermitidas = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-    $extensao = strtolower(pathinfo($arquivo['name'], PATHINFO_EXTENSION));
-
-    if (!in_array($extensao, $extensoesPermitidas)) {
-        throw new Exception("Extensão de arquivo não permitida.");
+    public function listarLocaisCompletos($userId = null) {
+        if ($_SESSION['usertipo'] != 1) {
+            $this->verificarPermissaoEstabelecimento();
+        }
+        return $this->localModel->listarLocaisCompletos($userId);
     }
 
-    $nomeUnico = uniqid() . '.' . $extensao;
-    $caminhoDestino = "../$pasta/" . $nomeUnico;
-
-    if (!move_uploaded_file($arquivo['tmp_name'], $caminhoDestino)) {
-        throw new Exception("Falha ao mover o arquivo enviado.");
+    public function buscarLocalPorId($publicacao_id) {
+        $this->verificarPermissaoEstabelecimento();
+        return $this->localModel->buscarLocalPorId($publicacao_id);
     }
-
-    return $nomeUnico;
 }
 
-function listarLocaisCompletos()
-{
-    global $localModel;
-    return $localModel->listarLocaisCompletos();
-}
-
-function buscarLocalPorId($publicacao_id) {
-    global $localModel;
-    return $localModel->buscarLocalPorId($publicacao_id);
-}
+// Instancia o controller e processa a requisição
+$controller = new LocalController();
+$controller->processarRequisicao();

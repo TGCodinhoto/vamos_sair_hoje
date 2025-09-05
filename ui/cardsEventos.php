@@ -1,5 +1,9 @@
 <?php
-// O array $eventos já é definido no index.php, conforme filtros aplicados.
+// Buscar eventos do banco de dados
+require_once __DIR__ . '/../controllers/evento_controller.php';
+$controller = new EventoController();
+$todosEventos = $controller->listarEventosCompletos();
+$totalEventos = count($todosEventos);
 $eventosPorPagina = 6;
 $totalEventos = isset($eventos) ? count($eventos) : 0;
 ?>

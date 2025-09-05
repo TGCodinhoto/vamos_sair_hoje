@@ -259,9 +259,9 @@ class LocalModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function listarLocaisCompletos()
+    public function listarLocaisCompletos($userId = null)
     {
-        $stmt = $this->conexao->query("
+        $sql = "
             SELECT 
                 p.publicacaoid,
                 p.publicacaonome,
@@ -272,6 +272,7 @@ class LocalModel
                 p.publicacaovideo,
                 p.publicacaoauditada,
                 p.publicacaopaga,
+                p.userid,
                 
                 a.atracaotelefone,
                 a.atracaowebsite,
@@ -309,9 +310,21 @@ class LocalModel
             LEFT JOIN tipopublico tp ON a.tipopublicoid = tp.tipopublicoid
             LEFT JOIN segmento s ON a.segmentoid = s.segmentoid
             LEFT JOIN categoria cat ON a.categoriaid = cat.categoriaid
-            ORDER BY p.publicacaoid DESC
-        ");
+            WHERE 1=1";
+        
+        if ($userId !== null) {
+            $sql .= " AND p.userid = :userid";
+        }
+        
+        $sql .= " ORDER BY p.publicacaoid DESC";
 
+        $stmt = $this->conexao->prepare($sql);
+        
+        if ($userId !== null) {
+            $stmt->bindParam(':userid', $userId);
+        }
+        
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

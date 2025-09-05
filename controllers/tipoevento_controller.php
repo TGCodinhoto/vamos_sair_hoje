@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../conexao.php';
 require_once __DIR__ . '/../models/tipo_evento_model.php';
 
+$conexao = Conexao::getInstance();
 $tipoEventoModel = new TipoEventoModel($conexao);
 
 if (isset($_GET['delete'])) {

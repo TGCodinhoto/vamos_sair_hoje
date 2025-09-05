@@ -1,4 +1,4 @@
-    <?php
+<?php
 session_start();
 
 // Verifica se o usuário já está autenticado
@@ -15,17 +15,13 @@ unset($_SESSION['mensagem']);
 <!DOCTYPE html>
 <html class="h-full bg-[#1B3B57]" lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>Tela de Login</title>
-    <link rel="shortcut icon" href="../image/favicon.svg" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha - VS Hoje</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="../image/favicon.svg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
         :root {
             --primary-color: #2563eb;
             --primary-hover: #1d4ed8;
@@ -135,48 +131,31 @@ unset($_SESSION['mensagem']);
             height: 20px;
         }
 
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--secondary-color);
-            cursor: pointer;
-            width: 20px;
-            height: 20px;
-        }
-
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
+        .back-button {
+            display: inline-flex;
             align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .remember-me input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary-color);
-        }
-
-        .forgot-password {
-            color: var(--primary-color);
+            justify-content: center;
+            color: var(--white);
             text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
             transition: var(--transition);
         }
 
-        .forgot-password:hover {
-            text-decoration: underline;
+        .back-button svg {
+            width: 28px;
+            height: 28px;
+            opacity: 0.9;
+        }
+
+        .back-button:hover {
+            transform: translateX(-3px);
+        }
+
+        .back-button:hover svg {
+            opacity: 1;
+        }
+
+        .back-button:active {
+            transform: translateX(0);
         }
 
         .login-btn {
@@ -219,31 +198,24 @@ unset($_SESSION['mensagem']);
             text-decoration: underline;
         }
 
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            text-decoration: none;
-            transition: var(--transition);
+        .success-message {
+            color: #059669;
+            background-color: #d1fae5;
+            border: 1px solid #34d399;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
         }
 
-        .back-button svg {
-            width: 28px;
-            height: 28px;
-            opacity: 0.9;
-        }
-
-        .back-button:hover {
-            transform: translateX(-3px);
-        }
-
-        .back-button:hover svg {
-            opacity: 1;
-        }
-
-        .back-button:active {
-            transform: translateX(0);
+        .error-message {
+            color: #dc2626;
+            background-color: #fee2e2;
+            border: 1px solid #ef4444;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
         }
 
         @keyframes slideUp {
@@ -270,43 +242,28 @@ unset($_SESSION['mensagem']);
                 padding: 30px 20px;
             }
         }
-
-        .error-message {
-            color: #dc2626;
-            background-color: #fee2e2;
-            border: 1px solid #ef4444;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .success-message {
-            color: #059669;
-            background-color: #d1fae5;
-            border: 1px solid #34d399;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
     </style>
 </head>
 <body class="h-full flex items-center justify-center px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg relative">
-        <a href="../index.php" class="absolute left-4 top-4 text-gray-600 hover:text-gray-900">
+        <a href="login.php" class="absolute left-4 top-4 text-gray-600 hover:text-gray-900">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
         </a>
-        <div class="flex justify-center">
-            <a href="../index.php">
-                <img alt="Logo Vamos Sair Hoje" class="h-20 w-20" src="../image/favicon.svg" />
-            </a>
+        <div>
+            <div class="flex justify-center">
+                <a href="../index.php">
+                    <img alt="Logo VS Hoje" class="h-20 w-20" src="../image/favicon.svg" />
+                </a>
+            </div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Recuperar Senha
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Digite seu e-mail para recuperar sua senha
+            </p>
         </div>
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Entrar na sua conta
-        </h2>
 
         <?php if ($erro): ?>
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -320,86 +277,52 @@ unset($_SESSION['mensagem']);
             </div>
         <?php endif; ?>
 
-        <form class="mt-8 space-y-6" method="POST" action="login_process.php" id="loginForm">
-            <div class="rounded-md shadow-sm -space-y-px">
-                <div>
-                    <label class="sr-only" for="email">Endereço de email</label>
-                    <input autocomplete="email" 
-                           class="appearance-none rounded-t-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
-                           id="email" 
-                           name="email" 
-                           placeholder="Endereço de email" 
-                           required="" 
-                           type="email"
-                           value="<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>">
-                    <?php unset($_SESSION['email']); ?>
-                </div>
-                <div>
-                    <label class="sr-only" for="senha">Senha</label>
-                    <input autocomplete="current-password" 
-                           class="appearance-none rounded-b-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
-                           id="senha" 
-                           name="senha" 
-                           placeholder="Senha" 
-                           required="" 
-                           type="password">
-                </div>
+        <form class="mt-8 space-y-6" method="POST" action="recuperar_senha_process.php" id="recuperarForm">
+            <div>
+                <label class="sr-only" for="email">Endereço de email</label>
+                <input autocomplete="email" 
+                       class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                       id="email" 
+                       name="email" 
+                       placeholder="Endereço de email" 
+                       required 
+                       type="email">
             </div>
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <input class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" 
-                           id="remember" 
-                           name="remember" 
-                           type="checkbox">
-                    <label class="ml-2 block text-sm text-gray-900" for="remember">Lembrar-me</label>
-                </div>
-                <div class="text-sm">
-                    <a class="font-medium text-blue-600 hover:text-blue-500" href="recuperar_senha.php">
-                        Esqueceu a senha?
-                    </a>
-                </div>
-            </div>
+
             <div>
                 <button type="submit" 
                         class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Entrar
+                    Enviar Link de Recuperação
                 </button>
             </div>
+
             <p class="mt-6 text-center text-sm text-gray-600">
-                Não tem uma conta?
-                <a class="font-medium text-blue-600 hover:text-blue-500" href="cadastro.php">
-                    Crie uma agora
+                Lembrou sua senha?
+                <a class="font-medium text-blue-600 hover:text-blue-500" href="login.php">
+                    Voltar ao login
                 </a>
             </p>
         </form>
     </div>
 
     <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('senha');
-            const toggleButton = document.querySelector('.password-toggle');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleButton.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                        <line x1="1" y1="1" x2="23" y2="23"></line>
-                    </svg>
-                `;
-            } else {
-                passwordInput.type = 'password';
-                toggleButton.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                `;
-            }
-        }
-
-        // Adiciona foco automático no campo de email
         document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('recuperarForm');
+            
+            form.addEventListener('submit', function(e) {
+                const button = form.querySelector('button[type="submit"]');
+                const originalText = button.textContent;
+                button.disabled = true;
+                button.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Enviando...
+                `;
+            });
+
+            // Adiciona foco automático no campo de email
             document.getElementById('email').focus();
         });
     </script>

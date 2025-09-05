@@ -1,4 +1,6 @@
 <?php
+require_once('../utils/admin_verification.php');
+verificarPermissaoAdmin();
 
 require_once('../controllers/formatoevento_controller.php');
 

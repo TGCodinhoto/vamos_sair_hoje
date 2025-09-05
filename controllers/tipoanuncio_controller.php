@@ -3,6 +3,7 @@
 require_once '../conexao.php';
 require_once '../models/tipo_anuncio_model.php';
 
+$conexao = Conexao::getInstance();
 $tipoAnuncioModel = new TipoAnuncioModel($conexao);
 
 if (isset($_GET['delete'])) {

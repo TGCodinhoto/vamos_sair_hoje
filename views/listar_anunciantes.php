@@ -1,5 +1,11 @@
 <?php
+require_once('../utils/admin_verification.php');
 require_once('../controllers/anunciante_controller.php');
+
+if (!isAdmin()) {
+    header('Location: ../index.php');
+    exit();
+}
 
 $anuncios = listarAnunciosCompletos();
 

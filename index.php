@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
 
@@ -36,11 +39,14 @@
     $dataFinal = $_GET['data_final'] ?? null;
     $tipoEvento = $_GET['tipo_evento'] ?? null;
 
+    // Cria uma instância do EventoController
+    $eventoController = new EventoController();
+
     // Busca eventos conforme filtros
     if ($cidade || $dataInicial || $dataFinal || $tipoEvento) {
-        $eventos = buscarEventosFiltrados($conexao, $cidade, $dataInicial, $dataFinal, $tipoEvento);
+        $eventos = $eventoController->buscarEventosFiltrados($cidade, $dataInicial, $dataFinal, $tipoEvento);
     } else {
-        $eventos = listarEventosCompletos();
+        $eventos = $eventoController->listarEventosCompletos();
     }
     ?>
 

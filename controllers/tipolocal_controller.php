@@ -2,6 +2,7 @@
 require_once '../conexao.php';
 require_once '../models/tipo_local_model.php';
 
+$conexao = Conexao::getInstance();
 $tipoLocalModel = new TipoLocalModel($conexao);
 
 if (isset($_GET['delete'])) {
