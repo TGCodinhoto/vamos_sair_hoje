@@ -33,6 +33,7 @@ $cidades = $cidadeModel->listar();
       <i class="fas fa-bars"></i>
     </button>
 
+<<<<<<< HEAD
     <?php if (isset($_SESSION['userid'])): ?>
       <div class="hidden sm:flex items-center gap-4">
         <?php if ($_SESSION['usertipo'] == 2 || $_SESSION['usertipo'] == 1): ?>
@@ -53,11 +54,24 @@ $cidades = $cidadeModel->listar();
         </a>
       </div>
     <?php endif; ?>
+=======
+    <a href="views/navegacao_forms.php"
+      class="hidden sm:inline-flex bg-white bg-opacity-20 hover:bg-opacity-40 text-white px-4 py-2 rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm">
+      <i class="fas fa-cog mr-1"></i>Administração
+    </a>
+
+    <a class="hidden sm:inline-flex bg-white bg-opacity-20 hover:bg-opacity-40 text-white px-4 py-2 rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm" href="views/login.php">
+    <i class="fas fa-sign-in-alt mr-1">
+    </i>
+    Login
+   </a>
+>>>>>>> 755eddcaf6847e1e2a2e1cfe8ee9a2e7f5f6bdb0
   </div>
 
   <!-- Mobile -->
   <nav id="mobile-menu"
     class="sm:hidden hidden absolute top-full left-0 right-0 py-1 px-4 max-w-5xl mx-auto bg-[#1B3B57] shadow-lg z-50 rounded-b-md">
+<<<<<<< HEAD
     <?php if (isset($_SESSION['userid'])): ?>
       <div class="flex flex-col gap-2 mt-2 mb-4">
         <?php if ($_SESSION['usertipo'] == 2): ?>
@@ -78,6 +92,12 @@ $cidades = $cidadeModel->listar();
         </a>
       </div>
     <?php endif; ?>
+=======
+    <a href="views/navegacao_forms.php"
+      class="block bg-white bg-opacity-20 hover:bg-opacity-40 text-white rounded text-sm font-medium transition items-center whitespace-nowrap backdrop-blur-sm px-4 py-2 mt-2">
+      <i class="fas fa-cog mr-2"></i>Administração
+    </a>
+>>>>>>> 755eddcaf6847e1e2a2e1cfe8ee9a2e7f5f6bdb0
     <form class="mt-4 flex flex-col gap-4 pb-4" aria-label="Formulário de filtro de eventos">
       <form method="GET" action="index.php" class="mt-4 flex flex-col gap-4 pb-4" aria-label="Formulário de filtro de eventos">
         <?php

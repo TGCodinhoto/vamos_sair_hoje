@@ -1,9 +1,13 @@
 <?php
+<<<<<<< HEAD
 // Buscar eventos do banco de dados
 require_once __DIR__ . '/../controllers/evento_controller.php';
 $controller = new EventoController();
 $todosEventos = $controller->listarEventosCompletos();
 $totalEventos = count($todosEventos);
+=======
+// O array $eventos já é definido no index.php, conforme filtros aplicados.
+>>>>>>> 755eddcaf6847e1e2a2e1cfe8ee9a2e7f5f6bdb0
 $eventosPorPagina = 6;
 $totalEventos = isset($eventos) ? count($eventos) : 0;
 ?>
