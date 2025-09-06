@@ -163,9 +163,19 @@ $cidades = $cidadeModel->listar();
 <!-- Icones -->
 <nav class="bg-[#f0f0f0] py-3 sm:py-4 md:py-6">
   <ul class="max-w-5xl mx-auto flex flex-wrap justify-center gap-x-6 gap-y-4 md:gap-x-10 md:gap-y-6 px-4 text-center">
-    <?php foreach ($tipoEvento as $tipo): ?>
+    <?php
+    $cidadeSelecionada = $_GET['cidade'] ?? '';
+    $dataInicialSelecionada = $_GET['data_inicial'] ?? '';
+    $dataFinalSelecionada = $_GET['data_final'] ?? '';
+    foreach ($tipoEvento as $tipo):
+      $url = 'index.php?';
+      if ($cidadeSelecionada !== '') $url .= 'cidade=' . urlencode($cidadeSelecionada) . '&';
+      if ($dataInicialSelecionada !== '') $url .= 'data_inicial=' . urlencode($dataInicialSelecionada) . '&';
+      if ($dataFinalSelecionada !== '') $url .= 'data_final=' . urlencode($dataFinalSelecionada) . '&';
+      $url .= 'tipo_evento=' . urlencode($tipo['tipoeventoid']);
+    ?>
       <li>
-        <a href="index.php?tipo_evento=<?= htmlspecialchars($tipo['tipoeventoid']) ?>"
+        <a href="<?= $url ?>"
           class="flex flex-col items-center text-gray-700 text-sm md:text-base font-semibold hover:text-[#1B3B57] hover:scale-105 hover:cursor-pointer transition-transform duration-200 w-20 sm:w-24 md:w-auto"
           title="Filtrar por <?= htmlspecialchars($tipo['tipoeventonome']) ?>">
           <?php

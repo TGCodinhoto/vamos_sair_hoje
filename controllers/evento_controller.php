@@ -431,7 +431,7 @@ function buscarEventosFiltrados($conexao, $cidade = null, $dataInicial = null, $
         $sql .= " AND e.eventodia <= :data_final";
         $params[':data_final'] = $dataFinal;
     }
-    if ($tipoEvento) {
+    if ($tipoEvento !== null && $tipoEvento !== '') {
         $sql .= " AND e.tipoeventoid = :tipo_evento";
         $params[':tipo_evento'] = $tipoEvento;
     }

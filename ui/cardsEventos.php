@@ -17,7 +17,43 @@ $totalEventos = isset($eventos) ? count($eventos) : 0;
                 Nenhum evento encontrado para os filtros selecionados.
             </div>
         </div>
-    <?php endif; ?>
+        <?php endif; ?>
+        <?php if (empty($eventos)):
+            // Mensagem personalizada de acordo com os filtros
+            $cidadeNome = '';
+            $tipoNome = '';
+            if (!empty($_GET['cidade'])) {
+                // Buscar nome da cidade
+                foreach ($cidades ?? [] as $cidade) {
+                    if ($cidade['cidadeid'] == $_GET['cidade']) {
+                        $cidadeNome = $cidade['cidadenome'];
+                        break;
+                    }
+                }
+            }
+            if (!empty($_GET['tipo_evento'])) {
+                foreach ($tipoEvento ?? [] as $tipo) {
+                    if ($tipo['tipoeventoid'] == $_GET['tipo_evento']) {
+                        $tipoNome = $tipo['tipoeventonome'];
+                        break;
+                    }
+                }
+            }
+        ?>
+        <div class="col-span-full text-center py-8">
+            <div class="bg-red-100 text-red-700 rounded-lg px-6 py-4 inline-block shadow">
+                <?php if ($cidadeNome && $tipoNome): ?>
+                    Não foi encontrado evento em <?= htmlspecialchars($cidadeNome) ?> do tipo <?= htmlspecialchars($tipoNome) ?>.
+                <?php elseif ($cidadeNome): ?>
+                    Não foi encontrado evento em <?= htmlspecialchars($cidadeNome) ?>.
+                <?php elseif ($tipoNome): ?>
+                    Não foi encontrado evento do tipo <?= htmlspecialchars($tipoNome) ?>.
+                <?php else: ?>
+                    Nenhum evento encontrado.
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php endif; ?>
     <?php foreach ($eventos as $evento): ?>
 
         <!-- Card Evento -->
