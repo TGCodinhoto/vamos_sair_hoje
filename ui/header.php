@@ -17,7 +17,6 @@ $cidades = $cidadeModel->listar();
 ?>
 
 <!-- Header -->
-
 <header class="bg-[#1B3B57] text-white py-5 sm:py-6 relative z-50">
   <div class="max-w-5xl mx-auto px-4 flex items-center justify-between sm:justify-center sm:space-x-6">
 
@@ -108,13 +107,11 @@ $cidades = $cidadeModel->listar();
             </option>
           <?php endforeach; ?>
         </select> -->
-        <div class="flex items-center justify-center gap-2">
           <button type="submit"
             class="bg-white bg-opacity-20 hover:bg-opacity-40 text-white font-medium rounded-md px-4 py-2 flex items-center justify-center space-x-2">
             <i class="fas fa-search"></i>
             <span>Pesquisar</span>
           </button>
-        </div>
       </form>
   </nav>
 
