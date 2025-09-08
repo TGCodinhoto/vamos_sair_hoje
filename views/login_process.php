@@ -15,6 +15,28 @@ try {
         throw new Exception('Por favor, preencha seu email e senha');
     }
 
+    // Verifica se o captcha foi preenchido
+    if (!isset($_POST['h-captcha-response'])) {
+        throw new Exception('Por favor, complete o captcha');
+    }
+
+    // Verifica o captcha com o hCaptcha
+    $secret = 'ES_5048e03e274346d18f4fb8d54b47b0d5';
+    $verify = curl_init();
+    curl_setopt($verify, CURLOPT_URL, "https://api.hcaptcha.com/siteverify");
+    curl_setopt($verify, CURLOPT_POST, true);
+    curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query([
+        'secret' => $secret,
+        'response' => $_POST['h-captcha-response']
+    ]));
+    curl_setopt($verify, CURLOPT_RETURNTRANSFER, true);
+    $response = json_decode(curl_exec($verify));
+    curl_close($verify);
+
+    if (!$response->success) {
+        throw new Exception('Verificação do captcha falhou. Por favor, tente novamente.');
+    }
+
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
     $senha = $_POST['senha'];
 

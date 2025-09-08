@@ -12,6 +12,11 @@ function buscarEventoPorId($publicacao_id) {
 
 // Obter dados para os dropdowns diretamente via SQL para evitar problemas com models
 try {
+    $conexao = Conexao::getInstance();
+    if (!$conexao) {
+        throw new Exception("Erro ao conectar ao banco de dados");
+    }
+
     // Buscar cidades
     $cidades = $conexao->query("
         SELECT c.cidadeid, c.cidadenome, e.estadoid, e.estadosigla 
