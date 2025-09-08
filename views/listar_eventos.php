@@ -1,13 +1,17 @@
 <?php
 require_once('../utils/admin_verification.php');
 require_once('../controllers/evento_controller.php');
-$eventoController = new EventoController();
-$eventos = $eventoController->listarEventosCompletos();
 
 if (!isAdmin()) {
     header('Location: ../index.php');
     exit();
 }
+
+// Instancia o EventoController
+$eventoController = new EventoController();
+
+// Busca os eventos usando o controller
+$eventos = $eventoController->listarEventosCompletos();
 
 // Tratamento de mensagens
 $mensagem = '';
