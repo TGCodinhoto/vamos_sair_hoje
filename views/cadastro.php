@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once '../config_env.php';
 
 // Verifica se o usuário já está autenticado
 if (isset($_SESSION['usuario_id'])) {
@@ -140,7 +141,8 @@ unset($_SESSION['form_data']);
             <div id="senha-error" class="text-sm text-red-600 mt-1"></div>
             
             <div class="flex justify-center my-4">
-                <div class="h-captcha" data-sitekey="<?php echo getenv('HCAPTCHA_SITEKEY'); ?>"></div>
+                <?php $sitekey = getenv('HCAPTCHA_SITEKEY'); ?>
+                <div class="h-captcha" data-sitekey="<?php echo htmlspecialchars($sitekey); ?>"></div>
             </div>
 
             <div>
