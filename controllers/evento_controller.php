@@ -435,7 +435,7 @@ function buscarEventosFiltrados($conexao, $cidade = null, $dataInicial = null, $
         $sql .= " AND e.tipoeventoid = :tipo_evento";
         $params[':tipo_evento'] = $tipoEvento;
     }
-    $sql .= " ORDER BY p.publicacaoid DESC";
+    $sql .= " ORDER BY e.eventodia ASC, e.eventohora ASC";
 
     $stmt = $conexao->prepare($sql);
     foreach ($params as $key => $value) {
