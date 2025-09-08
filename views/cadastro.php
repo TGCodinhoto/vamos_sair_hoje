@@ -21,6 +21,7 @@ unset($_SESSION['form_data']);
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="shortcut icon" href="../image/favicon.svg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     
     <style>
         body{
@@ -138,6 +139,10 @@ unset($_SESSION['form_data']);
 
             <div id="senha-error" class="text-sm text-red-600 mt-1"></div>
             
+            <div class="flex justify-center my-4">
+                <div class="h-captcha" data-sitekey="<?php echo getenv('HCAPTCHA_SITEKEY'); ?>"></div>
+            </div>
+
             <div>
                 <button type="submit" 
                         class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">

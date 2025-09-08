@@ -24,6 +24,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 
         <style>
             body{
@@ -98,6 +99,9 @@
                             Esqueceu a senha?
                         </a>
                     </div>
+                </div>
+                <div class="flex justify-center my-4">
+                    <div class="h-captcha" data-sitekey="<?php echo getenv('HCAPTCHA_SITEKEY'); ?>"></div>
                 </div>
                 <div>
                     <button type="submit"
