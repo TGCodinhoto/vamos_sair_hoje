@@ -21,24 +21,12 @@ $mensagem = '';
 $cor = 'green';
 $cidadeEditar = null;
 
+// Instancia os controllers
+$cidadeController = new CidadeController();
+$estadoController = new EstadoController();
+
 if (isset($_GET['editar'])) {
-    $cidadeEditar = buscarCidadePorId($_GET['editar']);
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = $_POST['cidadenome'];
-    $estadoid = $_POST['estadoid'];
-
-    if (!empty($_POST['id'])) {
-        $atualizou = atualizarCidade($_POST['id'], $nome, $estadoid);
-        $mensagem = $atualizou ? "updated" : "error";
-    } else {
-        $inseriu = criarCidade($nome, $estadoid);
-        $mensagem = $inseriu ? "created" : "error";
-    }
-
-    header("Location: form_cidade.php?msg=" . $mensagem);
-    exit;
+    $cidadeEditar = $cidadeController->buscarCidadePorId($_GET['editar']);
 }
 
 if (isset($_GET['msg'])) {
@@ -54,8 +42,9 @@ if (isset($_GET['msg'])) {
     }
 }
 
-$cidades = listarCidades();
-$estados = listarEstados();
+// Busca as listas usando os controllers
+$cidades = $cidadeController->listarCidades();
+$estados = $estadoController->listarEstados();
 ?>
 
 <!DOCTYPE html>
