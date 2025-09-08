@@ -140,7 +140,7 @@ unset($_SESSION['form_data']);
             <div id="senha-error" class="text-sm text-red-600 mt-1"></div>
             
             <div class="flex justify-center my-4">
-                <div class="h-captcha" data-sitekey="b0ea74e8-6e8a-47b4-aae6-3ca6c7a036dc"></div>
+                <div class="h-captcha" data-sitekey="<?php echo getenv('HCAPTCHA_SITEKEY'); ?>"></div>
             </div>
 
             <div>

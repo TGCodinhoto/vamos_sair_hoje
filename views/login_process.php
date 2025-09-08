@@ -3,6 +3,7 @@ require_once '../utils/session_manager.php';
 require_once '../conexao.php';
 require_once '../controllers/usuario_controller.php';
 require_once '../utils/logger.php';
+require_once '../config_env.php';
 
 SessionManager::iniciarSessao();
 
@@ -21,7 +22,10 @@ try {
     }
 
     // Verifica o captcha com o hCaptcha
-    $secret = 'ES_5048e03e274346d18f4fb8d54b47b0d5';
+    $secret = getenv('HCAPTCHA_SECRET');
+    if (!$secret) {
+        throw new Exception('Chave secreta do hCaptcha não configurada');
+    }
     $verify = curl_init();
     curl_setopt($verify, CURLOPT_URL, "https://api.hcaptcha.com/siteverify");
     curl_setopt($verify, CURLOPT_POST, true);
