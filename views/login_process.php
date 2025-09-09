@@ -2,7 +2,6 @@
 require_once '../utils/session_manager.php';
 require_once '../conexao.php';
 require_once '../controllers/usuario_controller.php';
-require_once '../utils/logger.php';
 require_once '../config_env.php';
 
 SessionManager::iniciarSessao();
