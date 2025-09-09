@@ -2,7 +2,7 @@
 ob_start(); // Inicia o buffer de saída
 
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+  session_start();
 }
 
 require_once __DIR__ . '/../conexao.php';
@@ -16,14 +16,26 @@ $cidadeModel = new CidadeModel($conexao);
 $cidades = $cidadeModel->listar();
 ?>
 
+<style>
+  h1 {
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+  }
+
+  .logo {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+  }
+</style>
+
 <!-- Header -->
 <header class="bg-[#1B3B57] text-white py-5 sm:py-6 relative z-50">
   <div class="max-w-5xl mx-auto px-4 flex items-center justify-between sm:justify-center sm:space-x-6">
 
     <div class="flex items-center space-x-2 sm:space-x-4">
-      <a href="index.php"><img src="./image/LogoVSHoje.png" alt="Logo Vamos Sair Hoje" class="w-16 sm:w-28 "></a>
+      <a href="index.php"><img src="./image/LogoVSHoje.png" alt="Logo Vamos Sair Hoje" class="w-16 sm:w-28 logo"></a>
       <h1 class="font-bold text-xl md:text-4xl text-white drop-shadow-lg tracking-wide uppercase select-none">
-        Vamos Sair Hoje!
+        Vamos <span class="text-[#D9A940]">Sair</span> Hoje!
       </h1>
     </div>
 
@@ -46,7 +58,7 @@ $cidades = $cidadeModel->listar();
         </a>
       </div>
     <?php else: ?>
-      <div class="hidden sm:flex items-center space-x-4">
+      <div class="hidden sm:flex items-center space-x-4 md:text-xl">
         <a href="views/login.php" class="text-white hover:text-gray-200">
           <i class="fas fa-sign-in-alt mr-1"></i> Login
         </a>
@@ -87,9 +99,9 @@ $cidades = $cidadeModel->listar();
         ?>
         <select name="cidade" aria-label="Cidade do evento"
           class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-full">
-          <option value=""<?= $cidadeSelecionada === '' ? ' selected' : '' ?>>Todas as cidades</option>
+          <option value="" <?= $cidadeSelecionada === '' ? ' selected' : '' ?>>Todas as cidades</option>
           <?php foreach ($cidades as $cidade): ?>
-            <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>"<?= $cidadeSelecionada == $cidade['cidadeid'] ? ' selected' : '' ?>>
+            <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>" <?= $cidadeSelecionada == $cidade['cidadeid'] ? ' selected' : '' ?>>
               <?= htmlspecialchars($cidade['cidadenome']) ?>
             </option>
           <?php endforeach; ?>
@@ -107,11 +119,11 @@ $cidades = $cidadeModel->listar();
             </option>
           <?php endforeach; ?>
         </select> -->
-          <button type="submit"
-            class="bg-white bg-opacity-20 hover:bg-opacity-40 text-white font-medium rounded-md px-4 py-2 flex items-center justify-center space-x-2">
-            <i class="fas fa-search"></i>
-            <span>Pesquisar</span>
-          </button>
+        <button type="submit"
+          class="bg-white bg-opacity-20 hover:bg-opacity-40 text-white font-medium rounded-md px-4 py-2 flex items-center justify-center space-x-2">
+          <i class="fas fa-search"></i>
+          <span>Pesquisar</span>
+        </button>
       </form>
   </nav>
 
@@ -126,9 +138,9 @@ $cidades = $cidadeModel->listar();
       ?>
       <select name="cidade" aria-label="Cidade do evento"
         class="rounded-md border border-gray-300 px-4 py-2 text-base text-black min-w-[220px]">
-  <option value=""<?= $cidadeSelecionada === '' ? ' selected' : '' ?>>Todas as cidades</option>
+        <option value="" <?= $cidadeSelecionada === '' ? ' selected' : '' ?>>Todas as cidades</option>
         <?php foreach ($cidades as $cidade): ?>
-          <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>"<?= $cidadeSelecionada == $cidade['cidadeid'] ? ' selected' : '' ?>>
+          <option value="<?= htmlspecialchars($cidade['cidadeid']) ?>" <?= $cidadeSelecionada == $cidade['cidadeid'] ? ' selected' : '' ?>>
             <?= htmlspecialchars($cidade['cidadenome']) ?>
           </option>
         <?php endforeach; ?>
@@ -173,7 +185,7 @@ $cidades = $cidadeModel->listar();
     ?>
       <li>
         <a href="<?= $url ?>"
-          class="flex flex-col items-center text-gray-700 text-sm md:text-base font-semibold hover:text-[#1B3B57] hover:scale-105 hover:cursor-pointer transition-transform duration-200 w-20 sm:w-24 md:w-auto"
+          class="flex flex-col items-center text-gray-700 text-sm md:text-base font-semibold hover:text-[#D9A940] hover:scale-105 hover:cursor-pointer transition-transform duration-200 w-20 sm:w-24 md:w-auto"
           title="Filtrar por <?= htmlspecialchars($tipo['tipoeventonome']) ?>">
           <?php
           $img = $tipo['tipoeventoimage'] ?? '';
