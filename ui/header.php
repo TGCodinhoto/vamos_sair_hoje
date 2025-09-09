@@ -58,7 +58,7 @@ $cidades = $cidadeModel->listar();
         </a>
       </div>
     <?php else: ?>
-      <div class="hidden sm:flex items-center space-x-4 md:text-xl">
+      <div class="hidden sm:flex items-center space-x-4 md:text-lg">
         <a href="views/login.php" class="text-white hover:text-gray-200">
           <i class="fas fa-sign-in-alt mr-1"></i> Login
         </a>
