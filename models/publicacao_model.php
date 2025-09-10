@@ -109,4 +109,26 @@ class PublicacaoModel
         $stmt = $this->conexao->prepare("DELETE FROM publicacao WHERE publicacaoid = :publicacaoid");
         return $stmt->execute([':publicacaoid' => $publicacaoid]);
     }
+    
+        // Retorna eventos e locais não auditados
+        public function getNaoAuditados() {
+            $sql = "SELECT p.publicacaoid, p.publicacaonome, p.publicacaoauditada,
+                           CASE 
+                               WHEN EXISTS (SELECT 1 FROM evento e WHERE e.publicacaoid = p.publicacaoid) THEN 'Evento'
+                               ELSE 'Local'
+                           END as tipo
+                    FROM publicacao p
+                    WHERE p.publicacaoauditada IS NULL OR p.publicacaoauditada = 0
+                    ORDER BY p.publicacaoid DESC";
+            $stmt = $this->conexao->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    
+        // Atualiza status de auditoria
+        public function auditar($publicacaoid, $status) {
+            $stmt = $this->conexao->prepare("UPDATE publicacao SET publicacaoauditada = :status WHERE publicacaoid = :id");
+            $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+            $stmt->bindParam(':id', $publicacaoid, PDO::PARAM_INT);
+            return $stmt->execute();
+        }
 }

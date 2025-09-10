@@ -146,6 +146,12 @@ error_log('É estabelecimento? ' . ($isEstabelecimento ? 'Sim' : 'Não'));
                         class="block p-6 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
                         <h2 class="text-xl font-semibold text-blue-700 mb-2">Tipo de Anúncio</h2>
                         <p class="text-gray-600">Gerenciar Tipos de Anúncio</p>
+                        <!-- Card Auditoria -->
+                        <a href="form_auditoria.php"
+                            class="block p-6 bg-yellow-50 border border-yellow-300 rounded-lg hover:bg-yellow-100 transition">
+                            <h2 class="text-xl font-semibold text-yellow-700 mb-2">Auditoria</h2>
+                            <p class="text-gray-600">Aprovar ou desaprovar eventos e locais</p>
+                        </a>
                     </a>
 
                     <a href="form_tipoevento.php"
