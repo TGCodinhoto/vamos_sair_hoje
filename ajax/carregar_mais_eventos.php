@@ -17,7 +17,12 @@ try {
     if ($cidade || $dataInicial || $dataFinal || $tipoEvento) {
         $todosEventos = buscarEventosFiltrados($conexao, $cidade, $dataInicial, $dataFinal, $tipoEvento);
     } else {
-        $todosEventos = listarEventosCompletos();
+            if (!isset($conexao)) {
+                require_once '../conexao.php';
+                $conexao = Conexao::getInstance();
+            }
+            $eventoController = new EventoController($conexao);
+            $todosEventos = $eventoController->listarEventosCompletos();
     }
 
     // Pegar os eventos da página solicitada
