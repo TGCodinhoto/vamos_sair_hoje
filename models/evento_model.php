@@ -207,6 +207,7 @@ class EventoModel
             // Atualizar evento
             $sqlEvento = "UPDATE evento SET
                         tipoeventoid = :tipoeventoid,
+                        loc_publicacaoid = :loc_publicacaoid,
                         formatoid = :formatoid,
                         eventoexpectativa = :expectativa,
                         eventodia = :diaevento,
@@ -219,6 +220,7 @@ class EventoModel
             $stmtEvento = $this->conexao->prepare($sqlEvento);
             $stmtEvento->execute([
                 ':tipoeventoid' => $dados['tipo-evento'],
+                ':loc_publicacaoid' => $dados['loc_publicacaoid'],
                 ':formatoid' => $dados['formato-evento'],
                 ':expectativa' => $dados['expectativa'],
                 ':diaevento' => $dados['dia-evento'],

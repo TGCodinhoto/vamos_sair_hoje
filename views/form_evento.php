@@ -52,8 +52,15 @@ try {
             p.publicacaoid,
             p.publicacaonome,
             c.cidadenome,
+            c.cidadeid,
             es.estadosigla,
-            tl.tipolocalnome
+            es.estadoid,
+            tl.tipolocalnome,
+            en.enderecorua,
+            en.enderecobairro,
+            en.endereconumero,
+            en.enderecocep,
+            en.enderecocomplemento
         FROM publicacao p
         JOIN local l ON p.publicacaoid = l.publicacaoid
         JOIN atracao a ON p.publicacaoid = a.publicacaoid
@@ -257,7 +264,7 @@ if (isset($_GET['msg'])) {
           <div class="flex flex-col w-full">
             <label class="mb-1 sm:mb-2 font-medium text-gray-700 text-base sm:text-lg"
               for="realizacao-evento">Local de realização do Evento</label>
-            <select id="realizacao-evento" name="realizacao-evento" required
+            <select id="realizacao-evento" name="loc_publicacaoid" required
               class="border border-gray-300 rounded-md px-4 py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
               <option disabled <?= !$edicao ? 'selected' : '' ?> value="">Selecione o local de realização do evento</option>
               <?php if (empty($locaisCadastrados)): ?>
@@ -265,7 +272,15 @@ if (isset($_GET['msg'])) {
               <?php else: ?>
                 <?php foreach ($locaisCadastrados as $local): ?>
                   <option value="<?= htmlspecialchars($local['publicacaoid']) ?>"
-                    <?= ($edicao && isset($evento['local_realizacao_id']) && $evento['local_realizacao_id'] == $local['publicacaoid']) ? 'selected' : '' ?>>
+                    <?= ($edicao && isset($evento['loc_publicacaoid']) && $evento['loc_publicacaoid'] == $local['publicacaoid']) ? 'selected' : '' ?>
+                    data-rua="<?= htmlspecialchars($local['enderecorua'] ?? '') ?>"
+                    data-bairro="<?= htmlspecialchars($local['enderecobairro'] ?? '') ?>"
+                    data-numero="<?= htmlspecialchars($local['endereconumero'] ?? '') ?>"
+                    data-cidade="<?= htmlspecialchars($local['cidadeid'] ?? '') ?>"
+                    data-estado="<?= htmlspecialchars($local['estadoid'] ?? '') ?>"
+                    data-complemento="<?= htmlspecialchars($local['enderecocomplemento'] ?? '') ?>"
+                    data-cep="<?= htmlspecialchars($local['enderecocep'] ?? '') ?>"
+                  >
                     <?= htmlspecialchars($local['publicacaonome']) ?> 
                     - <?= htmlspecialchars($local['cidadenome']) ?>/<?= htmlspecialchars($local['estadosigla']) ?>
                     <?php if (!empty($local['tipolocalnome'])): ?>
@@ -662,6 +677,29 @@ if (isset($_GET['msg'])) {
       // Chama a função uma vez quando a página carrega para preencher o estado
       // caso uma cidade já esteja selecionada (no modo de edição).
       atualizarEstado();
+    });
+
+    // Preencher automaticamente os campos de endereço ao selecionar um local
+    document.getElementById('realizacao-evento').addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+
+      // Obtenha os valores dos atributos data-* do option selecionado
+      const rua = selectedOption.getAttribute('data-rua') || '';
+      const bairro = selectedOption.getAttribute('data-bairro') || '';
+      const numero = selectedOption.getAttribute('data-numero') || '';
+      const cidade = selectedOption.getAttribute('data-cidade') || '';
+      const estado = selectedOption.getAttribute('data-estado') || '';
+      const complemento = selectedOption.getAttribute('data-complemento') || '';
+      const cep = selectedOption.getAttribute('data-cep') || '';
+
+      // Preencha os campos de endereço
+      document.getElementById('logradouro').value = rua;
+      document.getElementById('bairro').value = bairro;
+      document.getElementById('numero').value = numero;
+      document.getElementById('cidade').value = cidade;
+      document.getElementById('estado').value = estado;
+      document.getElementById('complemento').value = complemento;
+      document.getElementById('cep').value = cep;
     });
   </script>
 
