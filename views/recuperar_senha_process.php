@@ -1,6 +1,9 @@
 <?php
 require_once '../conexao.php';
 require_once '../models/usuario_model.php';
+require_once '../utils/session_manager.php';
+
+SessionManager::iniciarSessao();
 
 header('Content-Type: application/json');
 
@@ -18,10 +21,10 @@ if (!$email) {
 
 try {
     $pdo = Conexao::getInstance();
-    $usuario = new Usuario($pdo);
+    $usuarioModel = new UsuarioModel($pdo);
     
     // Verifica se o email existe
-    $stmt = $pdo->prepare("SELECT userid, usernome FROM usuario WHERE useremail = ?");
+    $stmt = $pdo->prepare("SELECT userid, usernome FROM user WHERE useremail = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 

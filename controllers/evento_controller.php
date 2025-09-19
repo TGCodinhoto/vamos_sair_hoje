@@ -51,20 +51,20 @@ class EventoController extends BaseController {
                     tp.tipopubliconome,
                     s.segmentonome,
                     cat.categorianome
-                FROM 
-                    publicacao p
-                JOIN evento e ON p.publicacaoid = e.publicacaoid
-                JOIN atracao a ON p.publicacaoid = a.publicacaoid
-                LEFT JOIN tipoevento te ON e.tipoeventoid = te.tipoeventoid
-                LEFT JOIN formatoevento fe ON e.formatoid = fe.formatoid
-                LEFT JOIN endereco en ON a.enderecoid = en.enderecoid
-                LEFT JOIN cidade c ON en.cidadeid = c.cidadeid
-                LEFT JOIN estado es ON c.estadoid = es.estadoid
-                LEFT JOIN classificacaoetaria cl ON a.classificacaoid = cl.classificacaoid
-                LEFT JOIN tipopublico tp ON a.tipopublicoid = tp.tipopublicoid
-                LEFT JOIN segmento s ON a.segmentoid = s.segmentoid
-                LEFT JOIN categoria cat ON a.categoriaid = cat.categoriaid
-                WHERE 1=1";
+                    FROM 
+                        publicacao p
+                    JOIN evento e ON p.publicacaoid = e.publicacaoid
+                    JOIN atracao a ON p.publicacaoid = a.publicacaoid
+                    LEFT JOIN tipoevento te ON e.tipoeventoid = te.tipoeventoid
+                    LEFT JOIN formatoevento fe ON e.formatoid = fe.formatoid
+                    LEFT JOIN endereco en ON a.enderecoid = en.enderecoid
+                    LEFT JOIN cidade c ON en.cidadeid = c.cidadeid
+                    LEFT JOIN estado es ON c.estadoid = es.estadoid
+                    LEFT JOIN classificacaoetaria cl ON a.classificacaoid = cl.classificacaoid
+                    LEFT JOIN tipopublico tp ON a.tipopublicoid = tp.tipopublicoid
+                    LEFT JOIN segmento s ON a.segmentoid = s.segmentoid
+                    LEFT JOIN categoria cat ON a.categoriaid = cat.categoriaid
+                    WHERE (p.publicacaoauditada = 1)";
         $params = [];
 
         if ($cidade) {
@@ -330,6 +330,7 @@ class EventoController extends BaseController {
         LEFT JOIN tipopublico tp ON a.tipopublicoid = tp.tipopublicoid
         LEFT JOIN segmento s ON a.segmentoid = s.segmentoid
         LEFT JOIN categoria cat ON a.categoriaid = cat.categoriaid
+        WHERE p.publicacaoauditada = 1
     ORDER BY e.eventodia ASC, e.eventohora ASC
     ");
 
