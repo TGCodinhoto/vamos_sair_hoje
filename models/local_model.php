@@ -36,8 +36,28 @@ class LocalModel
     public function buscarPorPublicacaoId($publicacaoId)
     {
         $stmt = $this->conexao->prepare("
-            SELECT l.*, tl.tipolocalnome 
+            SELECT 
+                p.*,
+                a.*,
+                l.*,
+                en.enderecoid, en.enderecorua, en.endereconumero, en.enderecobairro, 
+                en.enderecocep, en.enderecocomplemento, en.cidadeid,
+                c.cidadenome as nome_cidade, es.estadosigla, es.estadoid,
+                ce.classificacaonome,
+                tp.tipopubliconome,
+                s.segmentonome,
+                cat.categorianome,
+                tl.tipolocalnome
             FROM local l
+            LEFT JOIN publicacao p ON l.publicacaoid = p.publicacaoid
+            LEFT JOIN atracao a ON p.publicacaoid = a.publicacaoid
+            LEFT JOIN endereco en ON a.enderecoid = en.enderecoid
+            LEFT JOIN cidade c ON en.cidadeid = c.cidadeid
+            LEFT JOIN estado es ON c.estadoid = es.estadoid
+            LEFT JOIN classificacaoetaria ce ON a.classificacaoid = ce.classificacaoid
+            LEFT JOIN tipopublico tp ON a.tipopublicoid = tp.tipopublicoid
+            LEFT JOIN segmento s ON a.segmentoid = s.segmentoid
+            LEFT JOIN categoria cat ON a.categoriaid = cat.categoriaid
             LEFT JOIN tipolocal tl ON l.tipolocalid = tl.tipolocalid
             WHERE l.publicacaoid = :publicacaoId
         ");

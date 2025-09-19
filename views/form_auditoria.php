@@ -197,18 +197,13 @@ $naoAuditados = $publicacaoModel->getNaoAuditados();
                     </tbody>
                 </table>
                 <?php foreach ($naoAuditados as $item): ?>
-                    <?php
-                        // Buscar detalhes do evento ou local
-                        if ($item['tipo'] === 'Evento') {
-                            require_once '../models/evento_model.php';
-                            $eventoModel = new EventoModel($conexao);
-                            $detalhes = $eventoModel->buscarPorPublicacaoId($item['publicacaoid']);
-                        } else {
-                            require_once '../models/local_model.php';
-                            $localModel = new LocalModel($conexao);
-                            $detalhes = $localModel->buscarPorPublicacaoId($item['publicacaoid']);
-                        }
-                    ?>
+                    <?php if ($item['tipo'] === 'Evento'): ?>
+                        <?php include 'partials/modal_evento.php'; ?>
+                    <?php else: ?>
+                        <?php include 'partials/modal_local.php'; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                <?php foreach ($naoAuditados as $item): ?>
                         <div id="modal-<?= $item['publicacaoid'] ?>" class="modal">
                         <div class="modal-content">
                             <div class="flex justify-between items-start mb-6">
@@ -336,12 +331,25 @@ $naoAuditados = $publicacaoModel->getNaoAuditados();
                                                 <div>
                                                     <p class="font-medium text-gray-700">Localização</p>
                                                     <p class="info-text"><?= htmlspecialchars($detalhes['enderecorua'] ?? '-') ?>, <?= htmlspecialchars($detalhes['endereconumero'] ?? '-') ?></p>
-                                                    <p class="info-text">Bairro: <?= htmlspecialchars($detalhes['enderecobairro'] ?? '-') ?></p>
-                                                    <p class="info-text">Cidade: <?= htmlspecialchars($detalhes['nome_cidade'] ?? '-') ?>/<?= htmlspecialchars($detalhes['estadosigla'] ?? '-') ?></p>
-                                                    <p class="info-text">CEP: <?= htmlspecialchars($detalhes['enderecocep'] ?? '-') ?></p>
+                                                    <p class="info-text"><?= htmlspecialchars($detalhes['enderecobairro'] ?? '-') ?></p>
+                                                    <p class="info-text"><?= htmlspecialchars($detalhes['nome_cidade'] ?? '-') ?>/<?= htmlspecialchars($detalhes['estadosigla'] ?? '-') ?> • CEP: <?= htmlspecialchars($detalhes['enderecocep'] ?? '-') ?></p>
                                                     <?php if (!empty($detalhes['enderecocomplemento'])): ?>
                                                         <p class="info-text">Complemento: <?= htmlspecialchars($detalhes['enderecocomplemento']) ?></p>
                                                     <?php endif; ?>
+                                                </div>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-calendar info-icon mt-1"></i>
+                                                <div>
+                                                    <p class="font-medium text-gray-700">Validade da Publicação</p>
+                                                    <p class="info-text"><?= !empty($detalhes['publicacaovalidadein']) ? date('d/m/Y', strtotime($detalhes['publicacaovalidadein'])) : '-' ?> a <?= !empty($detalhes['publicacaovalidadeout']) ? date('d/m/Y', strtotime($detalhes['publicacaovalidadeout'])) : '-' ?></p>
+                                                </div>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-phone info-icon mt-1"></i>
+                                                <div>
+                                                    <p class="font-medium text-gray-700">Telefone</p>
+                                                    <p class="info-text"><?= htmlspecialchars($detalhes['atracaotelefone'] ?? '-') ?></p>
                                                 </div>
                                             </li>
                                         <?php endif; ?>
@@ -399,6 +407,13 @@ $naoAuditados = $publicacaoModel->getNaoAuditados();
                                                 <div>
                                                     <p class="font-medium text-gray-700">Classificação Etária</p>
                                                     <p class="info-text"><?= htmlspecialchars($detalhes['classificacaonome'] ?? '-') ?></p>
+                                                </div>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-phone info-icon mt-1"></i>
+                                                <div>
+                                                    <p class="font-medium text-gray-700">Telefone</p>
+                                                    <p class="info-text"><?= htmlspecialchars($detalhes['atracaotelefone'] ?? '-') ?></p>
                                                 </div>
                                             </li>
                                         <?php endif; ?>

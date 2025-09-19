@@ -47,8 +47,29 @@ class EventoModel
     public function buscarPorPublicacaoId($publicacaoId)
     {
         $stmt = $this->conexao->prepare("
-            SELECT e.*, te.tipoeventonome, fe.formatonome 
+            SELECT 
+                p.*,
+                a.*,
+                e.*,
+                en.enderecoid, en.enderecorua, en.endereconumero, en.enderecobairro, 
+                en.enderecocep, en.enderecocomplemento, en.cidadeid,
+                c.cidadenome as nome_cidade, es.estadosigla, es.estadoid,
+                ce.classificacaonome,
+                tp.tipopubliconome,
+                s.segmentonome,
+                cat.categorianome,
+                te.tipoeventonome,
+                fe.formatonome
             FROM evento e
+            LEFT JOIN publicacao p ON e.publicacaoid = p.publicacaoid
+            LEFT JOIN atracao a ON p.publicacaoid = a.publicacaoid
+            LEFT JOIN endereco en ON a.enderecoid = en.enderecoid
+            LEFT JOIN cidade c ON en.cidadeid = c.cidadeid
+            LEFT JOIN estado es ON c.estadoid = es.estadoid
+            LEFT JOIN classificacaoetaria ce ON a.classificacaoid = ce.classificacaoid
+            LEFT JOIN tipopublico tp ON a.tipopublicoid = tp.tipopublicoid
+            LEFT JOIN segmento s ON a.segmentoid = s.segmentoid
+            LEFT JOIN categoria cat ON a.categoriaid = cat.categoriaid
             LEFT JOIN tipoevento te ON e.tipoeventoid = te.tipoeventoid
             LEFT JOIN formatoevento fe ON e.formatoid = fe.formatoid
             WHERE e.publicacaoid = :publicacaoId

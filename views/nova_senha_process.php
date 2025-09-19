@@ -1,6 +1,9 @@
 <?php
 require_once '../conexao.php';
 require_once '../models/usuario_model.php';
+require_once '../utils/session_manager.php';
+
+SessionManager::iniciarSessao();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: login.php');
@@ -26,9 +29,9 @@ try {
     
     // Verifica se o token é válido e não foi usado
     $stmt = $pdo->prepare("
-        SELECT r.*, u.id as usuario_id 
+        SELECT r.*, u.userid as usuario_id 
         FROM recuperacao_senha r 
-        JOIN usuarios u ON u.id = r.usuario_id 
+        JOIN user u ON u.userid = r.userid 
         WHERE r.token = ? AND r.usado = 0 AND r.expira > NOW()
     ");
     $stmt->execute([$token]);
@@ -41,7 +44,7 @@ try {
 
     // Atualiza a senha do usuário
     $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-    $stmt = $pdo->prepare("UPDATE usuarios SET senha = ? WHERE id = ?");
+    $stmt = $pdo->prepare("UPDATE user SET userpass = ? WHERE userid = ?");
     $stmt->execute([$senha_hash, $recuperacao['usuario_id']]);
 
     // Marca o token como usado

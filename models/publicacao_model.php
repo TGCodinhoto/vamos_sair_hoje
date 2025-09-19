@@ -106,20 +106,69 @@ class PublicacaoModel
 
     public function excluir($publicacaoid)
     {
-        $stmt = $this->conexao->prepare("DELETE FROM publicacao WHERE publicacaoid = :publicacaoid");
-        return $stmt->execute([':publicacaoid' => $publicacaoid]);
+        try {
+            $this->conexao->beginTransaction();
+            
+            // Buscar endereco_id antes de excluir atracao
+            $stmt = $this->conexao->prepare("SELECT enderecoid FROM atracao WHERE publicacaoid = :publicacao_id");
+            $stmt->bindParam(':publicacao_id', $publicacaoid);
+            $stmt->execute();
+            $endereco = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Excluir evento se existir
+            $stmt = $this->conexao->prepare("DELETE FROM evento WHERE publicacaoid = :publicacao_id");
+            $stmt->bindParam(':publicacao_id', $publicacaoid);
+            $stmt->execute();
+            
+            // Excluir local se existir
+            $stmt = $this->conexao->prepare("DELETE FROM local WHERE publicacaoid = :publicacao_id");
+            $stmt->bindParam(':publicacao_id', $publicacaoid);
+            $stmt->execute();
+            
+            // Excluir atracao
+            $stmt = $this->conexao->prepare("DELETE FROM atracao WHERE publicacaoid = :publicacao_id");
+            $stmt->bindParam(':publicacao_id', $publicacaoid);
+            $stmt->execute();
+            
+            // Excluir endereco se existir
+            if ($endereco && $endereco['enderecoid']) {
+                $stmt = $this->conexao->prepare("DELETE FROM endereco WHERE enderecoid = :endereco_id");
+                $stmt->bindParam(':endereco_id', $endereco['enderecoid']);
+                $stmt->execute();
+            }
+            
+            // Excluir publicacao
+            $stmt = $this->conexao->prepare("DELETE FROM publicacao WHERE publicacaoid = :publicacao_id");
+            $stmt->bindParam(':publicacao_id', $publicacaoid);
+            $stmt->execute();
+            
+            $this->conexao->commit();
+            return true;
+        } catch (PDOException $e) {
+            if ($this->conexao->inTransaction()) {
+                $this->conexao->rollBack();
+            }
+            throw new Exception("Erro ao excluir publicação: " . $e->getMessage());
+        }
     }
     
         // Retorna eventos e locais não auditados
         public function getNaoAuditados() {
-            $sql = "SELECT p.publicacaoid, p.publicacaonome, p.publicacaoauditada,
-                           CASE 
-                               WHEN EXISTS (SELECT 1 FROM evento e WHERE e.publicacaoid = p.publicacaoid) THEN 'Evento'
-                               ELSE 'Local'
-                           END as tipo
-                    FROM publicacao p
-                    WHERE p.publicacaoauditada IS NULL OR p.publicacaoauditada = 0
-                    ORDER BY p.publicacaoid DESC";
+            // Query para eventos
+            $sqlEventos = "SELECT p.publicacaoid, p.publicacaonome, p.publicacaoauditada, 'Evento' as tipo
+                          FROM publicacao p
+                          INNER JOIN evento e ON p.publicacaoid = e.publicacaoid
+                          WHERE (p.publicacaoauditada IS NULL OR p.publicacaoauditada = 0)";
+            
+            // Query para locais
+            $sqlLocais = "SELECT p.publicacaoid, p.publicacaonome, p.publicacaoauditada, 'Local' as tipo
+                         FROM publicacao p
+                         INNER JOIN local l ON p.publicacaoid = l.publicacaoid
+                         WHERE (p.publicacaoauditada IS NULL OR p.publicacaoauditada = 0)";
+            
+            // União das duas queries
+            $sql = "($sqlEventos) UNION ($sqlLocais) ORDER BY publicacaoid DESC";
+            
             $stmt = $this->conexao->query($sql);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
@@ -127,7 +176,7 @@ class PublicacaoModel
         // Atualiza status de auditoria
         public function auditar($publicacaoid, $status) {
             $stmt = $this->conexao->prepare("UPDATE publicacao SET publicacaoauditada = :status WHERE publicacaoid = :id");
-            $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+            $stmt->bindParam(':status', $status);
             $stmt->bindParam(':id', $publicacaoid, PDO::PARAM_INT);
             return $stmt->execute();
         }

@@ -330,6 +330,7 @@ class EventoController extends BaseController {
         LEFT JOIN tipopublico tp ON a.tipopublicoid = tp.tipopublicoid
         LEFT JOIN segmento s ON a.segmentoid = s.segmentoid
         LEFT JOIN categoria cat ON a.categoriaid = cat.categoriaid
+        WHERE p.publicacaoauditada = 1
     ORDER BY e.eventodia ASC, e.eventohora ASC
     ");
 
